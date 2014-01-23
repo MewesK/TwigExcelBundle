@@ -1,0 +1,29 @@
+{
+    "name": "mewesk/phpexcel-twig-extension-bundle",
+    "description": "PhpExcel integration for Twig/Symfony",
+    "keywords": ["phpexcel","twig","symfony"],
+    "homepage": "https://github.com/mewesk/phpexcel-twig-extension",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mewes Kochheim",
+            "email": "mewes@kochheim.de"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "~2.1",
+        "twig/twig": "~1.11",
+        "phpoffice/phpexcel": "1.7.9"
+    },
+    "autoload": {
+        "psr-0": { "MewesK\\PhpExcelTwigExtensionBundle": "" }
+    },
+    "target-dir": "MewesK/PhpExcelTwigExtension",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
