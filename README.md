@@ -1,6 +1,8 @@
 PhpExcel Twig Extension Bundle
 ========================
 
+[![Build Status](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle.png?branch=master)](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle)
+
 Helper Functions
 ----------------------------------
 
