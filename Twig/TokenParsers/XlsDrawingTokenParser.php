@@ -1,6 +1,8 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig;
+namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers;
+
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Nodes\XlsStyleNode;
 
 class XlsDrawingTokenParser extends \Twig_TokenParser
 {

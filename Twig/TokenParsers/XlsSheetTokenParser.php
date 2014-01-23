@@ -1,12 +1,14 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig;
+namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers;
 
-class XlsCellTokenParser extends \Twig_TokenParser
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Nodes\XlsSheetNode;
+
+class XlsSheetTokenParser extends \Twig_TokenParser
 {
     public function parse(\Twig_Token $token)
     {
-        $coordinates = $this->parser->getExpressionParser()->parseExpression();
+        $title = $this->parser->getExpressionParser()->parseExpression();
 
         $properties = new \Twig_Node_Expression_Array([], $token->getLine());
         if (!$this->parser->getStream()->test(\Twig_Token::BLOCK_END_TYPE)) {
@@ -14,27 +16,27 @@ class XlsCellTokenParser extends \Twig_TokenParser
         }
 
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse([$this, 'decideXlsCellEnd'], true);
+        $body = $this->parser->subparse([$this, 'decideXlsSheetEnd'], true);
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
 
         $this->checkSyntaxErrorsRecursively($body);
 
-        return new XlsCellNode($coordinates, $properties, $body, $token->getLine(), $this->getTag());
+        return new XlsSheetNode($title, $properties, $body, $token->getLine(), $this->getTag());
     }
 
-    public function decideXlsCellEnd(\Twig_Token $token)
+    public function decideXlsSheetEnd(\Twig_Token $token)
     {
-        return $token->test('endxlscell');
+        return $token->test('endxlssheet');
     }
 
     public function getTag()
     {
-        return 'xlscell';
+        return 'xlssheet';
     }
 
     private function checkSyntaxErrorsRecursively(\Twig_Node $node) {
         foreach ($node->getIterator() as $subNode) {
-            if ($subNode instanceof XlsCellNode) {
+            if ($subNode instanceof XlsSheetNode) {
                 throw new \LogicException(
                     sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($subNode), get_class($node))
                 );

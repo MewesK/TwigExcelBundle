@@ -2,6 +2,11 @@
 
 namespace MewesK\PhpExcelTwigExtensionBundle\Twig;
 
+use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsCellTokenParser;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsDocumentTokenParser;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsSheetTokenParser;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsStyleTokenParser;
+
 class PhpExcelExtension extends \Twig_Extension
 {
     /**
