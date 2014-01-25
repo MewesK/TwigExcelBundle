@@ -222,26 +222,6 @@ Full Syntax
             {% xlscell 'B1' %}Foo{% endxlscell %}
             {% xlscell 'C1' %}Bar{% endxlscell %}
             {#
-                xlsstyle tag
-
-                {% xlsstyle [coordinates:string] [properties:literal] %}
-                {% xlsstyle [coordinates:string] {
-                    style: [literal]
-                } %}
-
-                'coordinates' and 'properties' are required
-
-                see: PHPExcel_Style:applyFromArray
-                see: PHPExcel_Style_Border
-            #}
-            {% xlsstyle 'B1:C1' {
-                style: {
-                    font: {
-                        color: 'ff0000'
-                    }
-                }
-            } %}
-            {#
                 xlsdrawing tag
 
                 {% xlsdrawing [path:string] [properties:literal] %}
