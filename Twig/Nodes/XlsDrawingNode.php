@@ -4,9 +4,9 @@ namespace MewesK\PhpExcelTwigExtensionBundle\Twig\Nodes;
 
 class XlsDrawingNode extends \Twig_Node
 {
-    public function __construct(\Twig_Node_Expression $path, \Twig_Node_Expression $properties, $lineno, $tag = 'xlsdrawing')
+    public function __construct(\Twig_Node_Expression $path, \Twig_Node_Expression $properties, $line, $tag = 'xlsdrawing')
     {
-        parent::__construct(['path' => $path, 'properties' => $properties], [], $lineno, $tag);
+        parent::__construct(['path' => $path, 'properties' => $properties], [], $line, $tag);
     }
 
     public function compile(\Twig_Compiler $compiler)
@@ -22,7 +22,7 @@ class XlsDrawingNode extends \Twig_Node
 
             ->write('
                 $objDrawing = new PHPExcel_Worksheet_Drawing();
-                $objDrawing->setWorksheet($objActiveSheet);
+                $objDrawing->setWorksheet($phpExcel->sheet);
                 $objDrawing->setPath($strPath);
 
                 if (count($arrDrawingProperties) > 0) {

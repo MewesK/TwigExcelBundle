@@ -15,18 +15,13 @@ class XlsDocumentTokenParser extends \Twig_TokenParser
         }
 
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse([$this, 'decideXlsDocumentEnd'], true);
+        $body = $this->parser->subparse(function(\Twig_Token $token) { return $token->test('endxlsdocument'); }, true);
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
 
         $this->removeTextNodesRecursively($body);
         $this->checkSyntaxErrorsRecursively($body);
 
         return new XlsDocumentNode($properties, $body, $token->getLine(), $this->getTag());
-    }
-
-    public function decideXlsDocumentEnd(\Twig_Token $token)
-    {
-        return $token->test('endxlsdocument');
     }
 
     public function getTag()

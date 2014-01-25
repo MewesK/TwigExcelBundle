@@ -16,17 +16,12 @@ class XlsCellTokenParser extends \Twig_TokenParser
         }
 
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse([$this, 'decideXlsCellEnd'], true);
+        $body = $this->parser->subparse(function(\Twig_Token $token) { return $token->test('endxlscell'); }, true);
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
 
         $this->checkSyntaxErrorsRecursively($body);
 
         return new XlsCellNode($coordinates, $properties, $body, $token->getLine(), $this->getTag());
-    }
-
-    public function decideXlsCellEnd(\Twig_Token $token)
-    {
-        return $token->test('endxlscell');
     }
 
     public function getTag()

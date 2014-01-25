@@ -4,8 +4,9 @@ namespace MewesK\PhpExcelTwigExtensionBundle\Twig;
 
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsCellTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsDocumentTokenParser;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsDrawingTokenParser;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsRowTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsSheetTokenParser;
-use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers\XlsStyleTokenParser;
 
 class PhpExcelExtension extends \Twig_Extension
 {
@@ -25,10 +26,11 @@ class PhpExcelExtension extends \Twig_Extension
     public function getTokenParsers()
     {
         return [
-            new XlsDocumentTokenParser(),
-            new XlsSheetTokenParser(),
             new XlsCellTokenParser(),
-            new XlsStyleTokenParser()
+            new XlsDocumentTokenParser(),
+            new XlsDrawingTokenParser(),
+            new XlsRowTokenParser(),
+            new XlsSheetTokenParser()
         ];
     }
 
