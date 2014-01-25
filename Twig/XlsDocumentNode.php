@@ -21,7 +21,7 @@ class XlsDocumentNode extends \Twig_Node
                 $objPHPExcel = new PHPExcel();
                 $objPHPExcel->removeSheetByIndex(0);
 
-                if ($arrDocumentProperties) > 0) {
+                if (count($arrDocumentProperties) > 0) {
                     $objDocumentProperties = new PHPExcel_DocumentProperties();
 
                     if (array_key_exists(\'category\', $arrDocumentProperties)) { $objDocumentProperties->setCategory($arrDocumentProperties[\'category\']); }

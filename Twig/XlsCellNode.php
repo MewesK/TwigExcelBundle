@@ -24,12 +24,12 @@ class XlsCellNode extends \Twig_Node
             ->raw(';'.PHP_EOL)
 
             ->write('
-                if ($arrCellProperties) > 0) {
+                if (count($arrCellProperties) > 0) {
                     if (array_key_exists(\'break\', $arrCellProperties)) { $objActiveSheet->setBreak($strCoordinates, $arrCellProperties[\'break\']); }
 
                     if (array_key_exists(\'dataValidation\', $arrCellProperties)) {
                         $arrValidation = $arrCellProperties[\'dataValidation\'];
-                        $objValidation = $objActiveSheet->getCell($strCoordinates)->getDataValidation();;
+                        $objValidation = $objActiveSheet->getCell($strCoordinates)->getDataValidation();
 
                         if (array_key_exists(\'allowBlank\', $arrValidation)) { $objValidation->setAllowBlank($arrValidation[\'allowBlank\']); }
                         if (array_key_exists(\'error\', $arrValidation)) { $objValidation->setError($arrValidation[\'error\']); }

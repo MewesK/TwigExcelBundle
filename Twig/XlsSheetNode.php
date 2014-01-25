@@ -25,7 +25,7 @@ class XlsSheetNode extends \Twig_Node
                 $objPHPExcel->setActiveSheetIndexByName($strTitle);
                 $objActiveSheet = $objPHPExcel->getActiveSheet();
 
-                if ($arrSheetProperties) > 0) {
+                if (count($arrSheetProperties) > 0) {
                     if (array_key_exists(\'columnDimension\', $arrSheetProperties)) {
                         $arrColumnDimensions = $arrSheetProperties[\'columnDimension\'];
 
