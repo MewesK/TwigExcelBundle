@@ -3,6 +3,11 @@ PhpExcel Twig Extension Bundle
 
 [![Build Status](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle.png?branch=master)](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle)
 
+Warning
+----------------------------------
+
+This is a working proof of concept. The planned release version is maturing in the dev branch.
+
 Helper Functions
 ----------------------------------
 
