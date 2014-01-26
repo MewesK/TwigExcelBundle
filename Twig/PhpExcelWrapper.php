@@ -303,11 +303,6 @@ class PhpExcelWrapper {
         if (strlen($this->column) > 1) {
             $lastCharacter = substr($this->column, - 1);
         }
-        if ($lastCharacter == 'Z') {
-            $lastCharacter = 'AA';
-        } else {
-            $lastCharacter = chr(ord($lastCharacter) + 1);
-        }
-        return substr($this->column, 0, -1) . $lastCharacter;
+        return substr($this->column, 0, -1) . ($lastCharacter == 'Z' ? $lastCharacter = 'AA' : chr(ord($lastCharacter) + 1));
     }
 }
