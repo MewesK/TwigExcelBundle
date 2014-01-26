@@ -290,7 +290,24 @@ class PhpExcelWrapper {
         $this->drawingObject = null;
     }
 
-    public function save($writerType = 'Excel5') {
+    public function save($format) {
+        $writerType = null;
+        switch(strtolower($format)) {
+            case 'csv':
+                $writerType = 'CSV';
+                break;
+            case 'xls':
+                $writerType = 'Excel5';
+                break;
+            case 'xlsx':
+                $writerType = 'Excel2007';
+                break;
+            case 'pdf':
+                $writerType = 'PDF';
+                break;
+            case 'default':
+                throw new \InvalidArgumentException();
+        }
         \PHPExcel_IOFactory::createWriter($this->documentObject, $writerType)->save('php://output');
     }
 
