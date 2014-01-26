@@ -2,7 +2,7 @@
 
 namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers;
 
-use MewesK\PhpExcelTwigExtensionBundle\Twig\Nodes\XlsStyleNode;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Nodes\XlsDrawingNode;
 
 class XlsDrawingTokenParser extends \Twig_TokenParser
 {
@@ -17,7 +17,7 @@ class XlsDrawingTokenParser extends \Twig_TokenParser
 
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        return new XlsStyleNode($path, $properties, $token->getLine(), $this->getTag());
+        return new XlsDrawingNode($path, $properties, $token->getLine(), $this->getTag());
     }
 
     public function getTag()
