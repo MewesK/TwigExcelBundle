@@ -122,8 +122,8 @@ class PhpExcelWrapper {
         $this->sheetMappings['protection']['insertRows'] = function($value) { $this->sheetObject->getProtection()->setInsertRows($value); };
         $this->sheetMappings['protection']['objects'] = function($value) { $this->sheetObject->getProtection()->setObjects($value); };
         $this->sheetMappings['protection']['pivotTables'] = function($value) { $this->sheetObject->getProtection()->setPivotTables($value); };
-        $this->sheetMappings['protection']['scenarios'] = function($value) { $this->sheetObject->getProtection()->setSelectLockedCells($value); };
-        $this->sheetMappings['protection']['selectLockedCells'] = function($value) { $this->sheetObject->getProtection()->setVerticalCentered($value); };
+        $this->sheetMappings['protection']['scenarios'] = function($value) { $this->sheetObject->getProtection()->setScenarios($value); };
+        $this->sheetMappings['protection']['selectLockedCells'] = function($value) { $this->sheetObject->getProtection()->setSelectLockedCells($value); };
         $this->sheetMappings['protection']['selectUnlockedCells'] = function($value) { $this->sheetObject->getProtection()->setSelectUnlockedCells($value); };
         $this->sheetMappings['protection']['sheet'] = function($value) { $this->sheetObject->getProtection()->setSheet($value); };
         $this->sheetMappings['protection']['sort'] = function($value) { $this->sheetObject->getProtection()->setSort($value); };
@@ -178,7 +178,7 @@ class PhpExcelWrapper {
         $this->drawingMappings['shadow']['alignment'] = function($value) { $this->drawingObject->getShadow()->setAlignment($value); };
         $this->drawingMappings['shadow']['alpha'] = function($value) { $this->drawingObject->getShadow()->setAlpha($value); };
         $this->drawingMappings['shadow']['blurRadius'] = function($value) { $this->drawingObject->getShadow()->setBlurRadius($value); };
-        $this->drawingMappings['shadow']['color'] = function($value) { $this->drawingObject->getShadow()->setColor()->setRgb($value); };
+        $this->drawingMappings['shadow']['color'] = function($value) { $this->drawingObject->getShadow()->getColor()->setRgb($value); };
         $this->drawingMappings['shadow']['direction'] = function($value) { $this->drawingObject->getShadow()->setDirection($value); };
         $this->drawingMappings['shadow']['distance'] = function($value) { $this->drawingObject->getShadow()->setDistance($value); };
         $this->drawingMappings['shadow']['visible'] = function($value) { $this->drawingObject->getShadow()->setVisible($value); };
@@ -290,8 +290,8 @@ class PhpExcelWrapper {
         $this->drawingObject = null;
     }
 
-    public function save() {
-        \PHPExcel_IOFactory::createWriter($this->phpExcel, 'Excel5')->save('php://output');
+    public function save($writerType = 'Excel5') {
+        \PHPExcel_IOFactory::createWriter($this->documentObject, $writerType)->save('php://output');
     }
 
     private function increaseRow() {
