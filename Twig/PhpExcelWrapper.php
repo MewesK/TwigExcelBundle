@@ -2,13 +2,12 @@
 
 namespace MewesK\PhpExcelTwigExtensionBundle\Twig;
 
-
 class PhpExcelWrapper {
 
     /**
      * @var string
      */
-    public static $COLUMN_DEFAULT = 'A';
+    public static $COLUMN_DEFAULT = 0;
     /**
      * @var int
      */
@@ -72,8 +71,8 @@ class PhpExcelWrapper {
         $this->sheetObject = null;
         $this->cellObject = null;
         $this->drawingObject = null;
-        $this->row = self::$ROW_DEFAULT;
-        $this->column = self::$COLUMN_DEFAULT;
+        $this->row = null;
+        $this->column = null;
         $this->format = null;
 
         $this->documentMappings = [];
@@ -249,16 +248,16 @@ class PhpExcelWrapper {
     }
 
     public function tagSheet($index, array $properties = null) {
-        if ($index == null) {
-            throw new \LogicException();
+        if ($index == null || empty($index)) {
+            throw new \InvalidArgumentException();
         }
 
         if (!$this->documentObject->sheetNameExists($index)) {
             $this->documentObject->createSheet()->setTitle($index);
         }
 
-        $this->column = self::$COLUMN_DEFAULT;
-        $this->row = self::$ROW_DEFAULT;
+        $this->column = null;
+        $this->row = null;
 
         $this->sheetObject = $this->documentObject->setActiveSheetIndexByName($index);
         $this->cellObject = null;
@@ -269,11 +268,14 @@ class PhpExcelWrapper {
     }
 
     public function tagRow($index = null, array $properties = null) {
-        if ($this->sheetObject == null || !is_int($index)) {
+        if ($this->sheetObject == null) {
             throw new \LogicException();
         }
+        if ($index !== null && !is_int($index)) {
+            throw new \InvalidArgumentException();
+        }
 
-        $this->column = self::$COLUMN_DEFAULT;
+        $this->column = null;
         $this->row = $index == null ? $this->increaseRow() : $index;
 
         $this->cellObject = null;
@@ -284,15 +286,18 @@ class PhpExcelWrapper {
     }
 
     public function tagCell($index = null, $value = null, array $properties = null) {
-        if ($this->sheetObject == null || !preg_match('/^[A-Z]$/', $index)) {
+        if ($this->sheetObject == null) {
             throw new \LogicException();
+        }
+        if ($index !== null && !is_int($index)) {
+            throw new \InvalidArgumentException();
         }
 
         $this->column = $index == null ? $this->increaseColumn() : $index;
 
         $this->cellObject = $this->sheetObject->getCellByColumnAndRow($this->column, $this->row);
 
-        if ($value != null) {
+        if ($value !== null) {
             $this->cellObject->setValue($value);
         }
         
@@ -302,8 +307,11 @@ class PhpExcelWrapper {
     }
     
     public function tagDrawing($path, array $properties = null) {
-        if ($this->sheetObject == null || !file_exists($path)) {
+        if ($this->sheetObject == null) {
             throw new \LogicException();
+        }
+        if (!file_exists($path)) {
+            throw new \InvalidArgumentException();
         }
 
         $this->drawingObject = new \PHPExcel_Worksheet_Drawing();
@@ -322,7 +330,7 @@ class PhpExcelWrapper {
             $format = $this->format;
         }
         if ($format == null || empty($format)) {
-
+            $format = 'xls';
         }
 
         $writerType = null;
@@ -347,14 +355,10 @@ class PhpExcelWrapper {
     }
 
     private function increaseRow() {
-        return $this->row + 1;
+        return $this->row === null ? self::$ROW_DEFAULT : $this->row + 1;
     }
 
     private function increaseColumn() {
-        $lastCharacter = $this->column;
-        if (strlen($this->column) > 1) {
-            $lastCharacter = substr($this->column, - 1);
-        }
-        return substr($this->column, 0, -1) . ($lastCharacter == 'Z' ? $lastCharacter = 'AA' : chr(ord($lastCharacter) + 1));
+        return $this->column === null ? self::$COLUMN_DEFAULT : $this->column + 1;
     }
 }
