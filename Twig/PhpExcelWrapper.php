@@ -342,7 +342,7 @@ class PhpExcelWrapper {
             case 'default':
                 throw new \InvalidArgumentException();
         }
-        
+
         \PHPExcel_IOFactory::createWriter($this->documentObject, $writerType)->save('php://output');
     }
 
