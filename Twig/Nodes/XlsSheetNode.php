@@ -22,10 +22,8 @@ class XlsSheetNode extends \Twig_Node
             ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
-            ->write('
-                $phpExcel->tagSheet($sheetIndex, $sheetProperties);
-                unset($sheetIndex, $sheetProperties);
-            ')
+            ->write('$phpExcel->tagSheet($sheetIndex, $sheetProperties);'.PHP_EOL)
+            ->write('unset($sheetIndex, $sheetProperties);'.PHP_EOL)
 
             ->subcompile($this->getNode('body'));
     }
