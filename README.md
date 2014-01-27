@@ -22,6 +22,7 @@ Full Syntax
             creator: [string],
             defaultStyle: [literal],
             description: [string],
+            format: [string],
             keywords: [string],
             lastModifiedBy: [string],
             manager: [string],
@@ -34,6 +35,7 @@ Full Syntax
         'properties' are optional
         cannot contain other 'xlsdocument' tags
         may contain multiple 'xlssheet' tags
+        possible formats are 'csv', 'html', 'pdf', 'xls, 'xlsx'
 
         see: PHPExcel_Document
         see: PHPExcel_DocumentSecurity
@@ -51,6 +53,7 @@ Full Syntax
             }
         },
         description: 'Test document',
+        format: 'xls',
         keywords: 'Test',
         lastModifiedBy: 'Tester',
         manager: 'Tester',
@@ -171,56 +174,69 @@ Full Syntax
             zoomScale: 75
         }%}
             {#
-                xlscell tag
+                xlsrow tag
 
-                {% xlssheet [coordinates:string] [properties:literal] %}[string]{% endxlscell %}
-                {% xlssheet [coordinates:string] {
-                    break: [integer],
-                    dataValidation: [literal],
-                    style: [literal],
-                    url: [string]
-                } %}[string]{% endxlscell %}
+                {% xlsrow [index:integer] %}[Twig_NodeInterface]{% endxlsrow %}
 
-                'coordinates' are required, 'properties' are optional
-                cannot contain other 'xlscell' tags
-
-                see: PHPExcel_Cell_DataValidation
-                see: PHPExcel_Style:applyFromArray
-                see: PHPExcel_Style_Border
+                'index' is optional
+                if 'index' is not defined it will default to 1 for the first usage per sheet
+                for each further usage it will increase the index by 1 automatically (1, 2, 3, ...)
             #}
-            {% xlscell 'A1' {
-                break: 1,
-                dataValidation: {
-                    allowBlank: false,
-                    error: '',
-                    errorStyle: 'stop',
-                    errorTitle: '',
-                    formula1: '',
-                    formula2: '',
-                    operator: '',
-                    prompt: ''
-                    promptTitle: '',
-                    showDropDown: false,
-                    showErrorMessage: false,
-                    showInputMessage: false,
-                    type: 'none',
-                },
-                style: {
-                    borders: {
-                        bottom: {
-                            style: 'thin',
-                            color: {
-                                rgb: '000000'
+            {% xlsrow 1 %}
+                {#
+                    xlscell tag
+
+                    {% xlscell [index:string] [properties:literal] %}[string]{% endxlscell %}
+                    {% xlscell [index:string] {
+                        break: [integer],
+                        dataValidation: [literal],
+                        style: [literal],
+                        url: [string]
+                    } %}[string]{% endxlscell %}
+
+                    'index' and 'properties' are optional
+                    if 'index' is not defined it will default to 'A' for the first usage per row
+                    for each further usage it will increase the index by 1 automatically (A, B, C, ..., AA, AB, AC, ...)
+                    cannot contain other 'xlscell' tags
+
+                    see: PHPExcel_Cell_DataValidation
+                    see: PHPExcel_Style:applyFromArray
+                    see: PHPExcel_Style_Border
+                #}
+                {% xlscell 'A' {
+                    break: 1,
+                    dataValidation: {
+                        allowBlank: false,
+                        error: '',
+                        errorStyle: 'stop',
+                        errorTitle: '',
+                        formula1: '',
+                        formula2: '',
+                        operator: '',
+                        prompt: ''
+                        promptTitle: '',
+                        showDropDown: false,
+                        showErrorMessage: false,
+                        showInputMessage: false,
+                        type: 'none',
+                    },
+                    style: {
+                        borders: {
+                            bottom: {
+                                style: 'thin',
+                                color: {
+                                    rgb: '000000'
+                                }
                             }
                         }
-                    }
-                },
-                url: 'http://www.example.com'
-            } %}
-                Test
-            {% endxlscell %}
-            {% xlscell 'B1' %}Foo{% endxlscell %}
-            {% xlscell 'C1' %}Bar{% endxlscell %}
+                    },
+                    url: 'http://www.example.com'
+                } %}
+                    Test
+                {% endxlscell %}
+                {% xlscell 'B' %}Foo{% endxlscell %}
+                {% xlscell %}Bar{% endxlscell %}
+            {% endxlsrow %}
             {#
                 xlsdrawing tag
 
