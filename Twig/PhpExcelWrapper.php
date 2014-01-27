@@ -6,55 +6,81 @@ namespace MewesK\PhpExcelTwigExtensionBundle\Twig;
 class PhpExcelWrapper {
 
     /**
+     * @var string
+     */
+    public static $COLUMN_DEFAULT = 'A';
+    /**
+     * @var int
+     */
+    public static $ROW_DEFAULT = 1;
+
+    /**
      * @var \PHPExcel
      */
     protected $documentObject;
     /**
      * @var \PHPExcel_Worksheet
      */
-    public $sheetObject = null;
+    public $sheetObject;
     /**
      * @var \PhpExcel_Cell
      */
-    protected $cellObject = null;
+    protected $cellObject;
     /**
      * @var \PHPExcel_Worksheet_Drawing
      */
-    protected $drawingObject = null;
+    protected $drawingObject;
     /**
      * @var int
      */
-    protected $row = 1;
+    protected $row;
     /**
      * @var string
      */
-    protected $column = 'A';
-    
+    protected $column;
+    /**
+     * @var string
+     */
+    protected $format;
+
     /**
      * @var array
      */
-    protected $documentMappings = [];
+    protected $documentMappings;
     /**
      * @var array
      */
-    protected $sheetMappings = [];
+    protected $sheetMappings;
     /**
      * @var array
      */
-    protected $rowMappings = [];
+    protected $rowMappings;
     /**
      * @var array
      */
-    protected $cellMappings = [];
+    protected $cellMappings;
     /**
      * @var array
      */
-    protected $drawingMappings = [];
+    protected $drawingMappings;
     
 
     public function __construct() {
         $this->documentObject = new \PHPExcel();
         $this->documentObject->removeSheetByIndex(0);
+
+        $this->sheetObject = null;
+        $this->cellObject = null;
+        $this->drawingObject = null;
+        $this->row = self::$ROW_DEFAULT;
+        $this->column = self::$COLUMN_DEFAULT;
+        $this->format = null;
+
+        $this->documentMappings = [];
+        $this->sheetMappings = [];
+        $this->rowMappings = [];
+        $this->cellMappings = [];
+        $this->drawingMappings = [];
 
         $this->initDocumentPropertyMappings();
         $this->initSheetPropertyMappings();
@@ -70,6 +96,7 @@ class PhpExcelWrapper {
         $this->documentMappings['creator'] = function($value) { $this->documentObject->getProperties()->setCreator($value); };
         $this->documentMappings['defaultStyle'] = function($value) { $this->documentObject->getDefaultStyle()->applyFromArray($value); };
         $this->documentMappings['description'] = function($value) { $this->documentObject->getProperties()->setDescription($value); };
+        $this->documentMappings['format'] = function($value) { $this->format = $value; };
         $this->documentMappings['keywords'] = function($value) { $this->documentObject->getProperties()->setKeywords($value); };
         $this->documentMappings['lastModifiedBy'] = function($value) { $this->documentObject->getProperties()->setLastModifiedBy($value); };
         $this->documentMappings['manager'] = function($value) { $this->documentObject->getProperties()->setManager($value); };
@@ -230,8 +257,8 @@ class PhpExcelWrapper {
             $this->documentObject->createSheet()->setTitle($index);
         }
 
-        $this->column = 'A';
-        $this->row = 1;
+        $this->column = self::$COLUMN_DEFAULT;
+        $this->row = self::$ROW_DEFAULT;
 
         $this->sheetObject = $this->documentObject->setActiveSheetIndexByName($index);
         $this->cellObject = null;
@@ -246,7 +273,7 @@ class PhpExcelWrapper {
             throw new \LogicException();
         }
 
-        $this->column = 'A';
+        $this->column = self::$COLUMN_DEFAULT;
         $this->row = $index == null ? $this->increaseRow() : $index;
 
         $this->cellObject = null;
@@ -290,7 +317,14 @@ class PhpExcelWrapper {
         $this->drawingObject = null;
     }
 
-    public function save($format) {
+    public function save($format = null) {
+        if ($this->format != null) {
+            $format = $this->format;
+        }
+        if ($format == null || empty($format)) {
+
+        }
+
         $writerType = null;
         switch(strtolower($format)) {
             case 'csv':
@@ -308,6 +342,7 @@ class PhpExcelWrapper {
             case 'default':
                 throw new \InvalidArgumentException();
         }
+        
         \PHPExcel_IOFactory::createWriter($this->documentObject, $writerType)->save('php://output');
     }
 
