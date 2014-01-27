@@ -15,11 +15,11 @@ class XlsDrawingNode extends \Twig_Node
             ->addDebugInfo($this)
 
             ->write('$drawingPath = ')
-            ->subcompile($this->getNode('path'), true)
+            ->subcompile($this->getNode('path'))
             ->raw(';'.PHP_EOL)
 
             ->write('$drawingProperties = ')
-            ->subcompile($this->getNode('properties'), true)
+            ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
             ->write('

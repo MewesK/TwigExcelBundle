@@ -15,11 +15,11 @@ class XlsRowNode extends \Twig_Node
             ->addDebugInfo($this)
 
             ->write('$rowIndex = ')
-            ->subcompile($this->getNode('index'), true)
+            ->subcompile($this->getNode('index'))
             ->raw(';'.PHP_EOL)
 
             ->write('$rowProperties = ')
-            ->subcompile($this->getNode('properties'), true)
+            ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
             ->write('
@@ -27,6 +27,6 @@ class XlsRowNode extends \Twig_Node
                 unset($rowIndex, $rowProperties);
             ')
 
-            ->subcompile($this->getNode('body'), true);
+            ->subcompile($this->getNode('body'));
     }
 }

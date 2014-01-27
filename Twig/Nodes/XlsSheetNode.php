@@ -15,11 +15,11 @@ class XlsSheetNode extends \Twig_Node
             ->addDebugInfo($this)
 
             ->write('$sheetIndex = ')
-            ->subcompile($this->getNode('index'), true)
+            ->subcompile($this->getNode('index'))
             ->raw(';'.PHP_EOL)
 
             ->write('$sheetProperties = ')
-            ->subcompile($this->getNode('properties'), true)
+            ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
             ->write('
@@ -27,6 +27,6 @@ class XlsSheetNode extends \Twig_Node
                 unset($sheetIndex, $sheetProperties);
             ')
 
-            ->subcompile($this->getNode('body'), true);
+            ->subcompile($this->getNode('body'));
     }
 }

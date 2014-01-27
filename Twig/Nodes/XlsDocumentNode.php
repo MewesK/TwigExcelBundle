@@ -15,7 +15,7 @@ class XlsDocumentNode extends \Twig_Node
             ->addDebugInfo($this)
 
             ->write('$documentProperties = ')
-            ->subcompile($this->getNode('properties'), true)
+            ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
             ->write('
@@ -24,7 +24,7 @@ class XlsDocumentNode extends \Twig_Node
                 unset($documentProperties);
             ')
 
-            ->subcompile($this->getNode('body'), true)
+            ->subcompile($this->getNode('body'))
 
             ->write('
                 $phpExcel->save($this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request"), "requestFormat"));

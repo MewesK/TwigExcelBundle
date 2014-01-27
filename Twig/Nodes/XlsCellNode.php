@@ -15,15 +15,15 @@ class XlsCellNode extends \Twig_Node
             ->addDebugInfo($this)
 
             ->write('$cellIndex = ')
-            ->subcompile($this->getNode('index'), true)
+            ->subcompile($this->getNode('index'))
             ->raw(';'.PHP_EOL)
 
             ->write("ob_start();\n")
-            ->subcompile($this->getNode('body'), true)
+            ->subcompile($this->getNode('body'))
             ->write('$cellValue = trim(ob_get_clean());'.PHP_EOL)
 
             ->write('$cellProperties = ')
-            ->subcompile($this->getNode('properties'), true)
+            ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
             ->write('
