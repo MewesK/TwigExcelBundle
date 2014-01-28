@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig\Nodes;
+namespace MewesK\PhpExcelTwigExtensionBundle\Twig\Node;
 
 class XlsRowNode extends \Twig_Node
 {

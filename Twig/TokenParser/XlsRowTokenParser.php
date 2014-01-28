@@ -1,10 +1,10 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers;
+namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser;
 
-use MewesK\PhpExcelTwigExtensionBundle\Twig\Nodes\XlsCellNode;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsRowNode;
 
-class XlsCellTokenParser extends \Twig_TokenParser
+class XlsRowTokenParser extends \Twig_TokenParser
 {
     public function parse(\Twig_Token $token)
     {
@@ -19,22 +19,22 @@ class XlsCellTokenParser extends \Twig_TokenParser
         }
 
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse(function(\Twig_Token $token) { return $token->test('endxlscell'); }, true);
+        $body = $this->parser->subparse(function(\Twig_Token $token) { return $token->test('endxlsrow'); }, true);
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
 
         $this->checkSyntaxErrorsRecursively($body);
 
-        return new XlsCellNode($index, $properties, $body, $token->getLine(), $this->getTag());
+        return new XlsRowNode($index, $properties, $body, $token->getLine(), $this->getTag());
     }
 
     public function getTag()
     {
-        return 'xlscell';
+        return 'xlsrow';
     }
 
     private function checkSyntaxErrorsRecursively(\Twig_Node $node) {
         foreach ($node->getIterator() as $subNode) {
-            if ($subNode instanceof XlsCellNode) {
+            if ($subNode instanceof XlsRowNode) {
                 throw new \LogicException(
                     sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($subNode), get_class($node))
                 );

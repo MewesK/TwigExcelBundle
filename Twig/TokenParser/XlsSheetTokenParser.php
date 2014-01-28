@@ -1,8 +1,8 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParsers;
+namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser;
 
-use MewesK\PhpExcelTwigExtensionBundle\Twig\Nodes\XlsSheetNode;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsSheetNode;
 
 class XlsSheetTokenParser extends \Twig_TokenParser
 {
