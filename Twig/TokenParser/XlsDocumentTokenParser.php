@@ -17,8 +17,10 @@ class XlsDocumentTokenParser extends Twig_TokenParser
         }
 
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse(function(Twig_Token $token) { return $token->test('endxlsdocument'); }, true);
+        $body = $this->parser->subparse(function(Twig_Token $token) { return $token->test('end'.$this->getTag()); }, true);
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
+
+        $this->removeTextNodesRecursively($body);
 
         return new XlsDocumentNode($properties, $body, $token->getLine(), $this->getTag());
     }
@@ -26,5 +28,16 @@ class XlsDocumentTokenParser extends Twig_TokenParser
     public function getTag()
     {
         return 'xlsdocument';
+    }
+
+    private function removeTextNodesRecursively(Twig_Node &$node) {
+        foreach ($node->getIterator() as $key => $subNode)  {
+            if ($subNode instanceof Twig_Node_Text) {
+                $node->removeNode($key);
+            }
+            else if ($subNode instanceof Twig_Node && !($subNode instanceof XlsCellNode) && $subNode->count() > 0) {
+                $this->removeTextNodesRecursively($subNode);
+            }
+        }
     }
 }
