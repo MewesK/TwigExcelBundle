@@ -17,6 +17,9 @@
         "twig/twig": ">=1.0",
         "phpoffice/phpexcel": "1.7.9"
     },
+    "recommend": {
+        "mpdf/mpdf": ">=v5.7.1"
+    },
     "autoload": {
         "psr-0": { "MewesK\\PhpExcelTwigExtensionBundle": "" }
     },
