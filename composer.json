@@ -23,5 +23,10 @@
     "autoload": {
         "psr-0": { "MewesK\\PhpExcelTwigExtensionBundle": "" }
     },
-    "target-dir": "MewesK/PhpExcelTwigExtension"
+    "target-dir": "MewesK/PhpExcelTwigExtension",
+    "extra": {
+        "branch-alias": {
+            "dev-dev": "1.0.x-dev"
+        }
+    }
 }
