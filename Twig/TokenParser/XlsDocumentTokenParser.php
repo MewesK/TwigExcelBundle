@@ -2,8 +2,11 @@
 
 namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser;
 
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsCellNode;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsDocumentNode;
+use Twig_Node;
 use Twig_Node_Expression_Array;
+use Twig_Node_Text;
 use Twig_Token;
 use Twig_TokenParser;
 
