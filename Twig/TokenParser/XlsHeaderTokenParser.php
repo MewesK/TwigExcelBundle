@@ -26,7 +26,7 @@ class XlsHeaderTokenParser extends Twig_TokenParser
         $body = $this->parser->subparse(function(Twig_Token $token) { return $token->test('end'.$this->getTag()); }, true);
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
-        return new XlsHeaderNode($index, $properties, $body, $token->getLine(), $this->getTag());
+        //return new XlsHeaderNode($index, $properties, $body, $token->getLine(), $this->getTag());
     }
 
     public function getTag()
