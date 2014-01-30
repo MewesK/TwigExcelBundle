@@ -23,7 +23,7 @@
     "target-dir": "MewesK/PhpExcelTwigExtension",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-poc"
+            "master": "1.0-poc"
         }
     }
 }
