@@ -22,13 +22,13 @@ class XlsDocumentNode extends Twig_Node
             ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
-            ->write('$phpExcel = new MewesK\PhpExcelTwigExtensionBundle\Twig\PhpExcelWrapper();'.PHP_EOL)
+            ->write('$phpExcel = new MewesK\PhpExcelTwigExtensionBundle\Twig\PhpExcelWrapper($context);'.PHP_EOL)
             ->write('$phpExcel->tagDocument($documentProperties);'.PHP_EOL)
             ->write('unset($documentProperties);'.PHP_EOL)
 
             ->subcompile($this->getNode('body'))
 
-            ->write('$phpExcel->save($this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request"), "requestFormat"));'.PHP_EOL)
+            ->write('$phpExcel->save();'.PHP_EOL)
             ->write('unset($phpExcel);'.PHP_EOL);
 
     }

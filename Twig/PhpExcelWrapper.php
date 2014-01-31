@@ -14,6 +14,10 @@ class PhpExcelWrapper {
     public static $ROW_DEFAULT = 1;
 
     /**
+     * @var
+     */
+    protected $context;
+    /**
      * @var \PHPExcel
      */
     protected $documentObject;
@@ -64,7 +68,9 @@ class PhpExcelWrapper {
     protected $drawingMappings;
     
 
-    public function __construct() {
+    public function __construct($context) {
+        $this->context = $context;
+
         $this->documentObject = new \PHPExcel();
         $this->documentObject->removeSheetByIndex(0);
 
@@ -325,9 +331,14 @@ class PhpExcelWrapper {
         $this->drawingObject = null;
     }
 
-    public function save($format = null) {
+    public function save() {
+        $format = null;
         if ($this->format != null) {
             $format = $this->format;
+        } else {
+            $app = $this->context && isset($this->context["app"]) ? $this->context["app"] : null;
+            $request = $app && isset($app['request']) ? $app['request'] : null;
+            $format = $request && isset($request['requestFormat']) ? $request['requestFormat'] : null;
         }
         if ($format == null || empty($format)) {
             $format = 'xls';
