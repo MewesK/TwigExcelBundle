@@ -146,6 +146,7 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface {
             }
             $this->lastDrawing = $node;
         }
+        return $node;
     }
 
     /**
@@ -173,6 +174,7 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface {
         elseif ($node instanceof XlsDrawingNode) {
             $this->lastDrawing = null;
         }
+        return $node;
     }
 
     /**
