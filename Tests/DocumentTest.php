@@ -34,15 +34,15 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             $reader = new \PHPExcel_Reader_Excel5();
             $phpExcel = $reader->load(__DIR__.'/Resources/results/documentSimple.xls');
 
-            // test
+            // tests
             $sheet = $phpExcel->getSheetByName('Test');
-            $this->assertNotNull($sheet);
-            $this->assertEquals($sheet->getCell('A1')->getValue(), 'Foo');
-            $this->assertEquals($sheet->getCell('B1')->getValue(), 'Bar');
-            $this->assertEquals($sheet->getCell('A2')->getValue(), 'Hello');
-            $this->assertEquals($sheet->getCell('B2')->getValue(), 'World');
+            $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
+
+            $this->assertEquals($sheet->getCell('A1')->getValue(), 'Foos', 'A1 does not contain "Foo"');
+            $this->assertEquals($sheet->getCell('B1')->getValue(), 'Bar', 'B1 does not contain "Bar"');
+            $this->assertEquals($sheet->getCell('A2')->getValue(), 'Hello', 'A2 does not contain "Hello"');
+            $this->assertEquals($sheet->getCell('B2')->getValue(), 'World', 'B2 does not contain "World"');
         } catch (\Twig_Error_Runtime $e) {
-            var_dump($e);
             $this->fail($e->getMessage());
         }
     }
