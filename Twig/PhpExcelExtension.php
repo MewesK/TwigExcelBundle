@@ -20,9 +20,9 @@ class PhpExcelExtension extends Twig_Extension
      */
     public function getFunctions()
     {
-        return [
+        return array(
             new Twig_SimpleFunction('xlsmergestyles', [$this, 'mergeStyles'])
-        ];
+        );
     }
 
     /**
@@ -30,14 +30,14 @@ class PhpExcelExtension extends Twig_Extension
      */
     public function getTokenParsers()
     {
-        return [
+        return array(
             new XlsCellTokenParser(),
             new XlsDocumentTokenParser(),
             new XlsDrawingTokenParser(),
             new XlsHeaderTokenParser(),
             new XlsRowTokenParser(),
             new XlsSheetTokenParser()
-        ];
+        );
     }
 
     /**
@@ -45,9 +45,9 @@ class PhpExcelExtension extends Twig_Extension
      */
     public function getNodeVisitors()
     {
-        return [
+        return array(
             new SyntaxCheckNodeVisitor()
-        ];
+        );
     }
 
     /**

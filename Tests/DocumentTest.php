@@ -11,9 +11,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
     public function setUp() {
         $this->environment = new Twig_Environment(
-            new \Twig_Loader_Array([
+            new \Twig_Loader_Array(array(
                 'documentSimple' => file_get_contents(__DIR__.'/Resources/views/documentSimple.xls.twig')
-            ]),
+            )),
             ['strict_variables' => true]
         );
         $this->environment->addExtension(new PhpExcelExtension());
@@ -25,7 +25,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         try {
             // generate source from template
             $source = $this->environment->loadTemplate('documentSimple')->render(
-                ['app' => ['request' => ['requestFormat' => 'xls']]]
+                array('app' => array('request' => array('requestFormat' => 'xls')))
             );
 
             // save source

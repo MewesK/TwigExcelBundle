@@ -9,7 +9,7 @@ class XlsDrawingNode extends Twig_Node
 {
     public function __construct(Twig_Node_Expression $path, Twig_Node_Expression $properties, $line, $tag = 'xlsdrawing')
     {
-        parent::__construct(['path' => $path, 'properties' => $properties], [], $line, $tag);
+        parent::__construct(array('path' => $path, 'properties' => $properties), array(), $line, $tag);
     }
 
     public function compile(Twig_Compiler $compiler)

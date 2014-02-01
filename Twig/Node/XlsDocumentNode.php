@@ -10,7 +10,7 @@ class XlsDocumentNode extends Twig_Node
 {
     public function __construct(Twig_Node_Expression $properties, Twig_NodeInterface $body, $line, $tag = 'xlsdocument')
     {
-        parent::__construct(['properties' => $properties, 'body' => $body], [], $line, $tag);
+        parent::__construct(array('properties' => $properties, 'body' => $body), array(), $line, $tag);
     }
 
     public function compile(Twig_Compiler $compiler)
