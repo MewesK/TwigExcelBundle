@@ -14,7 +14,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             new \Twig_Loader_Array(array(
                 'documentSimple' => file_get_contents(__DIR__.'/Resources/views/documentSimple.xls.twig')
             )),
-            ['strict_variables' => true]
+            array('strict_variables' => true)
         );
         $this->environment->addExtension(new PhpExcelExtension());
         $this->environment->setCache(__DIR__.'/../tmp/');
