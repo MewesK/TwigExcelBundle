@@ -21,7 +21,7 @@ class PhpExcelExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('xlsmergestyles', [$this, 'mergeStyles'])
+            new Twig_SimpleFunction('xlsmergestyles', array($this, 'mergeStyles'))
         );
     }
 
