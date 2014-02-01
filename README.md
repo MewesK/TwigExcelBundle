@@ -74,8 +74,6 @@ Full Syntax
             {% xlssheet [title:string] [properties:literal] %}[Twig_NodeInterface]{% endxlssheet %}
             {% xlssheet [title:string] {
                 columnDimension: [literal],
-                footer: [string],
-                header: [string],
                 pageMargins: [literal],
                 pageSetup: [literal],
                 protection: [literal],
@@ -174,6 +172,16 @@ Full Syntax
             zoomScale: 75
         }%}
             {#
+                xlsheader tag
+
+                {% xlsheader [type:string] [properties:literal] %}[Twig_NodeInterface]{% endxlsheader %}
+
+                'type' and 'properties' are optional
+                'type' can be null, 'odd', 'even' or 'first'
+                'type' null makes all headers the same
+            #}
+            {% xlsheader 'first' %}Test Header{% endxlsrow %}
+            {#
                 xlsrow tag
 
                 {% xlsrow [index:integer] %}[Twig_NodeInterface]{% endxlsrow %}
@@ -270,5 +278,15 @@ Full Syntax
                 },
                 width: 0
             } %}
+            {#
+                xlsfooter tag
+
+                {% xlsfooter [type:string] [properties:literal] %}[Twig_NodeInterface]{% endxlsfooter %}
+
+                'type' and 'properties' are optional
+                'type' can be null, 'odd', 'even' or 'first'
+                'type' null makes all footers the same
+            #}
+            {% xlsfooter 'first' %}Test Header{% xlsfooter %}
         {% endxlssheet %}
     {% endxlsdocument %}

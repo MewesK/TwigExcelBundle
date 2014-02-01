@@ -125,8 +125,6 @@ class PhpExcelWrapper {
         $this->sheetMappings['columnDimension']['visible'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setVisible($value); };
         $this->sheetMappings['columnDimension']['width'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setWidth($value); };
         $this->sheetMappings['columnDimension']['xfIndex'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setXfIndex($value); };
-        $this->sheetMappings['footer'] = function($value) { $this->sheetObject->getHeaderFooter()->setOddFooter($value); };
-        $this->sheetMappings['header'] = function($value) { $this->sheetObject->getHeaderFooter()->setOddHeader($value); };
         $this->sheetMappings['pageMargins']['top'] = function($value) { $this->sheetObject->getPageMargins()->setTop($value); };
         $this->sheetMappings['pageMargins']['bottom'] = function($value) { $this->sheetObject->getPageMargins()->setBottom($value); };
         $this->sheetMappings['pageMargins']['left'] = function($value) { $this->sheetObject->getPageMargins()->setLeft($value); };
@@ -248,6 +246,14 @@ class PhpExcelWrapper {
     }
 
     public function tagDocument(array $properties = null) {
+        $this->row = null;
+        $this->column = null;
+        $this->format = null;
+
+        $this->sheetObject = null;
+        $this->cellObject = null;
+        $this->drawingObject = null;
+
         if ($properties != null) {
             $this->setProperties($properties, $this->documentMappings);
         }
@@ -310,6 +316,55 @@ class PhpExcelWrapper {
         if ($properties != null) {
             $this->setProperties($properties, $this->cellMappings);
         }
+    }
+
+    public function tagHeaderFooter($type = null, $value = null, array $properties = null) {
+        if ($this->sheetObject == null) {
+            throw new \LogicException();
+        }
+        $headerObject = $this->sheetObject->getHeaderFooter();
+
+        switch($type) {
+            case 'header':
+                $headerObject->setOddHeader($value);
+                $headerObject->setEvenHeader($value);
+                $headerObject->setFirstHeader($value);
+                break;
+            case 'footer':
+                $headerObject->setOddFooter($value);
+                $headerObject->setEvenFooter($value);
+                $headerObject->setFirstFooter($value);
+                break;
+            case 'oddHeader':
+                $headerObject->setDifferentOddEven(true);
+                $headerObject->setOddHeader($value);
+                break;
+            case 'oddFooter':
+                $headerObject->setDifferentOddEven(true);
+                $headerObject->setOddFooter($value);
+                break;
+            case 'evenHeader':
+                $headerObject->setDifferentOddEven(true);
+                $headerObject->setEvenHeader($value);
+                break;
+            case 'evenFooter':
+                $headerObject->setDifferentOddEven(true);
+                $headerObject->setEvenFooter($value);
+                break;
+            case 'firstHeader':
+                $headerObject->setDifferentFirst(true);
+                $headerObject->setFirstHeader($value);
+                break;
+            case 'firstFooter':
+                $headerObject->setDifferentFirst(true);
+                $headerObject->setFirstFooter($value);
+                break;
+            default:
+                throw new \InvalidArgumentException();
+        }
+
+        $this->sheetObject->setHeaderFooter($headerObject);
+
     }
     
     public function tagDrawing($path, array $properties = null) {
