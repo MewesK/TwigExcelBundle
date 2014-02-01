@@ -179,6 +179,7 @@ Full Syntax
                 'type' and 'properties' are optional
                 'type' can be null, 'odd', 'even' or 'first'
                 'type' null makes all headers the same
+                cannot contain other 'xlsheader' tags
             #}
             {% xlsheader 'first' %}Test Header{% endxlsrow %}
             {#
@@ -203,15 +204,15 @@ Full Syntax
                     } %}[string]{% endxlscell %}
 
                     'index' and 'properties' are optional
-                    if 'index' is not defined it will default to 'A' for the first usage per row
-                    for each further usage it will increase the index by 1 automatically (A, B, C, ..., AA, AB, AC, ...)
+                    if 'index' is not defined it will default to 0 for the first usage per row
+                    for each further usage it will increase the index by 1 automatically (0, 1, 2, ...)
                     cannot contain other 'xlscell' tags
 
                     see: PHPExcel_Cell_DataValidation
                     see: PHPExcel_Style:applyFromArray
                     see: PHPExcel_Style_Border
                 #}
-                {% xlscell 'A' {
+                {% xlscell 0 {
                     break: 1,
                     dataValidation: {
                         allowBlank: false,
@@ -242,7 +243,7 @@ Full Syntax
                 } %}
                     Test
                 {% endxlscell %}
-                {% xlscell 'B' %}Foo{% endxlscell %}
+                {% xlscell 2 %}Foo{% endxlscell %}
                 {% xlscell %}Bar{% endxlscell %}
             {% endxlsrow %}
             {#
