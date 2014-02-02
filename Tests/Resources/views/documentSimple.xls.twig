@@ -1,0 +1,16 @@
+{% xlsdocument %}
+    {% xlssheet 'Test' %}
+        {% xlsrow %}
+            {% xlscell %}Foo{% endxlscell %}
+            {% xlscell %}Bar{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow %}
+            {% xlscell %}
+                Hello
+            {% endxlscell %}
+            {% xlscell %}
+                World
+            {% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+{% endxlsdocument %}

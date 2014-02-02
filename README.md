@@ -1,12 +1,7 @@
-PhpExcel Twig Extension Bundle
+PhpExcel Twig Extension Bundle (alpha)
 ========================
 
 [![Build Status](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle.png?branch=master)](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle)
-
-Warning
-----------------------------------
-
-This is a working proof of concept. The planned release version is maturing in the dev branch.
 
 Helper Functions
 ----------------------------------
@@ -27,6 +22,7 @@ Full Syntax
             creator: [string],
             defaultStyle: [literal],
             description: [string],
+            format: [string],
             keywords: [string],
             lastModifiedBy: [string],
             manager: [string],
@@ -39,6 +35,7 @@ Full Syntax
         'properties' are optional
         cannot contain other 'xlsdocument' tags
         may contain multiple 'xlssheet' tags
+        possible formats are 'csv', 'html', 'pdf', 'xls, 'xlsx'
 
         see: PHPExcel_Document
         see: PHPExcel_DocumentSecurity
@@ -56,6 +53,7 @@ Full Syntax
             }
         },
         description: 'Test document',
+        format: 'xls',
         keywords: 'Test',
         lastModifiedBy: 'Tester',
         manager: 'Tester',
@@ -76,8 +74,6 @@ Full Syntax
             {% xlssheet [title:string] [properties:literal] %}[Twig_NodeInterface]{% endxlssheet %}
             {% xlssheet [title:string] {
                 columnDimension: [literal],
-                footer: [string],
-                header: [string],
                 pageMargins: [literal],
                 pageSetup: [literal],
                 protection: [literal],
@@ -176,76 +172,80 @@ Full Syntax
             zoomScale: 75
         }%}
             {#
-                xlscell tag
+                xlsheader tag
 
-                {% xlssheet [coordinates:string] [properties:literal] %}[string]{% endxlscell %}
-                {% xlssheet [coordinates:string] {
-                    break: [integer],
-                    dataValidation: [literal],
-                    style: [literal],
-                    url: [string]
-                } %}[string]{% endxlscell %}
+                {% xlsheader [type:string] [properties:literal] %}[Twig_NodeInterface]{% endxlsheader %}
 
-                'coordinates' are required, 'properties' are optional
-                cannot contain other 'xlscell' tags
-
-                see: PHPExcel_Cell_DataValidation
-                see: PHPExcel_Style:applyFromArray
-                see: PHPExcel_Style_Border
+                'type' and 'properties' are optional
+                'type' can be null, 'odd', 'even' or 'first'
+                'type' null makes all headers the same
+                cannot contain other 'xlsheader' tags
             #}
-            {% xlscell 'A1' {
-                break: 1,
-                dataValidation: {
-                    allowBlank: false,
-                    error: '',
-                    errorStyle: 'stop',
-                    errorTitle: '',
-                    formula1: '',
-                    formula2: '',
-                    operator: '',
-                    prompt: ''
-                    promptTitle: '',
-                    showDropDown: false,
-                    showErrorMessage: false,
-                    showInputMessage: false,
-                    type: 'none',
-                },
-                style: {
-                    borders: {
-                        bottom: {
-                            style: 'thin',
-                            color: {
-                                rgb: '000000'
+            {% xlsheader 'first' %}Test Header{% endxlsrow %}
+            {#
+                xlsrow tag
+
+                {% xlsrow [index:integer] %}[Twig_NodeInterface]{% endxlsrow %}
+
+                'index' is optional
+                if 'index' is not defined it will default to 1 for the first usage per sheet
+                for each further usage it will increase the index by 1 automatically (1, 2, 3, ...)
+            #}
+            {% xlsrow 1 %}
+                {#
+                    xlscell tag
+
+                    {% xlscell [index:string] [properties:literal] %}[string]{% endxlscell %}
+                    {% xlscell [index:string] {
+                        break: [integer],
+                        dataValidation: [literal],
+                        style: [literal],
+                        url: [string]
+                    } %}[string]{% endxlscell %}
+
+                    'index' and 'properties' are optional
+                    if 'index' is not defined it will default to 0 for the first usage per row
+                    for each further usage it will increase the index by 1 automatically (0, 1, 2, ...)
+                    cannot contain other 'xlscell' tags
+
+                    see: PHPExcel_Cell_DataValidation
+                    see: PHPExcel_Style:applyFromArray
+                    see: PHPExcel_Style_Border
+                #}
+                {% xlscell 0 {
+                    break: 1,
+                    dataValidation: {
+                        allowBlank: false,
+                        error: '',
+                        errorStyle: 'stop',
+                        errorTitle: '',
+                        formula1: '',
+                        formula2: '',
+                        operator: '',
+                        prompt: ''
+                        promptTitle: '',
+                        showDropDown: false,
+                        showErrorMessage: false,
+                        showInputMessage: false,
+                        type: 'none',
+                    },
+                    style: {
+                        borders: {
+                            bottom: {
+                                style: 'thin',
+                                color: {
+                                    rgb: '000000'
+                                }
                             }
                         }
-                    }
-                },
-                url: 'http://www.example.com'
-            } %}
-                Test
-            {% endxlscell %}
-            {% xlscell 'B1' %}Foo{% endxlscell %}
-            {% xlscell 'C1' %}Bar{% endxlscell %}
-            {#
-                xlsstyle tag
-
-                {% xlsstyle [coordinates:string] [properties:literal] %}
-                {% xlsstyle [coordinates:string] {
-                    style: [literal]
+                    },
+                    url: 'http://www.example.com'
                 } %}
-
-                'coordinates' and 'properties' are required
-
-                see: PHPExcel_Style:applyFromArray
-                see: PHPExcel_Style_Border
-            #}
-            {% xlsstyle 'B1:C1' {
-                style: {
-                    font: {
-                        color: 'ff0000'
-                    }
-                }
-            } %}
+                    Test
+                {% endxlscell %}
+                {% xlscell 2 %}Foo{% endxlscell %}
+                {% xlscell %}Bar{% endxlscell %}
+            {% endxlsrow %}
             {#
                 xlsdrawing tag
 
@@ -279,5 +279,15 @@ Full Syntax
                 },
                 width: 0
             } %}
+            {#
+                xlsfooter tag
+
+                {% xlsfooter [type:string] [properties:literal] %}[Twig_NodeInterface]{% endxlsfooter %}
+
+                'type' and 'properties' are optional
+                'type' can be null, 'odd', 'even' or 'first'
+                'type' null makes all footers the same
+            #}
+            {% xlsfooter 'first' %}Test Header{% xlsfooter %}
         {% endxlssheet %}
     {% endxlsdocument %}
