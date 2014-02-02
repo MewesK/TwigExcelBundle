@@ -31,6 +31,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         return $reader->load(__DIR__.'/Temporary/'.$templateName.'.xls');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function setUp() {
         $this->environment = new Twig_Environment(new \Twig_Loader_Array($this->getLoaderArray(array(
                 'documentSimple',
@@ -38,6 +41,14 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             ))), array('strict_variables' => true));
         $this->environment->addExtension(new PhpExcelExtension());
         $this->environment->setCache(__DIR__.'/Temporary/');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function tearDown()
+    {
+        exec('rm -rf '.__DIR__.'/Temporary/');
     }
 
     public function testDocumentSimple()
