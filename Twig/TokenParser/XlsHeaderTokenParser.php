@@ -16,7 +16,7 @@ class XlsHeaderTokenParser extends Twig_TokenParser
         if (!$this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
             $type = $this->parser->getExpressionParser()->parseExpression();
         }
-        $properties = new Twig_Node_Expression_Array([], $token->getLine());
+        $properties = new Twig_Node_Expression_Array(array(), $token->getLine());
         if (!$this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
             $properties = $this->parser->getExpressionParser()->parseExpression();
         }
