@@ -37,7 +37,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function setUp() {
         $this->environment = new Twig_Environment(new \Twig_Loader_Array($this->getLoaderArray(array(
                 'documentSimple',
-                'documentManualIndex'
+                'documentIndices'
             ))), array('strict_variables' => true));
         $this->environment->addExtension(new PhpExcelExtension());
         $this->environment->setCache(__DIR__.'/Temporary/');
@@ -72,7 +72,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function testDocumentManualIndex()
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('documentManualIndex');
+            $phpExcel = $this->getPhpExcelObject('documentIndices');
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
