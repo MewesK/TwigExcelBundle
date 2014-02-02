@@ -20,7 +20,8 @@ class XlsDocumentTokenParser extends Twig_TokenParser
         }
 
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse(function(Twig_Token $token) use ($this) { return $token->test('end'.$this->getTag()); }, true);
+        $tokenParser = $this; // PHP 5.3 fix
+        $body = $this->parser->subparse(function(Twig_Token $token) use ($tokenParser) { return $token->test('end'.$tokenParser->getTag()); }, true);
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
         $this->removeTextNodesRecursively($body);
