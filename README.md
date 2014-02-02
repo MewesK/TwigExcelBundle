@@ -1,4 +1,4 @@
-PhpExcel Twig Extension Bundle
+PhpExcel Twig Extension Bundle (alpha)
 ========================
 
 [![Build Status](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle.png?branch=dev)](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle)
