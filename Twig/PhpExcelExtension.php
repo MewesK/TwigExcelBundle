@@ -9,9 +9,9 @@ use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsDrawingTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsHeaderTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsRowTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsSheetTokenParser;
-use \Twig_Error_Runtime;
-use \Twig_Extension;
-use \Twig_SimpleFunction;
+use Twig_Error_Runtime;
+use Twig_Extension;
+use Twig_SimpleFunction;
 
 class PhpExcelExtension extends Twig_Extension
 {
