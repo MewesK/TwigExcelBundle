@@ -23,7 +23,7 @@ class XlsCellTokenParser extends Twig_TokenParser
         }
 
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse(function(Twig_Token $token) { return $token->test('end'.$this->getTag()); }, true);
+        $body = $this->parser->subparse(function(Twig_Token $token) use ($this) { return $token->test('end'.$this->getTag()); }, true);
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
         return new XlsCellNode($index, $properties, $body, $token->getLine(), $this->getTag());
