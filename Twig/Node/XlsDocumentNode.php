@@ -28,6 +28,8 @@ class XlsDocumentNode extends Twig_Node
 
             ->subcompile($this->getNode('body'))
 
+            ->addDebugInfo($this)
+
             ->write('$phpExcel->save();'.PHP_EOL)
             ->write('unset($phpExcel);'.PHP_EOL);
 
