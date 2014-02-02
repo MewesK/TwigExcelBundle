@@ -81,11 +81,11 @@ class PhpExcelWrapper {
         $this->column = null;
         $this->format = null;
 
-        $this->documentMappings = [];
-        $this->sheetMappings = [];
-        $this->rowMappings = [];
-        $this->cellMappings = [];
-        $this->drawingMappings = [];
+        $this->documentMappings = array();
+        $this->sheetMappings = array();
+        $this->rowMappings = array();
+        $this->cellMappings = array();
+        $this->drawingMappings = array();
 
         $this->initDocumentPropertyMappings();
         $this->initSheetPropertyMappings();
@@ -95,82 +95,86 @@ class PhpExcelWrapper {
     }
 
     protected function initDocumentPropertyMappings() {
-        $this->documentMappings['category'] = function($value) { $this->documentObject->getProperties()->setCategory($value); };
-        $this->documentMappings['company'] = function($value) { $this->documentObject->getProperties()->setCompany($value); };
-        $this->documentMappings['created'] = function($value) { $this->documentObject->getProperties()->setCreated($value); };
-        $this->documentMappings['creator'] = function($value) { $this->documentObject->getProperties()->setCreator($value); };
-        $this->documentMappings['defaultStyle'] = function($value) { $this->documentObject->getDefaultStyle()->applyFromArray($value); };
-        $this->documentMappings['description'] = function($value) { $this->documentObject->getProperties()->setDescription($value); };
-        $this->documentMappings['format'] = function($value) { $this->format = $value; };
-        $this->documentMappings['keywords'] = function($value) { $this->documentObject->getProperties()->setKeywords($value); };
-        $this->documentMappings['lastModifiedBy'] = function($value) { $this->documentObject->getProperties()->setLastModifiedBy($value); };
-        $this->documentMappings['manager'] = function($value) { $this->documentObject->getProperties()->setManager($value); };
-        $this->documentMappings['modified'] = function($value) { $this->documentObject->getProperties()->setModified($value); };
-        $this->documentMappings['security']['lockRevision'] = function($value) { $this->documentObject->getSecurity()->setLockRevision($value); };
-        $this->documentMappings['security']['lockStructure'] = function($value) { $this->documentObject->getSecurity()->setLockStructure($value); };
-        $this->documentMappings['security']['lockWindows'] = function($value) { $this->documentObject->getSecurity()->setLockWindows($value); };
-        $this->documentMappings['security']['revisionsPassword'] = function($value) { $this->documentObject->getSecurity()->setRevisionsPassword($value); };
-        $this->documentMappings['security']['workbookPassword'] = function($value) { $this->documentObject->getSecurity()->setWorkbookPassword($value); };
-        $this->documentMappings['subject'] = function($value) { $this->documentObject->getProperties()->setSubject($value); };
-        $this->documentMappings['title'] = function($value) { $this->documentObject->getProperties()->setTitle($value); };
+        $wrapper = $this; // PHP 5.3 fix
+
+        $this->documentMappings['category'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setCategory($value); };
+        $this->documentMappings['company'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setCompany($value); };
+        $this->documentMappings['created'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setCreated($value); };
+        $this->documentMappings['creator'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setCreator($value); };
+        $this->documentMappings['defaultStyle'] = function($value) use ($wrapper) { $wrapper->documentObject->getDefaultStyle()->applyFromArray($value); };
+        $this->documentMappings['description'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setDescription($value); };
+        $this->documentMappings['format'] = function($value) use ($wrapper) { $wrapper->format = $value; };
+        $this->documentMappings['keywords'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setKeywords($value); };
+        $this->documentMappings['lastModifiedBy'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setLastModifiedBy($value); };
+        $this->documentMappings['manager'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setManager($value); };
+        $this->documentMappings['modified'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setModified($value); };
+        $this->documentMappings['security']['lockRevision'] = function($value) use ($wrapper) { $wrapper->documentObject->getSecurity()->setLockRevision($value); };
+        $this->documentMappings['security']['lockStructure'] = function($value) use ($wrapper) { $wrapper->documentObject->getSecurity()->setLockStructure($value); };
+        $this->documentMappings['security']['lockWindows'] = function($value) use ($wrapper) { $wrapper->documentObject->getSecurity()->setLockWindows($value); };
+        $this->documentMappings['security']['revisionsPassword'] = function($value) use ($wrapper) { $wrapper->documentObject->getSecurity()->setRevisionsPassword($value); };
+        $this->documentMappings['security']['workbookPassword'] = function($value) use ($wrapper) { $wrapper->documentObject->getSecurity()->setWorkbookPassword($value); };
+        $this->documentMappings['subject'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setSubject($value); };
+        $this->documentMappings['title'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setTitle($value); };
     }
 
     protected function initSheetPropertyMappings() {
+        $wrapper = $this; // PHP 5.3 fix
+
         $this->sheetMappings['columnDimension']['__multi'] = true;
-        $this->sheetMappings['columnDimension']['__object'] = function($key) { return $key == 'default' ? $this->sheetObject->getDefaultColumnDimension() : $this->sheetObject->getColumnDimension($key); };
-        $this->sheetMappings['columnDimension']['autoSize'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setAutoSize($value); };
-        $this->sheetMappings['columnDimension']['collapsed'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setCollapsed($value); };
-        $this->sheetMappings['columnDimension']['columnIndex'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setColumnIndex($value); };
-        $this->sheetMappings['columnDimension']['outlineLevel'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setOutlineLevel($value); };
-        $this->sheetMappings['columnDimension']['visible'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setVisible($value); };
-        $this->sheetMappings['columnDimension']['width'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setWidth($value); };
-        $this->sheetMappings['columnDimension']['xfIndex'] = function($key, $value) { $this->sheetMappings['columnDimension']['__object']($key)->setXfIndex($value); };
-        $this->sheetMappings['pageMargins']['top'] = function($value) { $this->sheetObject->getPageMargins()->setTop($value); };
-        $this->sheetMappings['pageMargins']['bottom'] = function($value) { $this->sheetObject->getPageMargins()->setBottom($value); };
-        $this->sheetMappings['pageMargins']['left'] = function($value) { $this->sheetObject->getPageMargins()->setLeft($value); };
-        $this->sheetMappings['pageMargins']['right'] = function($value) { $this->sheetObject->getPageMargins()->setRight($value); };
-        $this->sheetMappings['pageMargins']['header'] = function($value) { $this->sheetObject->getPageMargins()->setHeader($value); };
-        $this->sheetMappings['pageMargins']['footer'] = function($value) { $this->sheetObject->getPageMargins()->setFooter($value); };
-        $this->sheetMappings['pageSetup']['fitToHeight'] = function($value) { $this->sheetObject->getPageSetup()->setFitToHeight($value); };
-        $this->sheetMappings['pageSetup']['fitToPage'] = function($value) { $this->sheetObject->getPageSetup()->setFitToPage($value); };
-        $this->sheetMappings['pageSetup']['fitToWidth'] = function($value) { $this->sheetObject->getPageSetup()->setFitToWidth($value); };
-        $this->sheetMappings['pageSetup']['horizontalCentered'] = function($value) { $this->sheetObject->getPageSetup()->setHorizontalCentered($value); };
-        $this->sheetMappings['pageSetup']['orientation'] = function($value) { $this->sheetObject->getPageSetup()->setOrientation($value); };
-        $this->sheetMappings['pageSetup']['paperSize'] = function($value) { $this->sheetObject->getPageSetup()->setPaperSize($value); };
-        $this->sheetMappings['pageSetup']['printArea'] = function($value) { $this->sheetObject->getPageSetup()->setPrintArea($value); };
-        $this->sheetMappings['pageSetup']['scale'] = function($value) { $this->sheetObject->getPageSetup()->setScale($value); };
-        $this->sheetMappings['pageSetup']['verticalCentered'] = function($value) { $this->sheetObject->getPageSetup()->setVerticalCentered($value); };
-        $this->sheetMappings['printGridlines'] = function($value) { $this->sheetObject->setPrintGridlines($value); };
-        $this->sheetMappings['protection']['autoFilter'] = function($value) { $this->sheetObject->getProtection()->setAutoFilter($value); };
-        $this->sheetMappings['protection']['deleteColumns'] = function($value) { $this->sheetObject->getProtection()->setDeleteColumns($value); };
-        $this->sheetMappings['protection']['deleteRows'] = function($value) { $this->sheetObject->getProtection()->setDeleteRows($value); };
-        $this->sheetMappings['protection']['formatCells'] = function($value) { $this->sheetObject->getProtection()->setFormatCells($value); };
-        $this->sheetMappings['protection']['formatColumns'] = function($value) { $this->sheetObject->getProtection()->setFormatColumns($value); };
-        $this->sheetMappings['protection']['formatRows'] = function($value) { $this->sheetObject->getProtection()->setFormatRows($value); };
-        $this->sheetMappings['protection']['insertColumns'] = function($value) { $this->sheetObject->getProtection()->setInsertColumns($value); };
-        $this->sheetMappings['protection']['insertHyperlinks'] = function($value) { $this->sheetObject->getProtection()->setInsertHyperlinks($value); };
-        $this->sheetMappings['protection']['insertRows'] = function($value) { $this->sheetObject->getProtection()->setInsertRows($value); };
-        $this->sheetMappings['protection']['objects'] = function($value) { $this->sheetObject->getProtection()->setObjects($value); };
-        $this->sheetMappings['protection']['pivotTables'] = function($value) { $this->sheetObject->getProtection()->setPivotTables($value); };
-        $this->sheetMappings['protection']['scenarios'] = function($value) { $this->sheetObject->getProtection()->setScenarios($value); };
-        $this->sheetMappings['protection']['selectLockedCells'] = function($value) { $this->sheetObject->getProtection()->setSelectLockedCells($value); };
-        $this->sheetMappings['protection']['selectUnlockedCells'] = function($value) { $this->sheetObject->getProtection()->setSelectUnlockedCells($value); };
-        $this->sheetMappings['protection']['sheet'] = function($value) { $this->sheetObject->getProtection()->setSheet($value); };
-        $this->sheetMappings['protection']['sort'] = function($value) { $this->sheetObject->getProtection()->setSort($value); };
-        $this->sheetMappings['rightToLeft'] = function($value) { $this->sheetObject->setRightToLeft($value); };
+        $this->sheetMappings['columnDimension']['__object'] = function($key) use ($wrapper) { return $key == 'default' ? $wrapper->sheetObject->getDefaultColumnDimension() : $wrapper->sheetObject->getColumnDimension($key); };
+        $this->sheetMappings['columnDimension']['autoSize'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setAutoSize($value); };
+        $this->sheetMappings['columnDimension']['collapsed'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setCollapsed($value); };
+        $this->sheetMappings['columnDimension']['columnIndex'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setColumnIndex($value); };
+        $this->sheetMappings['columnDimension']['outlineLevel'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setOutlineLevel($value); };
+        $this->sheetMappings['columnDimension']['visible'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setVisible($value); };
+        $this->sheetMappings['columnDimension']['width'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setWidth($value); };
+        $this->sheetMappings['columnDimension']['xfIndex'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setXfIndex($value); };
+        $this->sheetMappings['pageMargins']['top'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageMargins()->setTop($value); };
+        $this->sheetMappings['pageMargins']['bottom'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageMargins()->setBottom($value); };
+        $this->sheetMappings['pageMargins']['left'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageMargins()->setLeft($value); };
+        $this->sheetMappings['pageMargins']['right'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageMargins()->setRight($value); };
+        $this->sheetMappings['pageMargins']['header'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageMargins()->setHeader($value); };
+        $this->sheetMappings['pageMargins']['footer'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageMargins()->setFooter($value); };
+        $this->sheetMappings['pageSetup']['fitToHeight'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageSetup()->setFitToHeight($value); };
+        $this->sheetMappings['pageSetup']['fitToPage'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageSetup()->setFitToPage($value); };
+        $this->sheetMappings['pageSetup']['fitToWidth'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageSetup()->setFitToWidth($value); };
+        $this->sheetMappings['pageSetup']['horizontalCentered'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageSetup()->setHorizontalCentered($value); };
+        $this->sheetMappings['pageSetup']['orientation'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageSetup()->setOrientation($value); };
+        $this->sheetMappings['pageSetup']['paperSize'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageSetup()->setPaperSize($value); };
+        $this->sheetMappings['pageSetup']['printArea'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageSetup()->setPrintArea($value); };
+        $this->sheetMappings['pageSetup']['scale'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageSetup()->setScale($value); };
+        $this->sheetMappings['pageSetup']['verticalCentered'] = function($value) use ($wrapper) { $wrapper->sheetObject->getPageSetup()->setVerticalCentered($value); };
+        $this->sheetMappings['printGridlines'] = function($value) use ($wrapper) { $wrapper->sheetObject->setPrintGridlines($value); };
+        $this->sheetMappings['protection']['autoFilter'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setAutoFilter($value); };
+        $this->sheetMappings['protection']['deleteColumns'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setDeleteColumns($value); };
+        $this->sheetMappings['protection']['deleteRows'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setDeleteRows($value); };
+        $this->sheetMappings['protection']['formatCells'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setFormatCells($value); };
+        $this->sheetMappings['protection']['formatColumns'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setFormatColumns($value); };
+        $this->sheetMappings['protection']['formatRows'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setFormatRows($value); };
+        $this->sheetMappings['protection']['insertColumns'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setInsertColumns($value); };
+        $this->sheetMappings['protection']['insertHyperlinks'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setInsertHyperlinks($value); };
+        $this->sheetMappings['protection']['insertRows'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setInsertRows($value); };
+        $this->sheetMappings['protection']['objects'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setObjects($value); };
+        $this->sheetMappings['protection']['pivotTables'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setPivotTables($value); };
+        $this->sheetMappings['protection']['scenarios'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setScenarios($value); };
+        $this->sheetMappings['protection']['selectLockedCells'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setSelectLockedCells($value); };
+        $this->sheetMappings['protection']['selectUnlockedCells'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setSelectUnlockedCells($value); };
+        $this->sheetMappings['protection']['sheet'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setSheet($value); };
+        $this->sheetMappings['protection']['sort'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setSort($value); };
+        $this->sheetMappings['rightToLeft'] = function($value) use ($wrapper) { $wrapper->sheetObject->setRightToLeft($value); };
         $this->sheetMappings['rowDimension']['__multi'] = true;
-        $this->sheetMappings['rowDimension']['__object'] = function($key) { return $key == 'default' ? $this->sheetObject->getDefaultRowDimension() : $this->sheetObject->getRowDimension($key); };
-        $this->sheetMappings['rowDimension']['collapsed'] = function($key, $value) { $this->sheetMappings['rowDimension']['__object']($key)->setCollapsed($value); };
-        $this->sheetMappings['rowDimension']['outlineLevel'] = function($key, $value) { $this->sheetMappings['rowDimension']['__object']($key)->setOutlineLevel($value); };
-        $this->sheetMappings['rowDimension']['rowHeight'] = function($key, $value) { $this->sheetMappings['rowDimension']['__object']($key)->setRowHeight($value); };
-        $this->sheetMappings['rowDimension']['rowIndex'] = function($key, $value) { $this->sheetMappings['rowDimension']['__object']($key)->setRowIndex($value); };
-        $this->sheetMappings['rowDimension']['visible'] = function($key, $value) { $this->sheetMappings['rowDimension']['__object']($key)->setVisible($value); };
-        $this->sheetMappings['rowDimension']['xfIndex'] = function($key, $value) { $this->sheetMappings['rowDimension']['__object']($key)->setXfIndex($value); };
-        $this->sheetMappings['rowDimension']['zeroHeight'] = function($key, $value) { $this->sheetMappings['rowDimension']['__object']($key)->setZeroHeight($value); };
-        $this->sheetMappings['sheetState'] = function($value) { $this->sheetObject->setSheetState($value); };
-        $this->sheetMappings['showGridlines'] = function($value) { $this->sheetObject->setShowGridlines($value); };
-        $this->sheetMappings['tabColor'] = function($value) { $this->sheetObject->getTabColor()->setRGB($value); };
-        $this->sheetMappings['zoomScale'] = function($value) { $this->sheetObject->getSheetView()->setZoomScale($value); };
+        $this->sheetMappings['rowDimension']['__object'] = function($key) use ($wrapper) { return $key == 'default' ? $wrapper->sheetObject->getDefaultRowDimension() : $wrapper->sheetObject->getRowDimension($key); };
+        $this->sheetMappings['rowDimension']['collapsed'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setCollapsed($value); };
+        $this->sheetMappings['rowDimension']['outlineLevel'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setOutlineLevel($value); };
+        $this->sheetMappings['rowDimension']['rowHeight'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setRowHeight($value); };
+        $this->sheetMappings['rowDimension']['rowIndex'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setRowIndex($value); };
+        $this->sheetMappings['rowDimension']['visible'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setVisible($value); };
+        $this->sheetMappings['rowDimension']['xfIndex'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setXfIndex($value); };
+        $this->sheetMappings['rowDimension']['zeroHeight'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setZeroHeight($value); };
+        $this->sheetMappings['sheetState'] = function($value) use ($wrapper) { $wrapper->sheetObject->setSheetState($value); };
+        $this->sheetMappings['showGridlines'] = function($value) use ($wrapper) { $wrapper->sheetObject->setShowGridlines($value); };
+        $this->sheetMappings['tabColor'] = function($value) use ($wrapper) { $wrapper->sheetObject->getTabColor()->setRGB($value); };
+        $this->sheetMappings['zoomScale'] = function($value) use ($wrapper) { $wrapper->sheetObject->getSheetView()->setZoomScale($value); };
     }
 
     protected function initRowPropertyMappings() {
@@ -178,41 +182,45 @@ class PhpExcelWrapper {
     }
 
     protected function initCellPropertyMappings() {
-        $this->cellMappings['break'] = function($value) { $this->sheetObject->setBreak($this->cellObject->getCoordinate(), $value); };
-        $this->cellMappings['dataValidation']['allowBlank'] = function($value) { $this->cellObject->getDataValidation()->setAllowBlank($value); };
-        $this->cellMappings['dataValidation']['error'] = function($value) { $this->cellObject->getDataValidation()->setError($value); };
-        $this->cellMappings['dataValidation']['errorStyle'] = function($value) { $this->cellObject->getDataValidation()->setErrorStyle($value); };
-        $this->cellMappings['dataValidation']['errorTitle'] = function($value) { $this->cellObject->getDataValidation()->setErrorTitle($value); };
-        $this->cellMappings['dataValidation']['formula1'] = function($value) { $this->cellObject->getDataValidation()->setFormula1($value); };
-        $this->cellMappings['dataValidation']['formula2'] = function($value) { $this->cellObject->getDataValidation()->setFormula2($value); };
-        $this->cellMappings['dataValidation']['operator'] = function($value) { $this->cellObject->getDataValidation()->setOperator($value); };
-        $this->cellMappings['dataValidation']['prompt'] = function($value) { $this->cellObject->getDataValidation()->setPrompt($value); };
-        $this->cellMappings['dataValidation']['promptTitle'] = function($value) { $this->cellObject->getDataValidation()->setPromptTitle($value); };
-        $this->cellMappings['dataValidation']['showDropDown'] = function($value) { $this->cellObject->getDataValidation()->setShowDropDown($value); };
-        $this->cellMappings['dataValidation']['showErrorMessage'] = function($value) { $this->cellObject->getDataValidation()->setShowErrorMessage($value); };
-        $this->cellMappings['dataValidation']['showInputMessage'] = function($value) { $this->cellObject->getDataValidation()->setShowInputMessage($value); };
-        $this->cellMappings['dataValidation']['type'] = function($value) { $this->cellObject->getDataValidation()->setType($value); };
-        $this->cellMappings['style'] = function($value) { $this->sheetObject->getStyle($this->cellObject->getCoordinate())->applyFromArray($value); };
-        $this->cellMappings['url'] = function($value) { $this->cellObject->getHyperlink()->setUrl($value); };
+        $wrapper = $this; // PHP 5.3 fix
+
+        $this->cellMappings['break'] = function($value) use ($wrapper) { $wrapper->sheetObject->setBreak($wrapper->cellObject->getCoordinate(), $value); };
+        $this->cellMappings['dataValidation']['allowBlank'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setAllowBlank($value); };
+        $this->cellMappings['dataValidation']['error'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setError($value); };
+        $this->cellMappings['dataValidation']['errorStyle'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setErrorStyle($value); };
+        $this->cellMappings['dataValidation']['errorTitle'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setErrorTitle($value); };
+        $this->cellMappings['dataValidation']['formula1'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setFormula1($value); };
+        $this->cellMappings['dataValidation']['formula2'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setFormula2($value); };
+        $this->cellMappings['dataValidation']['operator'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setOperator($value); };
+        $this->cellMappings['dataValidation']['prompt'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setPrompt($value); };
+        $this->cellMappings['dataValidation']['promptTitle'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setPromptTitle($value); };
+        $this->cellMappings['dataValidation']['showDropDown'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setShowDropDown($value); };
+        $this->cellMappings['dataValidation']['showErrorMessage'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setShowErrorMessage($value); };
+        $this->cellMappings['dataValidation']['showInputMessage'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setShowInputMessage($value); };
+        $this->cellMappings['dataValidation']['type'] = function($value) use ($wrapper) { $wrapper->cellObject->getDataValidation()->setType($value); };
+        $this->cellMappings['style'] = function($value) use ($wrapper) { $wrapper->sheetObject->getStyle($wrapper->cellObject->getCoordinate())->applyFromArray($value); };
+        $this->cellMappings['url'] = function($value) use ($wrapper) { $wrapper->cellObject->getHyperlink()->setUrl($value); };
     }
 
     protected function initDrawingPropertyMappings() {
-        $this->drawingMappings['coordinates'] = function($value) { $this->drawingObject->getCoordinates($value); };
-        $this->drawingMappings['description'] = function($value) { $this->drawingObject->getDescription($value); };
-        $this->drawingMappings['height'] = function($value) { $this->drawingObject->getHeight($value); };
-        $this->drawingMappings['name'] = function($value) { $this->drawingObject->getName($value); };
-        $this->drawingMappings['offsetX'] = function($value) { $this->drawingObject->getOffsetX($value); };
-        $this->drawingMappings['offsetY'] = function($value) { $this->drawingObject->getOffsetY($value); };
-        $this->drawingMappings['resizeProportional'] = function($value) { $this->drawingObject->getResizeProportional($value); };
-        $this->drawingMappings['rotation'] = function($value) { $this->drawingObject->getRotation($value); };
-        $this->drawingMappings['shadow']['alignment'] = function($value) { $this->drawingObject->getShadow()->setAlignment($value); };
-        $this->drawingMappings['shadow']['alpha'] = function($value) { $this->drawingObject->getShadow()->setAlpha($value); };
-        $this->drawingMappings['shadow']['blurRadius'] = function($value) { $this->drawingObject->getShadow()->setBlurRadius($value); };
-        $this->drawingMappings['shadow']['color'] = function($value) { $this->drawingObject->getShadow()->getColor()->setRgb($value); };
-        $this->drawingMappings['shadow']['direction'] = function($value) { $this->drawingObject->getShadow()->setDirection($value); };
-        $this->drawingMappings['shadow']['distance'] = function($value) { $this->drawingObject->getShadow()->setDistance($value); };
-        $this->drawingMappings['shadow']['visible'] = function($value) { $this->drawingObject->getShadow()->setVisible($value); };
-        $this->drawingMappings['width'] = function($value) { $this->drawingObject->getWidth($value); };
+        $wrapper = $this; // PHP 5.3 fix
+
+        $this->drawingMappings['coordinates'] = function($value) use ($wrapper) { $wrapper->drawingObject->getCoordinates($value); };
+        $this->drawingMappings['description'] = function($value) use ($wrapper) { $wrapper->drawingObject->getDescription($value); };
+        $this->drawingMappings['height'] = function($value) use ($wrapper) { $wrapper->drawingObject->getHeight($value); };
+        $this->drawingMappings['name'] = function($value) use ($wrapper) { $wrapper->drawingObject->getName($value); };
+        $this->drawingMappings['offsetX'] = function($value) use ($wrapper) { $wrapper->drawingObject->getOffsetX($value); };
+        $this->drawingMappings['offsetY'] = function($value) use ($wrapper) { $wrapper->drawingObject->getOffsetY($value); };
+        $this->drawingMappings['resizeProportional'] = function($value) use ($wrapper) { $wrapper->drawingObject->getResizeProportional($value); };
+        $this->drawingMappings['rotation'] = function($value) use ($wrapper) { $wrapper->drawingObject->getRotation($value); };
+        $this->drawingMappings['shadow']['alignment'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setAlignment($value); };
+        $this->drawingMappings['shadow']['alpha'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setAlpha($value); };
+        $this->drawingMappings['shadow']['blurRadius'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setBlurRadius($value); };
+        $this->drawingMappings['shadow']['color'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->getColor()->setRgb($value); };
+        $this->drawingMappings['shadow']['direction'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setDirection($value); };
+        $this->drawingMappings['shadow']['distance'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setDistance($value); };
+        $this->drawingMappings['shadow']['visible'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setVisible($value); };
+        $this->drawingMappings['width'] = function($value) use ($wrapper) { $wrapper->drawingObject->getWidth($value); };
     }
 
     public function setProperties(array $properties, array $mappings) {
