@@ -141,7 +141,7 @@ pageSetup | array
  + fitToPage | boolean
  + fitToWidth | int
  + horizontalCentered | boolean
- + orientation | string | Possible orientations are 'default', 'landscape' or 'portrait'
+ + orientation | string | Possible orientations are 'default', 'landscape', 'portrait'
  + paperSize | int | Possible values are defined in PHPExcel_Worksheet_PageSetup
  + printArea | string | An area like 'A1:B1'
  + scale | int
@@ -258,7 +258,7 @@ zoomScale | int
 {% endxlssheet %}
 ```
 
-### xlsheader
+### xlsheader (WIP)
 
     {% xlsheader [type:string] [properties:array] %}
         ...
@@ -268,14 +268,25 @@ zoomScale | int
 
 #### Attributes
 
+Name | Type | Optional | Description
+---- | ---- | -------- | -----------
+type | string | X | Possible types are 'header' (default), 'oddHeader', 'evenHeader', 'firstHeader'
+properties | array
+
 #### Properties
+
+Name | Type | Description
+---- | ---- | -----------
 
 #### Example
 
 ```lua
+{% xlsheader 'first' %}
+    {# ... #}
+{% endxlsrow %}
 ```
 
-### xlsfooter
+### xlsfooter (WIP)
 
     {% xlsfooter [type:string] [properties:array] %}
         ...
@@ -285,11 +296,22 @@ zoomScale | int
 
 #### Attributes
 
+Name | Type | Optional | Description
+---- | ---- | -------- | -----------
+type | string | X | Possible types are 'footer' (default), 'oddFooter', 'evenFooter', 'firstFooter'
+properties | array
+
 #### Properties
+
+Name | Type | Description
+---- | ---- | -----------
 
 #### Example
 
 ```lua
+{% xlsfooter 'first' %}
+    {# ... #}
+{% xlsfooter %}
 ```
 
 ### xlsrow
@@ -300,14 +322,21 @@ zoomScale | int
 
  * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlsdrawing' tags
  * May contain one or more 'xlscell' tags
+ * If 'index' is not defined it will default to 1 for the first usage per sheet
+ * For each further usage it will increase the index by 1 automatically (1, 2, 3, ...)
 
 #### Attributes
 
-#### Properties
+Name | Type | Optional | Description
+---- | ---- | -------- | -----------
+index | int | | A row index >=1
 
 #### Example
 
 ```lua
+{% xlsrow 1 %}
+    {# ... #}
+{% endxlsrow %}
 ```
 
 ### xlscell
@@ -317,14 +346,72 @@ zoomScale | int
     {% endxlscell %}
 
  * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * If 'index' is not defined it will default to 0 for the first usage per row
+ * For each further usage it will increase the index by 1 automatically (0, 1, 2, ...)
 
 #### Attributes
 
+Name | Type | Optional | Description
+---- | ---- | -------- | -----------
+index | int | | A column index >=0
+properties | array | X
+
 #### Properties
 
+Name | Type | Description
+---- | ---- | -----------
+break | int | Possible values are defined in PHPExcel_Worksheet
+dataValidation | array
+ + allowBlank | boolean
+ + error | string
+ + errorStyle | string | Possible values are defined in PHPExcel_Cell_DataValidation
+ + errorTitle | string
+ + formula1 | string
+ + formula2 | string
+ + operator | string | Possible values are defined in PHPExcel_Cell_DataValidation
+ + prompt | string
+ + promptTitle | string
+ + showDropDown | boolean
+ + showErrorMessage | boolean
+ + showInputMessage | boolean
+ + type | string | Possible values are defined in PHPExcel_Cell_DataValidation
+style | array | Standard PhpExcel style array
+url | string
+    
 #### Example
 
 ```lua
+{% xlscell 0 {
+    break: 1,
+    dataValidation: {
+        allowBlank: false,
+        error: '',
+        errorStyle: 'stop',
+        errorTitle: '',
+        formula1: '',
+        formula2: '',
+        operator: '',
+        prompt: ''
+        promptTitle: '',
+        showDropDown: false,
+        showErrorMessage: false,
+        showInputMessage: false,
+        type: 'none',
+    },
+    style: {
+        borders: {
+            bottom: {
+                style: 'thin',
+                color: {
+                    rgb: '000000'
+                }
+            }
+        }
+    },
+    url: 'http://www.example.com'
+} %}
+    {# ... #}
+{% endxlscell %}
 ```
 
 ### xlsdrawing
@@ -335,130 +422,37 @@ zoomScale | int
 
 #### Attributes
 
-#### Properties
+Name | Type | Optional | Description
+---- | ---- | -------- | -----------
+path | string
+properties | array | X
+
+#### Properties (WIP)
+
+Name | Type | Description
+---- | ---- | -----------
 
 #### Example
 
 ```lua
+{% xlsdrawing '/test.png' {
+    coordinates: 'A1',
+    description: 'Test',
+    height: 0,
+    name: '',
+    offsetX: 0,
+    offsetY: 0,
+    resizeProportional: true,
+    rotation: 0,
+    shadow: {
+        alignment: 'br',
+        alpha: 50,
+        blurRadius: 6,
+        color: '000000',
+        direction: 0,
+        distance: 2,
+        visible: false
+    },
+    width: 0
+} %}
 ```
-
-### Not cleaned up yet
-
-    {#
-        xlsheader tag
-
-        {% xlsheader [type:string] [properties:array] %}[Twig_NodeInterface]{% endxlsheader %}
-
-        'type' and 'properties' are optional
-        'type' can be null, 'odd', 'even' or 'first'
-        'type' null makes all headers the same
-        cannot contain other 'xlsheader' tags
-    #}
-    {% xlsheader 'first' %}Test Header{% endxlsrow %}
-    {#
-        xlsrow tag
-
-        {% xlsrow [index:int] %}[Twig_NodeInterface]{% endxlsrow %}
-
-        'index' is optional
-        if 'index' is not defined it will default to 1 for the first usage per sheet
-        for each further usage it will increase the index by 1 automatically (1, 2, 3, ...)
-    #}
-    {% xlsrow 1 %}
-        {#
-            xlscell tag
-
-            {% xlscell [index:string] [properties:array] %}[string]{% endxlscell %}
-            {% xlscell [index:string] {
-                break: [int],
-                dataValidation: [array],
-                style: [array],
-                url: [string]
-            } %}[string]{% endxlscell %}
-
-            'index' and 'properties' are optional
-            if 'index' is not defined it will default to 0 for the first usage per row
-            for each further usage it will increase the index by 1 automatically (0, 1, 2, ...)
-            cannot contain other 'xlscell' tags
-
-            see: PHPExcel_Cell_DataValidation
-            see: PHPExcel_Style:applyFromArray
-            see: PHPExcel_Style_Border
-        #}
-        {% xlscell 0 {
-            break: 1,
-            dataValidation: {
-                allowBlank: false,
-                error: '',
-                errorStyle: 'stop',
-                errorTitle: '',
-                formula1: '',
-                formula2: '',
-                operator: '',
-                prompt: ''
-                promptTitle: '',
-                showDropDown: false,
-                showErrorMessage: false,
-                showInputMessage: false,
-                type: 'none',
-            },
-            style: {
-                borders: {
-                    bottom: {
-                        style: 'thin',
-                        color: {
-                            rgb: '000000'
-                        }
-                    }
-                }
-            },
-            url: 'http://www.example.com'
-        } %}
-            Test
-        {% endxlscell %}
-        {% xlscell 2 %}Foo{% endxlscell %}
-        {% xlscell %}Bar{% endxlscell %}
-    {% endxlsrow %}
-    {#
-        xlsdrawing tag
-
-        {% xlsdrawing [path:string] [properties:array] %}
-        {% xlsdrawing [path:string] {
-            style: [array]
-        } %}
-
-        'path' is required, 'properties' are optional
-
-        see: PHPExcel_Worksheet_Drawing
-        see: PHPExcel_Worksheet_Drawing_Shadow
-    #}
-    {% xlsdrawing '/test.png' {
-        coordinates: 'A1',
-        description: 'Test',
-        height: 0,
-        name: '',
-        offsetX: 0,
-        offsetY: 0,
-        resizeProportional: true,
-        rotation: 0,
-        shadow: {
-            alignment: 'br',
-            alpha: 50,
-            blurRadius: 6,
-            color: '000000',
-            direction: 0,
-            distance: 2,
-            visible: false
-        },
-        width: 0
-    } %}
-    {#
-        xlsfooter tag
-
-        {% xlsfooter [type:string] [properties:array] %}[Twig_NodeInterface]{% endxlsfooter %}
-
-        'type' and 'properties' are optional
-        'type' can be null, 'odd', 'even' or 'first'
-        'type' null makes all footers the same
-    #}
-    {% xlsfooter 'first' %}Test Header{% xlsfooter %}
