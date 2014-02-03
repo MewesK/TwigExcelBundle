@@ -4,13 +4,21 @@
 
 This Symfony2 bundle provides a PhpExcel integration for Twig.
 
+## Installation
+
+TODO
+
+## Getting started
+
+TODO
+
 ## Twig Functions
 
 ### xlsmergestyles
 
     xlsmergestyles([style1:array], [style2:array])
     
- * Merges two style arrays recusrively
+ * Merges two style arrays recursively
  * Returns a new array
 
 #### Parameters
@@ -108,7 +116,7 @@ title | string
         {% endxlssheet %}
 
  * Cannot contain 'xlsdocument', 'xlssheet', 'xlscell' or 'xlsdrawing' tags
- * May contain one or more , 'xlsheader', 'xlsfooter', 'xlsrow' and 'xlsdrawing' tags
+ * May contain one or more 'xlsheader', 'xlsfooter', 'xlsrow' and 'xlsdrawing' tags
 
 #### Attributes
 
@@ -264,7 +272,8 @@ zoomScale | int
         ...
     {% endxlsheader %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlscell' tags
+ * May contain one or more 'xlsdrawing' tags
 
 #### Attributes
 
@@ -292,7 +301,8 @@ Name | Type | Description
         ...
     {% endxlsfooter %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlscell' tags
+ * May contain one or more 'xlsdrawing' tags
 
 #### Attributes
 
@@ -431,6 +441,23 @@ properties | array | X
 
 Name | Type | Description
 ---- | ---- | -----------
+coordinates | string | Cell coordinates like 'A1'
+description | string
+height | int
+name | string
+offsetX | int
+offsetY | int
+resizeProportional | boolean
+rotation | int
+shadow | array
+ + alignment: | string | Possible values are defined in PHPExcel_Worksheet_Drawing_Shadow
+ + alpha | int
+ + blurRadius | int
+ + color | string | A hexadecimal color string like '000000' (without #)
+ + direction | int
+ + distance | int
+ + visible | boolean
+width | int
 
 #### Example
 
