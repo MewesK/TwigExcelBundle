@@ -23,7 +23,7 @@ style2 | array | | Standard PhpExcel style array
 #### Example
 
 ```lua
-{% set mergedStyle = xlsmergestyles({ font: { name: 'Verdana' } }, { font: { size: '18' } } %}
+{% set mergedStyle = xlsmergestyles({ font: { name: 'Verdana' } }, { font: { size: '18' } }) %}
 ```
 
 ## Twig Tags
@@ -256,6 +256,61 @@ zoomScale | int
 }%}
     {# ... #}
 {% endxlssheet %}
+```
+
+### xlsheader
+
+#### Attributes
+
+#### Properties
+
+#### Example
+
+```lua
+```
+
+### xlsfooter
+
+#### Attributes
+
+#### Properties
+
+#### Example
+
+```lua
+```
+
+### xlsrow
+
+#### Attributes
+
+#### Properties
+
+#### Example
+
+```lua
+```
+
+### xlscell
+
+#### Attributes
+
+#### Properties
+
+#### Example
+
+```lua
+```
+
+### xlsdrawing
+
+#### Attributes
+
+#### Properties
+
+#### Example
+
+```lua
 ```
 
 ### Not cleaned up yet
