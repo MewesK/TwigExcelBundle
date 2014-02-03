@@ -1,8 +1,8 @@
 {
     "name": "mewesk/phpexcel-twig-extension-bundle",
     "type": "symfony-bundle",
-    "description": "This bundle provides a PhpExcel integration for Twig",
-    "keywords": ["phpexcel","twig","symfony"],
+    "description": "This Symfony2 bundle provides a PhpExcel integration for Twig",
+    "keywords": ["phpexcel","twig","symfony","symfony2"],
     "homepage": "https://github.com/mewesk/phpexcel-twig-extension",
     "license": "MIT",
     "authors": [
