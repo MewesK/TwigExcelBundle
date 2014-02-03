@@ -2,11 +2,31 @@
 
 [![Build Status](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle.png?branch=dev)](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle)
 
-## Helper Functions
+This Symfony2 bundle provides a PhpExcel integration for Twig.
 
-  * xlsmergestyles([array], [array])
+## Twig Functions
 
-## Twig Tag Documentation
+### xlsmergestyles
+
+    xlsmergestyles([style1:array], [style2:array])
+    
+ * Merges two style arrays recusrively
+ * Returns a new array
+
+#### Parameters
+
+Name | Type | Optional | Description
+---- | ---- | -------- | -----------
+style1 | array | | Standard PhpExcel style array
+style2 | array | | Standard PhpExcel style array
+
+#### Example
+
+```lua
+{% set mergedStyle = xlsmergestyles({ font: { name: 'Verdana' } }, { font: { size: '18' } } %}
+```
+
+## Twig Tags
 
 ### xlsdocument
 
@@ -14,17 +34,19 @@
         ...
     {% endxlsdocument %}
 
-Cannot contain other 'xlsdocument' tags
-May contain multiple 'xlssheet' tags
+ * Cannot contain other 'xlsdocument' tags
+ * May contain multiple 'xlssheet' tags
 
 #### Attributes
 
-Name | Type | Optional
+Name | Type | Optional | Description
+---- | ---- | -------- | -----------
 properties | array | X
 
 #### Properties
 
 Name | Type | Description
+---- | ---- | -----------
 category | string
 company | string
 created | datetime
@@ -85,18 +107,20 @@ title | string
         ...
         {% endxlssheet %}
 
-Cannot contain other 'xlssheet' tags
-May contain multiple 'xlscell' tags
+ * Cannot contain other 'xlssheet' tags
+ * May contain multiple 'xlscell' tags
 
 #### Attributes
 
-Name | Type | Optional
+Name | Type | Optional | Description
+---- | ---- | -------- | -----------
 title | string
 properties | array | X
 
 #### Properties
 
 Name | Type | Description
+---- | ---- | -----------
 columnDimension | array | Contains one or more arrays. Possible keys are 'default' or a valid column name like 'A'
  + autoSize | boolean
  + collapsed | boolean
