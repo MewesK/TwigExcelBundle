@@ -5,7 +5,7 @@ namespace MewesK\PhpExcelTwigExtensionBundle\Tests;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\PhpExcelExtension;
 use Twig_Environment;
 
-class DocumentTest extends \PHPUnit_Framework_TestCase
+class TwigTest extends \PHPUnit_Framework_TestCase
 {
     private $environment;
 
@@ -37,7 +37,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function setUp() {
         $this->environment = new Twig_Environment(new \Twig_Loader_Array($this->getLoaderArray(array(
                 'documentSimple',
-                'documentIndices'
+                'documentIndices',
+                'drawingSimple'
             ))), array('strict_variables' => true));
         $this->environment->addExtension(new PhpExcelExtension());
         $this->environment->setCache(__DIR__.'/Temporary/');
@@ -48,7 +49,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        exec('rm -rf '.__DIR__.'/Temporary/');
+        //exec('rm -rf '.__DIR__.'/Temporary/');
     }
 
     public function testDocumentSimple()
@@ -84,6 +85,27 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($sheet->getCell('D3')->getValue(), 'Ipsum', 'D3 does not contain "Ipsum"');
             $this->assertEquals($sheet->getCell('B4')->getValue(), 'Hello', 'B4 does not contain "Hello"');
             $this->assertEquals($sheet->getCell('D4')->getValue(), 'World', 'D4 does not contain "World"');
+        } catch (\Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    public function testDrawingSimple()
+    {
+        try {
+            $phpExcel = $this->getPhpExcelObject('drawingSimple');
+
+            // tests
+            /*$sheet = $phpExcel->getSheetByName('Test');
+            $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
+
+            $drawings = $sheet->getDrawingCollection();
+            $this->assertCount(1, $drawings, 'Sheet has not exactly one drawing');
+
+            $drawing = $drawings[0];
+            $this->assertNotNull($drawing, 'Drawing is null');
+
+            var_dump($drawing);*/
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
