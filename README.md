@@ -34,8 +34,8 @@ style2 | array | | Standard PhpExcel style array
         ...
     {% endxlsdocument %}
 
- * Cannot contain other 'xlsdocument' tags
- * May contain multiple 'xlssheet' tags
+ * Cannot contain 'xlsdocument', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * May contain one or more 'xlssheet' tags
 
 #### Attributes
 
@@ -107,8 +107,8 @@ title | string
         ...
         {% endxlssheet %}
 
- * Cannot contain other 'xlssheet' tags
- * May contain multiple 'xlscell' tags
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlscell' or 'xlsdrawing' tags
+ * May contain one or more , 'xlsheader', 'xlsfooter', 'xlsrow' and 'xlsdrawing' tags
 
 #### Attributes
 
@@ -260,6 +260,12 @@ zoomScale | int
 
 ### xlsheader
 
+    {% xlsheader [type:string] [properties:array] %}
+        ...
+    {% endxlsheader %}
+
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+
 #### Attributes
 
 #### Properties
@@ -270,6 +276,12 @@ zoomScale | int
 ```
 
 ### xlsfooter
+
+    {% xlsfooter [type:string] [properties:array] %}
+        ...
+    {% endxlsfooter %}
+
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
 
 #### Attributes
 
@@ -282,6 +294,13 @@ zoomScale | int
 
 ### xlsrow
 
+    {% xlsrow [index:int] %}
+        ...
+    {% endxlsrow %}
+
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlsdrawing' tags
+ * May contain one or more 'xlscell' tags
+
 #### Attributes
 
 #### Properties
@@ -293,6 +312,12 @@ zoomScale | int
 
 ### xlscell
 
+    {% xlscell [index:string] [properties:array] %}
+        ...
+    {% endxlscell %}
+
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+
 #### Attributes
 
 #### Properties
@@ -303,6 +328,10 @@ zoomScale | int
 ```
 
 ### xlsdrawing
+
+    {% xlsdrawing [path:string] [properties:array] %}
+
+ * Cannot contain anything
 
 #### Attributes
 
