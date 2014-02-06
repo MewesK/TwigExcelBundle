@@ -37,7 +37,7 @@ public function registerBundles()
 
 ## Getting started
 
-### Step 1: Creating your controller
+### Step 1: Create your controller
 
 ```php
 // src/Acme/HelloBundle/Controller/HelloController.php
@@ -60,7 +60,7 @@ class HelloController
 }
 ```
 
-### Step 2: Creating your template
+### Step 2: Create your template
 
 ```twig
 {% xlsdocument %}
