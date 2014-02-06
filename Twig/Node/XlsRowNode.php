@@ -8,7 +8,7 @@ use Twig_NodeInterface;
 
 class XlsRowNode extends Twig_Node
 {
-    public function __construct(Twig_Node_Expression $index, Twig_Node_Expression $properties, Twig_NodeInterface $body, $line, $tag = 'xlsrow')
+    public function __construct(Twig_Node_Expression $index, Twig_NodeInterface $body, $line, $tag = 'xlsrow')
     {
         parent::__construct(array('index' => $index, 'body' => $body), array(), $line, $tag);
     }
