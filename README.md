@@ -6,11 +6,76 @@ This Symfony2 bundle provides a PhpExcel integration for Twig.
 
 ## Installation
 
-TODO
+### Step 1: Download using composer
+
+```js
+{
+    "require": {
+        "mewesk/phpexcel-twig-extension-bundle": "1.0.*@dev"
+    }
+}
+```
+
+```bash
+$ php composer.phar update mewesk/phpexcel-twig-extension-bundle
+```
+
+### Step 2: Enable the bundle
+
+```php
+<?php
+// app/AppKernel.php
+
+public function registerBundles()
+{
+    $bundles = array(
+        // ...
+        new MewesK\PhpExcelTwigExtension\PhpExcelTwigExtensionBundle(),
+    );
+}
+```
 
 ## Getting started
 
-TODO
+### Step 1: Creating your controller
+
+```php
+// src/Acme/HelloBundle/Controller/HelloController.php
+namespace Acme\HelloBundle\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
+
+class HelloController
+{
+    /**
+     * @Route("/hello.{_format}", defaults={"_format"="xls"}, requirements={"_format"="xls|xlsx"})
+     * @Template()
+     */
+    public function indexAction($name)
+    {
+        return array('data' => array('La', 'Le', 'Lu'));
+    }
+}
+```
+
+### Step 2: Creating your template
+
+```twig
+{% xlsdocument %}
+    {% xlssheet 'Worksheet' %}
+        {% xlsrow %}
+            {% xlscell { style: { font: { size: '18' } } } %}Values{% endxlscell %}
+        {% endxlsrow %}
+        {% for value in data %}
+            {% xlsrow %}
+                {% xlscell %}{{ value }}{% endxlscell %}
+            {% endxlsrow %}
+        {% endfor %}
+    {% endxlssheet %}
+{% endxlsdocument %}
+```
 
 ## Twig Functions
 
