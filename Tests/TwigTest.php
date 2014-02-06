@@ -20,15 +20,15 @@ class TwigTest extends \PHPUnit_Framework_TestCase
     private function getPhpExcelObject($templateName) {
         // generate source from template
         $source = $this->environment->loadTemplate($templateName)->render(
-            array('app' => array('request' => array('requestFormat' => 'xls')))
+            array('app' => array('request' => array('requestFormat' => 'xlsx')))
         );
 
         // save source
-        file_put_contents(__DIR__.'/Temporary/'.$templateName.'.xls',$source);
+        file_put_contents(__DIR__.'/Temporary/'.$templateName.'.xlsx', $source);
 
         // load source
-        $reader = new \PHPExcel_Reader_Excel5();
-        return $reader->load(__DIR__.'/Temporary/'.$templateName.'.xls');
+        $reader = new \PHPExcel_Reader_Excel2007();
+        return $reader->load(__DIR__.'/Temporary/'.$templateName.'.xlsx');
     }
 
     /**
@@ -38,7 +38,8 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         $this->environment = new Twig_Environment(new \Twig_Loader_Array($this->getLoaderArray(array(
                 'documentSimple',
                 'documentIndices',
-                'drawingSimple'
+                'drawingSimple',
+                'drawingHeaderFooter'
             ))), array('strict_variables' => true));
         $this->environment->addExtension(new PhpExcelExtension());
         $this->environment->setCache(__DIR__.'/Temporary/');
@@ -49,7 +50,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        //exec('rm -rf '.__DIR__.'/Temporary/');
+        exec('rm -rf '.__DIR__.'/Temporary/');
     }
 
     public function testDocumentSimple()
@@ -61,10 +62,10 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $sheet = $phpExcel->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
 
-            $this->assertEquals($sheet->getCell('A1')->getValue(), 'Foo', 'A1 does not contain "Foo"');
-            $this->assertEquals($sheet->getCell('B1')->getValue(), 'Bar', 'B1 does not contain "Bar"');
-            $this->assertEquals($sheet->getCell('A2')->getValue(), 'Hello', 'A2 does not contain "Hello"');
-            $this->assertEquals($sheet->getCell('B2')->getValue(), 'World', 'B2 does not contain "World"');
+            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'A1 does not equal "Foo"');
+            $this->assertEquals('Bar', $sheet->getCell('B1')->getValue(), 'B1 does not equal "Bar"');
+            $this->assertEquals('Hello', $sheet->getCell('A2')->getValue(), 'A2 does not equal "Hello"');
+            $this->assertEquals('World', $sheet->getCell('B2')->getValue(), 'B2 does not equal "World"');
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
@@ -79,12 +80,12 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $sheet = $phpExcel->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
 
-            $this->assertEquals($sheet->getCell('A1')->getValue(), 'Foo', 'A1 does not contain "Foo"');
-            $this->assertEquals($sheet->getCell('C1')->getValue(), 'Bar', 'C1 does not contain "Bar"');
-            $this->assertEquals($sheet->getCell('C3')->getValue(), 'Lorem', 'C3 does not contain "Lorem"');
-            $this->assertEquals($sheet->getCell('D3')->getValue(), 'Ipsum', 'D3 does not contain "Ipsum"');
-            $this->assertEquals($sheet->getCell('B4')->getValue(), 'Hello', 'B4 does not contain "Hello"');
-            $this->assertEquals($sheet->getCell('D4')->getValue(), 'World', 'D4 does not contain "World"');
+            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'A1 does not equal "Foo"');
+            $this->assertEquals('Bar',$sheet->getCell('C1')->getValue(),  'C1 does not equal "Bar"');
+            $this->assertEquals('Lorem', $sheet->getCell('C3')->getValue(), 'C3 does not equal "Lorem"');
+            $this->assertEquals('Ipsum', $sheet->getCell('D3')->getValue(), 'D3 does not equal "Ipsum"');
+            $this->assertEquals('Hello', $sheet->getCell('B4')->getValue(), 'B4 does not equal "Hello"');
+            $this->assertEquals('World', $sheet->getCell('D4')->getValue(), 'D4 does not equal "World"');
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
@@ -99,13 +100,42 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $sheet = $phpExcel->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
 
-            /*$drawings = $sheet->getDrawingCollection();
+            $drawings = $sheet->getDrawingCollection();
             $this->assertCount(1, $drawings, 'Sheet has not exactly one drawing');
+            $this->assertArrayHasKey(0, $drawings, 'Drawing does not exist');
 
             $drawing = $drawings[0];
             $this->assertNotNull($drawing, 'Drawing is null');
+            $this->assertEquals(100, $drawing->getWidth(), 'Drawing width does not equal 100px');
+            $this->assertEquals(100, $drawing->getHeight(), 'Drawing height does not equal 100px');
+        } catch (\Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
 
-            var_dump($drawing);*/
+    public function testDrawingHeaderFooter()
+    {
+        try {
+            $phpExcel = $this->getPhpExcelObject('drawingHeaderFooter');
+
+            // tests
+            $sheet = $phpExcel->getSheetByName('Test');
+            $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
+
+            $drawings = $sheet->getHeaderFooter()->getImages();
+            $this->assertCount(2, $drawings, 'Sheet has not exactly 2 drawings');
+            $this->assertArrayHasKey('LH', $drawings, 'Header drawing does not exist');
+            $this->assertArrayHasKey('RF', $drawings, 'Footer drawing does not exist');
+
+            $drawing = $drawings['LH'];
+            $this->assertNotNull($drawing, 'Header drawing is null');
+            $this->assertEquals(40, $drawing->getWidth(), 'Width does not equal 40px');
+            $this->assertEquals(40, $drawing->getHeight(), 'Height does not equal 40px');
+
+            $drawing = $drawings['RF'];
+            $this->assertNotNull($drawing, 'Footer drawing is null');
+            $this->assertEquals(20, $drawing->getWidth(), 'Footer drawing width does not equal 20px');
+            $this->assertEquals(20, $drawing->getHeight(), 'Footer drawing height does not equal 20px');
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }

@@ -5,6 +5,8 @@ namespace MewesK\PhpExcelTwigExtensionBundle\Twig\NodeVisitor;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsCellNode;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsDocumentNode;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsDrawingNode;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsFooterNode;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsHeaderNode;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsRowNode;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsSheetNode;
 use Twig_Environment;
@@ -16,6 +18,8 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface {
 
     protected $lastDocument = null;
     protected $lastSheet = null;
+    protected $lastFooter = null;
+    protected $lastHeader = null;
     protected $lastRow = null;
     protected $lastCell = null;
     protected $lastDrawing = null;
@@ -76,6 +80,72 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface {
                 );
             }
             $this->lastSheet = $node;
+        }
+        elseif ($node instanceof XlsFooterNode) {
+            if (!$this->lastDocument) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed outside of Node "%s".', get_class($node), get_class($this->lastDocument))
+                );
+            }
+            if (!$this->lastSheet) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed outside of Node "%s".', get_class($node), get_class($this->lastSheet))
+                );
+            }
+            if ($this->lastFooter) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), get_class($this->lastFooter))
+                );
+            }
+            if ($this->lastHeader) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), get_class($this->lastHeader))
+                );
+            }
+            if ($this->lastRow) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), get_class($this->lastRow))
+                );
+            }
+            if ($this->lastCell) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), get_class($this->lastCell))
+                );
+            }
+            $this->lastFooter = $node;
+        }
+        elseif ($node instanceof XlsHeaderNode) {
+            if (!$this->lastDocument) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed outside of Node "%s".', get_class($node), get_class($this->lastDocument))
+                );
+            }
+            if (!$this->lastSheet) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed outside of Node "%s".', get_class($node), get_class($this->lastSheet))
+                );
+            }
+            if ($this->lastFooter) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), get_class($this->lastFooter))
+                );
+            }
+            if ($this->lastHeader) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), get_class($this->lastHeader))
+                );
+            }
+            if ($this->lastRow) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), get_class($this->lastRow))
+                );
+            }
+            if ($this->lastCell) {
+                throw new Twig_Error_Syntax(
+                    sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), get_class($this->lastCell))
+                );
+            }
+            $this->lastHeader = $node;
         }
         elseif ($node instanceof XlsRowNode) {
             if (!$this->lastDocument) {
@@ -164,6 +234,12 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface {
         }
         elseif ($node instanceof XlsSheetNode) {
             $this->lastSheet = null;
+        }
+        elseif ($node instanceof XlsFooterNode) {
+            $this->lastFooter = null;
+        }
+        elseif ($node instanceof XlsHeaderNode) {
+            $this->lastHeader = null;
         }
         elseif ($node instanceof XlsRowNode) {
             $this->lastRow = null;

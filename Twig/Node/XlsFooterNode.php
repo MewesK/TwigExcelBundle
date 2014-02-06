@@ -21,16 +21,20 @@ class XlsFooterNode extends Twig_Node
             ->write('$footerType = ')
             ->subcompile($this->getNode('type'))
             ->raw(';'.PHP_EOL)
-
-            ->write("ob_start();\n")
-            ->subcompile($this->getNode('body'))
-            ->write('$footerValue = trim(ob_get_clean());'.PHP_EOL)
+            ->write('$footerType = $footerType ? $footerType : \'footer\';'.PHP_EOL)
 
             ->write('$footerProperties = ')
             ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
-            ->write('$phpExcel->tagFooter($footerType, $footerValue, $footerProperties);'.PHP_EOL)
-            ->write('unset($footerType ? $footerType : \'footer\', $footerValue, $footerProperties);'.PHP_EOL);
+            ->write('$phpExcel->startHeaderFooter($footerType, $footerProperties);'.PHP_EOL)
+            ->write('unset($footerProperties);'.PHP_EOL)
+
+            ->write("ob_start();\n")
+            ->subcompile($this->getNode('body'))
+            ->write('$footerValue = trim(ob_get_clean());'.PHP_EOL)
+
+            ->write('$phpExcel->endHeaderFooter($footerType, $footerValue);'.PHP_EOL)
+            ->write('unset($footerType, $footerValue);'.PHP_EOL);
     }
 }

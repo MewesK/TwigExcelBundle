@@ -12,7 +12,7 @@ class XlsFooterTokenParser extends Twig_TokenParser
 {
     public function parse(Twig_Token $token)
     {
-        $type = new Twig_Node_Expression_Constant('header', $token->getLine());
+        $type = new Twig_Node_Expression_Constant('footer', $token->getLine());
         if (!$this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
             $type = $this->parser->getExpressionParser()->parseExpression();
         }
