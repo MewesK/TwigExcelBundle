@@ -25,7 +25,7 @@ class XlsDrawingNode extends Twig_Node
             ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
-            ->write('$phpExcel->tagSheet($drawingPath, $drawingProperties);'.PHP_EOL)
+            ->write('$phpExcel->tagDrawing($drawingPath, $drawingProperties);'.PHP_EOL)
             ->write('unset($drawingPath, $drawingProperties);'.PHP_EOL);
     }
 }

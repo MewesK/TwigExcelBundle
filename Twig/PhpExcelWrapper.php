@@ -376,22 +376,47 @@ class PhpExcelWrapper {
     }
     
     public function tagDrawing($path, array $properties = null) {
-        if ($this->sheetObject == null) {
-            throw new \LogicException();
-        }
-        if (!file_exists($path)) {
-            throw new \InvalidArgumentException();
-        }
+        try {
+            $pathInfo = pathinfo($path, PATHINFO_EXTENSION);
+            $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'xlsdrawing' . '_' . md5($path) .
+                (isset($pathInfo['extension']) && !empty($pathInfo['extension']) ? '.'.$pathInfo['extension'] : '');
 
-        $this->drawingObject = new \PHPExcel_Worksheet_Drawing();
-        $this->drawingObject->setWorksheet($this->sheetObject);
-        $this->drawingObject->setPath($path);
+            // make local copy of the asset
+            if (!file_exists($tempPath)) {
+                $data = file_get_contents($path);
+                if ($data === false) {
+                    throw new \InvalidArgumentException($path . ' does not exist.');
+                }
+                $temp = fopen($tempPath, 'w+');
+                if ($temp === false) {
+                    throw new \RuntimeException('Cannot open ' . $tempPath);
+                }
+                fwrite($temp, $data);
+                if (fclose($temp) === false) {
+                    throw new \RuntimeException('Cannot close ' . $tempPath);
+                }
+                unset($data, $temp);
+            }
 
-        if ($properties != null) {
-            $this->setProperties($properties, $this->cellMappings);
+            if ($this->sheetObject == null) {
+                throw new \LogicException();
+            }
+
+            $this->drawingObject = new \PHPExcel_Worksheet_Drawing();
+            $this->drawingObject->setWorksheet($this->sheetObject);
+            $this->drawingObject->setPath($tempPath);
+
+            if ($properties != null) {
+                $this->setProperties($properties, $this->drawingMappings);
+            }
+
+            $this->drawingObject = null;
+        } catch(\Exception $e) {
+            $this->drawingObject = null;
+
+            // re-throw
+            throw $e;
         }
-
-        $this->drawingObject = null;
     }
 
     public function save() {
