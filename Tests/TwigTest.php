@@ -17,18 +17,35 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         return $loaderArray;
     }
 
-    private function getPhpExcelObject($templateName) {
+    private function getPhpExcelObject($templateName, $format) {
         // generate source from template
         $source = $this->environment->loadTemplate($templateName)->render(
-            array('app' => array('request' => array('requestFormat' => 'xlsx')))
+            array('app' => array('request' => array('requestFormat' => $format)))
         );
 
         // save source
-        file_put_contents(__DIR__.'/Temporary/'.$templateName.'.xlsx', $source);
+        file_put_contents(__DIR__.'/Temporary/'.$templateName.'.'.$format, $source);
 
         // load source
-        $reader = new \PHPExcel_Reader_Excel2007();
-        return $reader->load(__DIR__.'/Temporary/'.$templateName.'.xlsx');
+        $reader = null;
+        switch($format) {
+            case 'xls':
+                $reader = new \PHPExcel_Reader_Excel5();
+                break;
+            case 'xlsx':
+                $reader = new \PHPExcel_Reader_Excel2007();
+                break;
+            default:
+                throw new \InvalidArgumentException();
+        }
+        return $reader->load(__DIR__.'/Temporary/'.$templateName.'.'.$format);
+    }
+
+    public function formatProvider() {
+        return array(
+            array('xls'),
+            array('xlsx')
+        );
     }
 
     /**
@@ -39,7 +56,8 @@ class TwigTest extends \PHPUnit_Framework_TestCase
                 'documentSimple',
                 'documentIndices',
                 'drawingSimple',
-                'drawingHeaderFooter'
+                'drawingHeaderFooter',
+                'documentMultiSheet'
             ))), array('strict_variables' => true));
         $this->environment->addExtension(new PhpExcelExtension());
         $this->environment->setCache(__DIR__.'/Temporary/');
@@ -50,13 +68,20 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        exec('rm -rf '.__DIR__.'/Temporary/');
+        //exec('rm -rf '.__DIR__.'/Temporary/');
     }
 
-    public function testDocumentSimple()
+    //
+    // Tests
+    //
+
+    /**
+     * @dataProvider formatProvider
+     */
+    public function testDocumentSimple($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('documentSimple');
+            $phpExcel = $this->getPhpExcelObject('documentSimple', $format);
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
@@ -71,10 +96,14 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testDocumentManualIndex()
+    /**
+     * @depends testDocumentSimple
+     * @dataProvider formatProvider
+     */
+    public function testDocumentManualIndex($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('documentIndices');
+            $phpExcel = $this->getPhpExcelObject('documentIndices', $format);
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
@@ -91,10 +120,36 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testDrawingSimple()
+    /**
+     * @depends testDocumentSimple
+     * @dataProvider formatProvider
+     */
+    public function testDocumentMultiSheet($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('drawingSimple');
+            $phpExcel = $this->getPhpExcelObject('documentMultiSheet', $format);
+
+            // tests
+            $sheet = $phpExcel->getSheetByName('Test 1');
+            $this->assertNotNull($sheet, 'Sheet "Test 1" does not exist');
+            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'A1 does not equal "Foo"');
+
+            $sheet = $phpExcel->getSheetByName('Test 2');
+            $this->assertNotNull($sheet, 'Sheet "Test 2" does not exist');
+            $this->assertEquals('Bar', $sheet->getCell('A1')->getValue(), 'A1 does not equal "Bar"');
+        } catch (\Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @depends testDocumentSimple
+     * @dataProvider formatProvider
+     */
+    public function testDrawingSimple($format)
+    {
+        try {
+            $phpExcel = $this->getPhpExcelObject('drawingSimple', $format);
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
@@ -113,10 +168,19 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testDrawingHeaderFooter()
+    /**
+     * @depends testDrawingSimple
+     * @dataProvider formatProvider
+     */
+    public function testDrawingHeaderFooter($format)
     {
+        // header drawings are not supported by the Excel5 writer
+        if ($format == 'xls') {
+            return;
+        }
+
         try {
-            $phpExcel = $this->getPhpExcelObject('drawingHeaderFooter');
+            $phpExcel = $this->getPhpExcelObject('drawingHeaderFooter', $format);
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
