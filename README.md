@@ -23,7 +23,6 @@ $ php composer.phar update mewesk/phpexcel-twig-extension-bundle
 ### Step 2: Enable the bundle
 
 ```php
-<?php
 // app/AppKernel.php
 
 public function registerBundles()
@@ -41,6 +40,7 @@ public function registerBundles()
 
 ```php
 // src/Acme/HelloBundle/Controller/HelloController.php
+
 namespace Acme\HelloBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -50,8 +50,8 @@ use Symfony\Component\HttpFoundation\Response;
 class HelloController
 {
     /**
-     * @Route("/hello.{_format}", defaults={"_format"="xls"}, requirements={"_format"="xls|xlsx"})
-     * @Template()
+     * @Route("/hello.{_format}", defaults={"_format"="xls"}, requirements={"_format"="csv|xls|xlsx"})
+     * @Template("AcmeHelloBundle:Hello:index.xls.twig")
      */
     public function indexAction($name)
     {
@@ -62,7 +62,9 @@ class HelloController
 
 ### Step 2: Create your template
 
-```twig
+```lua
+{# src/Acme/HelloBundle/Resources/views/Hello/index.xls.twig #}
+
 {% xlsdocument %}
     {% xlssheet 'Worksheet' %}
         {% xlsrow %}
