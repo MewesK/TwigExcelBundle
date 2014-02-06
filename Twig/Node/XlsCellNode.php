@@ -30,7 +30,8 @@ class XlsCellNode extends Twig_Node
             ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
-            ->write('$phpExcel->tagCell($cellIndex, $cellValue, $cellProperties);'.PHP_EOL)
-            ->write('unset($cellIndex, $cellValue, $cellProperties);'.PHP_EOL);
+            ->write('$phpExcel->startCell($cellIndex, $cellValue, $cellProperties);'.PHP_EOL)
+            ->write('unset($cellIndex, $cellValue, $cellProperties);'.PHP_EOL)
+            ->write('$phpExcel->endCell();'.PHP_EOL);
     }
 }

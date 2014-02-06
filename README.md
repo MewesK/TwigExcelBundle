@@ -266,14 +266,14 @@ zoomScale | int
 {% endxlssheet %}
 ```
 
-### xlsheader (WIP)
+### xlsheader
 
     {% xlsheader [type:string] [properties:array] %}
         ...
     {% endxlsheader %}
 
  * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlscell' tags
- * May contain one or more 'xlsdrawing' tags
+ * May contain one or more 'xlsdrawing' tags (not supported in Excel5 files)
 
 #### Attributes
 
@@ -295,14 +295,14 @@ Name | Type | Description
 {% endxlsrow %}
 ```
 
-### xlsfooter (WIP)
+### xlsfooter
 
     {% xlsfooter [type:string] [properties:array] %}
         ...
     {% endxlsfooter %}
 
  * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlscell' tags
- * May contain one or more 'xlsdrawing' tags
+ * May contain one or more 'xlsdrawing' tags (not supported in Excel5 files)
 
 #### Attributes
 
@@ -444,6 +444,7 @@ Name | Type | Description
 coordinates | string | Cell coordinates like 'A1'
 description | string
 height | int
+location | string | Only used inside a header/footer. Possible values are defined in PHPExcel_Worksheet_HeaderFooter
 name | string
 offsetX | int
 offsetY | int

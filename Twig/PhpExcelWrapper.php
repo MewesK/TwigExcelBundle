@@ -17,6 +17,7 @@ class PhpExcelWrapper {
      * @var
      */
     protected $context;
+
     /**
      * @var \PHPExcel
      */
@@ -26,13 +27,22 @@ class PhpExcelWrapper {
      */
     public $sheetObject;
     /**
+     * @var \PHPExcel_Worksheet_HeaderFooter
+     */
+    protected $footerObject;
+    /**
+     * @var \PHPExcel_Worksheet_HeaderFooter
+     */
+    protected $headerObject;
+    /**
      * @var \PhpExcel_Cell
      */
     protected $cellObject;
     /**
-     * @var \PHPExcel_Worksheet_Drawing
+     * @var \PHPExcel_Worksheet_Drawing | \PHPExcel_Worksheet_HeaderFooterDrawing
      */
     protected $drawingObject;
+
     /**
      * @var int
      */
@@ -71,9 +81,7 @@ class PhpExcelWrapper {
     public function __construct($context) {
         $this->context = $context;
 
-        $this->documentObject = new \PHPExcel();
-        $this->documentObject->removeSheetByIndex(0);
-
+        $this->documentObject = null;
         $this->sheetObject = null;
         $this->cellObject = null;
         $this->drawingObject = null;
@@ -93,6 +101,10 @@ class PhpExcelWrapper {
         $this->initCellPropertyMappings();
         $this->initDrawingPropertyMappings();
     }
+
+    //
+    // Property mappings
+    //
 
     protected function initDocumentPropertyMappings() {
         $wrapper = $this; // PHP 5.3 fix
@@ -177,6 +189,14 @@ class PhpExcelWrapper {
         $this->sheetMappings['zoomScale'] = function($value) use ($wrapper) { $wrapper->sheetObject->getSheetView()->setZoomScale($value); };
     }
 
+    protected function initFooterPropertyMappings() {
+        // nothing
+    }
+
+    protected function initHeaderPropertyMappings() {
+        // nothing
+    }
+
     protected function initRowPropertyMappings() {
         // nothing
     }
@@ -205,14 +225,14 @@ class PhpExcelWrapper {
     protected function initDrawingPropertyMappings() {
         $wrapper = $this; // PHP 5.3 fix
 
-        $this->drawingMappings['coordinates'] = function($value) use ($wrapper) { $wrapper->drawingObject->getCoordinates($value); };
-        $this->drawingMappings['description'] = function($value) use ($wrapper) { $wrapper->drawingObject->getDescription($value); };
-        $this->drawingMappings['height'] = function($value) use ($wrapper) { $wrapper->drawingObject->getHeight($value); };
-        $this->drawingMappings['name'] = function($value) use ($wrapper) { $wrapper->drawingObject->getName($value); };
-        $this->drawingMappings['offsetX'] = function($value) use ($wrapper) { $wrapper->drawingObject->getOffsetX($value); };
-        $this->drawingMappings['offsetY'] = function($value) use ($wrapper) { $wrapper->drawingObject->getOffsetY($value); };
-        $this->drawingMappings['resizeProportional'] = function($value) use ($wrapper) { $wrapper->drawingObject->getResizeProportional($value); };
-        $this->drawingMappings['rotation'] = function($value) use ($wrapper) { $wrapper->drawingObject->getRotation($value); };
+        $this->drawingMappings['coordinates'] = function($value) use ($wrapper) { $wrapper->drawingObject->setCoordinates($value); };
+        $this->drawingMappings['description'] = function($value) use ($wrapper) { $wrapper->drawingObject->setDescription($value); };
+        $this->drawingMappings['height'] = function($value) use ($wrapper) { $wrapper->drawingObject->setHeight($value); };
+        $this->drawingMappings['name'] = function($value) use ($wrapper) { $wrapper->drawingObject->setName($value); };
+        $this->drawingMappings['offsetX'] = function($value) use ($wrapper) { $wrapper->drawingObject->setOffsetX($value); };
+        $this->drawingMappings['offsetY'] = function($value) use ($wrapper) { $wrapper->drawingObject->setOffsetY($value); };
+        $this->drawingMappings['resizeProportional'] = function($value) use ($wrapper) { $wrapper->drawingObject->setResizeProportional($value); };
+        $this->drawingMappings['rotation'] = function($value) use ($wrapper) { $wrapper->drawingObject->setRotation($value); };
         $this->drawingMappings['shadow']['alignment'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setAlignment($value); };
         $this->drawingMappings['shadow']['alpha'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setAlpha($value); };
         $this->drawingMappings['shadow']['blurRadius'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setBlurRadius($value); };
@@ -220,206 +240,23 @@ class PhpExcelWrapper {
         $this->drawingMappings['shadow']['direction'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setDirection($value); };
         $this->drawingMappings['shadow']['distance'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setDistance($value); };
         $this->drawingMappings['shadow']['visible'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setVisible($value); };
-        $this->drawingMappings['width'] = function($value) use ($wrapper) { $wrapper->drawingObject->getWidth($value); };
+        $this->drawingMappings['width'] = function($value) use ($wrapper) { $wrapper->drawingObject->setWidth($value); };
     }
 
-    public function setProperties(array $properties, array $mappings) {
-        foreach ($properties as $key => $value) {
-            if (array_key_exists($key, $mappings)) {
-                if (is_array($value)) {
-                    if ($mappings['__multi']) {
-                        foreach ($value as $_key => $_value) {
-                            $this->setPropertiesByKey($_key, $_value, $mappings[$key]);
-                        }
-                    } else {
-                        $this->setProperties($value, $mappings[$key]);
-                    }
-                } else {
-                    $mappings[$key](trim($value));
-                }
-            }
-        }
-    }
+    //
+    // Tags
+    //
 
-    public function setPropertiesByKey($key, array $properties, array $mappings) {
-        foreach ($properties as $_key => $value) {
-            if (array_key_exists($_key, $mappings)) {
-                if (is_array($value)) {
-                    $this->setPropertiesByKey($key, $value, $mappings[$_key]);
-                } else {
-                    $mappings[$_key]($key, trim($value));
-                }
-            }
-        }
-    }
-
-    public function tagDocument(array $properties = null) {
-        $this->row = null;
-        $this->column = null;
-        $this->format = null;
-
-        $this->sheetObject = null;
-        $this->cellObject = null;
-        $this->drawingObject = null;
+    public function startDocument(array $properties = null) {
+        $this->documentObject = new \PHPExcel();
+        $this->documentObject->removeSheetByIndex(0);
 
         if ($properties != null) {
             $this->setProperties($properties, $this->documentMappings);
         }
     }
 
-    public function tagSheet($index, array $properties = null) {
-        if ($index == null || empty($index)) {
-            throw new \InvalidArgumentException();
-        }
-
-        if (!$this->documentObject->sheetNameExists($index)) {
-            $this->documentObject->createSheet()->setTitle($index);
-        }
-
-        $this->column = null;
-        $this->row = null;
-
-        $this->sheetObject = $this->documentObject->setActiveSheetIndexByName($index);
-        $this->cellObject = null;
-        
-        if ($properties != null) {
-            $this->setProperties($properties, $this->sheetMappings);
-        }
-    }
-
-    public function tagRow($index = null, array $properties = null) {
-        if ($this->sheetObject == null) {
-            throw new \LogicException();
-        }
-        if ($index !== null && !is_int($index)) {
-            throw new \InvalidArgumentException();
-        }
-
-        $this->column = null;
-        $this->row = $index == null ? $this->increaseRow() : $index;
-
-        $this->cellObject = null;
-
-        if ($properties != null) {
-            $this->setProperties($properties, $this->rowMappings);
-        }
-    }
-
-    public function tagCell($index = null, $value = null, array $properties = null) {
-        if ($this->sheetObject == null) {
-            throw new \LogicException();
-        }
-        if ($index !== null && !is_int($index)) {
-            throw new \InvalidArgumentException();
-        }
-
-        $this->column = $index == null ? $this->increaseColumn() : $index;
-
-        $this->cellObject = $this->sheetObject->getCellByColumnAndRow($this->column, $this->row);
-
-        if ($value !== null) {
-            $this->cellObject->setValue($value);
-        }
-        
-        if ($properties != null) {
-            $this->setProperties($properties, $this->cellMappings);
-        }
-    }
-
-    public function tagHeaderFooter($type = null, $value = null, array $properties = null) {
-        if ($this->sheetObject == null) {
-            throw new \LogicException();
-        }
-        $headerObject = $this->sheetObject->getHeaderFooter();
-
-        switch($type) {
-            case 'header':
-                $headerObject->setOddHeader($value);
-                $headerObject->setEvenHeader($value);
-                $headerObject->setFirstHeader($value);
-                break;
-            case 'footer':
-                $headerObject->setOddFooter($value);
-                $headerObject->setEvenFooter($value);
-                $headerObject->setFirstFooter($value);
-                break;
-            case 'oddHeader':
-                $headerObject->setDifferentOddEven(true);
-                $headerObject->setOddHeader($value);
-                break;
-            case 'oddFooter':
-                $headerObject->setDifferentOddEven(true);
-                $headerObject->setOddFooter($value);
-                break;
-            case 'evenHeader':
-                $headerObject->setDifferentOddEven(true);
-                $headerObject->setEvenHeader($value);
-                break;
-            case 'evenFooter':
-                $headerObject->setDifferentOddEven(true);
-                $headerObject->setEvenFooter($value);
-                break;
-            case 'firstHeader':
-                $headerObject->setDifferentFirst(true);
-                $headerObject->setFirstHeader($value);
-                break;
-            case 'firstFooter':
-                $headerObject->setDifferentFirst(true);
-                $headerObject->setFirstFooter($value);
-                break;
-            default:
-                throw new \InvalidArgumentException();
-        }
-
-        $this->sheetObject->setHeaderFooter($headerObject);
-
-    }
-    
-    public function tagDrawing($path, array $properties = null) {
-        try {
-            $pathInfo = pathinfo($path, PATHINFO_EXTENSION);
-            $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'xlsdrawing' . '_' . md5($path) .
-                (isset($pathInfo['extension']) && !empty($pathInfo['extension']) ? '.'.$pathInfo['extension'] : '');
-
-            // make local copy of the asset
-            if (!file_exists($tempPath)) {
-                $data = file_get_contents($path);
-                if ($data === false) {
-                    throw new \InvalidArgumentException($path . ' does not exist.');
-                }
-                $temp = fopen($tempPath, 'w+');
-                if ($temp === false) {
-                    throw new \RuntimeException('Cannot open ' . $tempPath);
-                }
-                fwrite($temp, $data);
-                if (fclose($temp) === false) {
-                    throw new \RuntimeException('Cannot close ' . $tempPath);
-                }
-                unset($data, $temp);
-            }
-
-            if ($this->sheetObject == null) {
-                throw new \LogicException();
-            }
-
-            $this->drawingObject = new \PHPExcel_Worksheet_Drawing();
-            $this->drawingObject->setWorksheet($this->sheetObject);
-            $this->drawingObject->setPath($tempPath);
-
-            if ($properties != null) {
-                $this->setProperties($properties, $this->drawingMappings);
-            }
-
-            $this->drawingObject = null;
-        } catch(\Exception $e) {
-            $this->drawingObject = null;
-
-            // re-throw
-            throw $e;
-        }
-    }
-
-    public function save() {
+    public function endDocument() {
         $format = null;
         if ($this->format != null) {
             $format = $this->format;
@@ -451,7 +288,198 @@ class PhpExcelWrapper {
         }
 
         \PHPExcel_IOFactory::createWriter($this->documentObject, $writerType)->save('php://output');
+
+        $this->documentObject = null;
     }
+
+    public function startSheet($index, array $properties = null) {
+        if ($index == null || empty($index)) {
+            throw new \InvalidArgumentException();
+        }
+        if (!$this->documentObject->sheetNameExists($index)) {
+            $this->documentObject->createSheet()->setTitle($index);
+        }
+
+        $this->sheetObject = $this->documentObject->setActiveSheetIndexByName($index);
+        
+        if ($properties != null) {
+            $this->setProperties($properties, $this->sheetMappings);
+        }
+    }
+
+    public function endSheet() {
+        $this->sheetObject = null;
+        $this->row = null;
+    }
+
+    public function startRow($index = null, array $properties = null) {
+        if ($this->sheetObject == null) {
+            throw new \LogicException();
+        }
+        if ($index !== null && !is_int($index)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $this->row = $index == null ? $this->increaseRow() : $index;
+
+        if ($properties != null) {
+            $this->setProperties($properties, $this->rowMappings);
+        }
+    }
+
+    public function endRow() {
+        $this->column = null;
+    }
+
+    public function startCell($index = null, $value = null, array $properties = null) {
+        if ($this->sheetObject == null) {
+            throw new \LogicException();
+        }
+        if ($index !== null && !is_int($index)) {
+            throw new \InvalidArgumentException();
+        }
+
+        $this->column = $index == null ? $this->increaseColumn() : $index;
+        $this->cellObject = $this->sheetObject->getCellByColumnAndRow($this->column, $this->row);
+
+        if ($value !== null) {
+            $this->cellObject->setValue($value);
+        }
+        
+        if ($properties != null) {
+            $this->setProperties($properties, $this->cellMappings);
+        }
+    }
+
+    public function endCell() {
+        $this->cellObject = null;
+    }
+
+    public function startHeaderFooter($type = null, $value = null, array $properties = null) {
+        if ($this->sheetObject == null) {
+            throw new \LogicException();
+        }
+
+        $headerObject = $this->sheetObject->getHeaderFooter();
+
+        switch($type) {
+            case 'header':
+            case 'oddHeader':
+            case 'evenHeader':
+            case 'firstHeader':
+                $this->headerObject = $headerObject;
+                break;
+            case 'footer':
+            case 'oddFooter':
+            case 'evenFooter':
+            case 'firstFooter':
+                $this->footerObject = $headerObject;
+                break;
+            default:
+                throw new \InvalidArgumentException();
+        }
+
+        $this->sheetObject->setHeaderFooter($headerObject);
+
+    }
+
+    public function endHeaderFooter($type = null, $value = null) {
+        switch($type) {
+            case 'header':
+                $this->headerObject->setOddHeader($value);
+                $this->headerObject->setEvenHeader($value);
+                $this->headerObject->setFirstHeader($value);
+                break;
+            case 'footer':
+                $this->footerObject->setOddFooter($value);
+                $this->footerObject->setEvenFooter($value);
+                $this->footerObject->setFirstFooter($value);
+                break;
+            case 'oddHeader':
+                $this->headerObject->setDifferentOddEven(true);
+                $this->headerObject->setOddHeader($value);
+                break;
+            case 'oddFooter':
+                $this->footerObject->setDifferentOddEven(true);
+                $this->footerObject->setOddFooter($value);
+                break;
+            case 'evenHeader':
+                $this->headerObject->setDifferentOddEven(true);
+                $this->headerObject->setEvenHeader($value);
+                break;
+            case 'evenFooter':
+                $this->footerObject->setDifferentOddEven(true);
+                $this->footerObject->setEvenFooter($value);
+                break;
+            case 'firstHeader':
+                $this->headerObject->setDifferentFirst(true);
+                $this->headerObject->setFirstHeader($value);
+                break;
+            case 'firstFooter':
+                $this->footerObject->setDifferentFirst(true);
+                $this->footerObject->setFirstFooter($value);
+                break;
+            default:
+                throw new \InvalidArgumentException();
+        }
+
+        $this->footerObject = null;
+        $this->headerObject = null;
+    }
+    
+    public function startDrawing($path, array $properties = null) {
+        $pathInfo = pathinfo($path, PATHINFO_EXTENSION);
+        $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'xlsdrawing' . '_' . md5($path) .
+            (isset($pathInfo['extension']) && !empty($pathInfo['extension']) ? '.'.$pathInfo['extension'] : '');
+
+        // make local copy of the asset
+        if (!file_exists($tempPath)) {
+            $data = file_get_contents($path);
+            if ($data === false) {
+                throw new \InvalidArgumentException($path . ' does not exist.');
+            }
+            $temp = fopen($tempPath, 'w+');
+            if ($temp === false) {
+                throw new \RuntimeException('Cannot open ' . $tempPath);
+            }
+            fwrite($temp, $data);
+            if (fclose($temp) === false) {
+                throw new \RuntimeException('Cannot close ' . $tempPath);
+            }
+            unset($data, $temp);
+        }
+
+        if ($this->sheetObject == null) {
+            throw new \LogicException();
+        }
+
+        if ($this->headerObject) {
+            $this->drawingObject = new \PHPExcel_Worksheet_HeaderFooterDrawing();
+            $this->drawingObject->setPath($tempPath);
+            $this->drawingObject->setHeight(40);
+            $this->headerObject->addImage($this->drawingObject, isset($properties['location']) ? $properties['location'] : 'LH');
+        } elseif ($this->footerObject) {
+            $this->drawingObject = new \PHPExcel_Worksheet_HeaderFooterDrawing();
+            $this->drawingObject->setPath($tempPath);
+            $this->footerObject->addImage($this->drawingObject, isset($properties['location']) ? $properties['location'] : 'LF');
+        } else {
+            $this->drawingObject = new \PHPExcel_Worksheet_Drawing();
+            $this->drawingObject->setWorksheet($this->sheetObject);
+            $this->drawingObject->setPath($tempPath);
+        }
+
+        if ($properties != null) {
+            $this->setProperties($properties, $this->drawingMappings);
+        }
+    }
+
+    public function endDrawing() {
+        $this->drawingObject = null;
+    }
+
+    //
+    // Helper
+    //
 
     private function increaseRow() {
         return $this->row === null ? self::$ROW_DEFAULT : $this->row + 1;
@@ -459,5 +487,35 @@ class PhpExcelWrapper {
 
     private function increaseColumn() {
         return $this->column === null ? self::$COLUMN_DEFAULT : $this->column + 1;
+    }
+
+    private function setProperties(array $properties, array $mappings) {
+        foreach ($properties as $key => $value) {
+            if (array_key_exists($key, $mappings)) {
+                if (is_array($value)) {
+                    if ($mappings['__multi']) {
+                        foreach ($value as $_key => $_value) {
+                            $this->setPropertiesByKey($_key, $_value, $mappings[$key]);
+                        }
+                    } else {
+                        $this->setProperties($value, $mappings[$key]);
+                    }
+                } else {
+                    $mappings[$key](trim($value));
+                }
+            }
+        }
+    }
+
+    private function setPropertiesByKey($key, array $properties, array $mappings) {
+        foreach ($properties as $_key => $value) {
+            if (array_key_exists($_key, $mappings)) {
+                if (is_array($value)) {
+                    $this->setPropertiesByKey($key, $value, $mappings[$_key]);
+                } else {
+                    $mappings[$_key]($key, trim($value));
+                }
+            }
+        }
     }
 }

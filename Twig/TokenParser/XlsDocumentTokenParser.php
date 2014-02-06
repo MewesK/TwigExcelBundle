@@ -4,6 +4,8 @@ namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser;
 
 use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsCellNode;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsDocumentNode;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsFooterNode;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsHeaderNode;
 use Twig_Node;
 use Twig_Node_Expression_Array;
 use Twig_Node_Text;
@@ -39,7 +41,7 @@ class XlsDocumentTokenParser extends Twig_TokenParser
             if ($subNode instanceof Twig_Node_Text) {
                 $node->removeNode($key);
             }
-            else if ($subNode instanceof Twig_Node && !($subNode instanceof XlsCellNode) && $subNode->count() > 0) {
+            else if ($subNode instanceof Twig_Node && !($subNode instanceof XlsCellNode || $subNode instanceof XlsFooterNode || $subNode instanceof XlsHeaderNode) && $subNode->count() > 0) {
                 $this->removeTextNodesRecursively($subNode);
             }
         }

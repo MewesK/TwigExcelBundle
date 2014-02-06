@@ -26,9 +26,13 @@ class XlsRowNode extends Twig_Node
             ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
-            ->write('$phpExcel->tagRow($rowIndex, $rowProperties);'.PHP_EOL)
+            ->write('$phpExcel->startRow($rowIndex, $rowProperties);'.PHP_EOL)
             ->write('unset($rowIndex, $rowProperties);'.PHP_EOL)
 
-            ->subcompile($this->getNode('body'));
+            ->subcompile($this->getNode('body'))
+
+            ->addDebugInfo($this)
+
+            ->write('$phpExcel->endRow();'.PHP_EOL);
     }
 }
