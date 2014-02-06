@@ -8,7 +8,7 @@ use Twig_NodeInterface;
 
 class XlsHeaderNode extends Twig_Node
 {
-    public function __construct(Twig_Node_Expression $type, Twig_Node_Expression $properties, Twig_NodeInterface $body, $line, $tag = 'xlscell')
+    public function __construct(Twig_Node_Expression $type, Twig_Node_Expression $properties, Twig_NodeInterface $body, $line, $tag = 'xlsheader')
     {
         parent::__construct(array('type' => $type, 'properties' => $properties, 'body' => $body), array(), $line, $tag);
     }
