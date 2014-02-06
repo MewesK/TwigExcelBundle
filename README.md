@@ -280,12 +280,14 @@ zoomScale | int
 Name | Type | Optional | Description
 ---- | ---- | -------- | -----------
 type | string | X | Possible types are 'header' (default), 'oddHeader', 'evenHeader', 'firstHeader'
-properties | array
+properties | array | X
 
 #### Properties
 
 Name | Type | Description
 ---- | ---- | -----------
+scaleWithDocument | boolean
+alignWithMargins | boolean
 
 #### Example
 
@@ -309,12 +311,14 @@ Name | Type | Description
 Name | Type | Optional | Description
 ---- | ---- | -------- | -----------
 type | string | X | Possible types are 'footer' (default), 'oddFooter', 'evenFooter', 'firstFooter'
-properties | array
+properties | array | X
 
 #### Properties
 
 Name | Type | Description
 ---- | ---- | -----------
+scaleWithDocument | boolean
+alignWithMargins | boolean
 
 #### Example
 
