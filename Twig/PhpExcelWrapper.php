@@ -67,7 +67,7 @@ class PhpExcelWrapper {
     /**
      * @var array
      */
-    protected $rowMappings;
+    protected $footerHeaderMappings;
     /**
      * @var array
      */
@@ -91,13 +91,13 @@ class PhpExcelWrapper {
 
         $this->documentMappings = array();
         $this->sheetMappings = array();
-        $this->rowMappings = array();
+        $this->footerHeaderMappings = array();
         $this->cellMappings = array();
         $this->drawingMappings = array();
 
         $this->initDocumentPropertyMappings();
         $this->initSheetPropertyMappings();
-        $this->initRowPropertyMappings();
+        $this->initFooterHeaderPropertyMappings();
         $this->initCellPropertyMappings();
         $this->initDrawingPropertyMappings();
     }
@@ -189,16 +189,12 @@ class PhpExcelWrapper {
         $this->sheetMappings['zoomScale'] = function($value) use ($wrapper) { $wrapper->sheetObject->getSheetView()->setZoomScale($value); };
     }
 
-    protected function initFooterPropertyMappings() {
-        // nothing
-    }
+    protected function initFooterHeaderPropertyMappings() {
+        $wrapper = $this; // PHP 5.3 fix
 
-    protected function initHeaderPropertyMappings() {
-        // nothing
-    }
-
-    protected function initRowPropertyMappings() {
-        // nothing
+        $this->footerHeaderMappings['__object'] = function($value) use ($wrapper) { return $wrapper->footerObject ? $wrapper->footerObject : $wrapper->headerObject; };
+        $this->footerHeaderMappings['scaleWithDocument'] = function($value) use ($wrapper) { $wrapper->footerHeaderMappings['__object']->setScaleWithDocument($value); };
+        $this->footerHeaderMappings['alignWithMargins'] = function($value) use ($wrapper) { $wrapper->footerHeaderMappings['__object']->setAlignWithMargins($value); };
     }
 
     protected function initCellPropertyMappings() {
@@ -312,7 +308,7 @@ class PhpExcelWrapper {
         $this->row = null;
     }
 
-    public function startRow($index = null, array $properties = null) {
+    public function startRow($index = null) {
         if ($this->sheetObject == null) {
             throw new \LogicException();
         }
@@ -321,10 +317,6 @@ class PhpExcelWrapper {
         }
 
         $this->row = $index == null ? $this->increaseRow() : $index;
-
-        if ($properties != null) {
-            $this->setProperties($properties, $this->rowMappings);
-        }
     }
 
     public function endRow() {
@@ -381,6 +373,9 @@ class PhpExcelWrapper {
 
         $this->sheetObject->setHeaderFooter($headerObject);
 
+        if ($properties != null) {
+            $this->setProperties($properties, $this->footerHeaderMappings);
+        }
     }
 
     public function endHeaderFooter($type = null, $value = null) {

@@ -8,9 +8,9 @@ use Twig_NodeInterface;
 
 class XlsRowNode extends Twig_Node
 {
-    public function __construct(Twig_Node_Expression $index, Twig_Node_Expression $properties, Twig_NodeInterface $body, $line, $tag = 'xlsrow')
+    public function __construct(Twig_Node_Expression $index, Twig_NodeInterface $body, $line, $tag = 'xlsrow')
     {
-        parent::__construct(array('index' => $index, 'properties' => $properties, 'body' => $body), array(), $line, $tag);
+        parent::__construct(array('index' => $index, 'body' => $body), array(), $line, $tag);
     }
 
     public function compile(Twig_Compiler $compiler)
@@ -22,12 +22,8 @@ class XlsRowNode extends Twig_Node
             ->subcompile($this->getNode('index'))
             ->raw(';'.PHP_EOL)
 
-            ->write('$rowProperties = ')
-            ->subcompile($this->getNode('properties'))
-            ->raw(';'.PHP_EOL)
-
-            ->write('$phpExcel->startRow($rowIndex, $rowProperties);'.PHP_EOL)
-            ->write('unset($rowIndex, $rowProperties);'.PHP_EOL)
+            ->write('$phpExcel->startRow($rowIndex);'.PHP_EOL)
+            ->write('unset($rowIndex);'.PHP_EOL)
 
             ->subcompile($this->getNode('body'))
 
