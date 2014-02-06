@@ -96,10 +96,10 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $phpExcel = $this->getPhpExcelObject('drawingSimple');
 
             // tests
-            /*$sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $phpExcel->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
 
-            $drawings = $sheet->getDrawingCollection();
+            /*$drawings = $sheet->getDrawingCollection();
             $this->assertCount(1, $drawings, 'Sheet has not exactly one drawing');
 
             $drawing = $drawings[0];
