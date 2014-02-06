@@ -6,6 +6,7 @@ use MewesK\PhpExcelTwigExtensionBundle\Twig\NodeVisitor\SyntaxCheckNodeVisitor;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsCellTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsDocumentTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsDrawingTokenParser;
+use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsFooterTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsHeaderTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsRowTokenParser;
 use MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser\XlsSheetTokenParser;
@@ -34,6 +35,7 @@ class PhpExcelExtension extends Twig_Extension
             new XlsCellTokenParser(),
             new XlsDocumentTokenParser(),
             new XlsDrawingTokenParser(),
+            new XlsFooterTokenParser(),
             new XlsHeaderTokenParser(),
             new XlsRowTokenParser(),
             new XlsSheetTokenParser()
