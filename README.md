@@ -514,12 +514,12 @@ Name | Type | Description | XLS
 ---- | ---- | ----------- | ---
 coordinates | string | Cell coordinates like 'A1' | X
 description | string
-height | int | X
+height | int | | X
 location | string | Only used inside a header/footer. Possible values are defined in PHPExcel_Worksheet_HeaderFooter
 name | string
 offsetX | int
 offsetY | int
-resizeProportional | boolean | X
+resizeProportional | boolean | | X
 rotation | int
 shadow | array
  + alignment: | string | Possible values are defined in PHPExcel_Worksheet_Drawing_Shadow
@@ -529,7 +529,7 @@ shadow | array
  + direction | int
  + distance | int
  + visible | boolean
-width | int | X
+width | int | | X
 
 #### Example
 
