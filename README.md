@@ -120,8 +120,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 category | string
 company | string
 created | datetime
@@ -194,8 +194,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 columnDimension | array | Contains one or more arrays. Possible keys are 'default' or a valid column name like 'A'
  + autoSize | boolean
  + collapsed | boolean
@@ -351,8 +351,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 scaleWithDocument | boolean
 alignWithMargins | boolean
 
@@ -382,8 +382,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 scaleWithDocument | boolean
 alignWithMargins | boolean
 
@@ -439,8 +439,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 break | int | Possible values are defined in PHPExcel_Worksheet
 dataValidation | array
  + allowBlank | boolean
@@ -510,16 +510,16 @@ properties | array | X
 
 #### Properties (WIP)
 
-Name | Type | Description
----- | ---- | -----------
-coordinates | string | Cell coordinates like 'A1'
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
+coordinates | string | Cell coordinates like 'A1' | X
 description | string
-height | int
+height | int | X
 location | string | Only used inside a header/footer. Possible values are defined in PHPExcel_Worksheet_HeaderFooter
 name | string
 offsetX | int
 offsetY | int
-resizeProportional | boolean
+resizeProportional | boolean | X
 rotation | int
 shadow | array
  + alignment: | string | Possible values are defined in PHPExcel_Worksheet_Drawing_Shadow
@@ -529,7 +529,7 @@ shadow | array
  + direction | int
  + distance | int
  + visible | boolean
-width | int
+width | int | X
 
 #### Example
 
