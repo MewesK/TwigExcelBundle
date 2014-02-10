@@ -21,7 +21,7 @@ class PhpExcelWrapper {
     /**
      * @var \PHPExcel
      */
-    protected $documentObject;
+    public $documentObject;
     /**
      * @var \PHPExcel_Worksheet
      */
@@ -29,19 +29,19 @@ class PhpExcelWrapper {
     /**
      * @var \PHPExcel_Worksheet_HeaderFooter
      */
-    protected $footerObject;
+    public $footerObject;
     /**
      * @var \PHPExcel_Worksheet_HeaderFooter
      */
-    protected $headerObject;
+    public $headerObject;
     /**
      * @var \PhpExcel_Cell
      */
-    protected $cellObject;
+    public $cellObject;
     /**
      * @var \PHPExcel_Worksheet_Drawing | \PHPExcel_Worksheet_HeaderFooterDrawing
      */
-    protected $drawingObject;
+    public $drawingObject;
 
     /**
      * @var int
@@ -54,7 +54,7 @@ class PhpExcelWrapper {
     /**
      * @var string
      */
-    protected $format;
+    public $format;
 
     /**
      * @var array
