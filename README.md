@@ -1,4 +1,4 @@
-# PhpExcel Twig Extension Bundle (alpha)
+# TwigExcelBundle (alpha)
 
 [![Build Status](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle.png?branch=master)](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle)
 
@@ -11,13 +11,13 @@ This Symfony2 bundle provides a PhpExcel integration for Twig.
 ```js
 {
     "require": {
-        "mewesk/phpexcel-twig-extension-bundle": "1.0.*@dev"
+        "mewesk/twig-excel-bundle": "1.0.*@dev"
     }
 }
 ```
 
 ```bash
-$ php composer.phar update mewesk/phpexcel-twig-extension-bundle
+$ php composer.phar update mewesk/twig-excel-bundle
 ```
 
 ### Step 2: Enable the bundle
@@ -29,7 +29,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new MewesK\PhpExcelTwigExtension\PhpExcelTwigExtensionBundle(),
+        new MewesK\TwigExcelBundle\TwigExcelBundle(),
     );
 }
 ```
@@ -109,7 +109,7 @@ style2 | array | | Standard PhpExcel style array
         ...
     {% endxlsdocument %}
 
- * Cannot contain 'xlsdocument', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * Cannot contain 'xlsdocument', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell', 'xlsleft', 'xlscenter', 'xlsright' or 'xlsdrawing' tags
  * May contain one or more 'xlssheet' tags
 
 #### Attributes
@@ -120,8 +120,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 category | string
 company | string
 created | datetime
@@ -182,7 +182,7 @@ title | string
         ...
         {% endxlssheet %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlscell' or 'xlsdrawing' tags
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlscell', 'xlsleft', 'xlscenter' or 'xlsright' tags
  * May contain one or more 'xlsheader', 'xlsfooter', 'xlsrow' and 'xlsdrawing' tags
 
 #### Attributes
@@ -194,8 +194,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 columnDimension | array | Contains one or more arrays. Possible keys are 'default' or a valid column name like 'A'
  + autoSize | boolean
  + collapsed | boolean
@@ -339,8 +339,8 @@ zoomScale | int
         ...
     {% endxlsheader %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlscell' tags
- * May contain one or more 'xlsdrawing' tags (not supported in Excel5 files)
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * May contain one 'xlsleft', 'xlscenter' and 'xlsright'
 
 #### Attributes
 
@@ -351,8 +351,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 scaleWithDocument | boolean
 alignWithMargins | boolean
 
@@ -370,8 +370,8 @@ alignWithMargins | boolean
         ...
     {% endxlsfooter %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlscell' tags
- * May contain one or more 'xlsdrawing' tags (not supported in Excel5 files)
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * May contain one 'xlsleft', 'xlscenter' and 'xlsright'
 
 #### Attributes
 
@@ -382,8 +382,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 scaleWithDocument | boolean
 alignWithMargins | boolean
 
@@ -394,6 +394,8 @@ alignWithMargins | boolean
     {# ... #}
 {% xlsfooter %}
 ```
+
+### TODO xlsleft, xlscenter, xlsright
 
 ### xlsrow
 
@@ -439,8 +441,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description
----- | ---- | -----------
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
 break | int | Possible values are defined in PHPExcel_Worksheet
 dataValidation | array
  + allowBlank | boolean
@@ -508,18 +510,17 @@ Name | Type | Optional | Description
 path | string
 properties | array | X
 
-#### Properties (WIP)
+#### Properties
 
-Name | Type | Description
----- | ---- | -----------
-coordinates | string | Cell coordinates like 'A1'
+Name | Type | Description | XLS
+---- | ---- | ----------- | ---
+coordinates | string | Cell coordinates like 'A1' | X
 description | string
-height | int
-location | string | Only used inside a header/footer. Possible values are defined in PHPExcel_Worksheet_HeaderFooter
+height | int | | X
 name | string
 offsetX | int
 offsetY | int
-resizeProportional | boolean
+resizeProportional | boolean | | X
 rotation | int
 shadow | array
  + alignment: | string | Possible values are defined in PHPExcel_Worksheet_Drawing_Shadow
@@ -529,7 +530,7 @@ shadow | array
  + direction | int
  + distance | int
  + visible | boolean
-width | int
+width | int | | X
 
 #### Example
 

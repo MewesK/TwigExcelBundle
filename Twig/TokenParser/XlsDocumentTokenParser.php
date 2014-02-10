@@ -1,11 +1,12 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser;
+namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
-use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsCellNode;
-use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsDocumentNode;
-use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsFooterNode;
-use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsHeaderNode;
+use MewesK\TwigExcelBundle\Twig\Node\XlsCellNode;
+use MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode;
+use MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode;
+use MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode;
+use MewesK\TwigExcelBundle\Twig\Node\XlsRightNode;
 use Twig_Node;
 use Twig_Node_Expression_Array;
 use Twig_Node_Text;
@@ -41,7 +42,11 @@ class XlsDocumentTokenParser extends Twig_TokenParser
             if ($subNode instanceof Twig_Node_Text) {
                 $node->removeNode($key);
             }
-            else if ($subNode instanceof Twig_Node && !($subNode instanceof XlsCellNode || $subNode instanceof XlsFooterNode || $subNode instanceof XlsHeaderNode) && $subNode->count() > 0) {
+            else if ($subNode instanceof Twig_Node && !(
+                    $subNode instanceof XlsCellNode ||
+                    $subNode instanceof XlsLeftNode ||
+                    $subNode instanceof XlsCenterNode ||
+                    $subNode instanceof XlsRightNode) && $subNode->count() > 0) {
                 $this->removeTextNodesRecursively($subNode);
             }
         }

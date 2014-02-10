@@ -1,0 +1,16 @@
+{% xlsdocument %}
+    {% xlssheet 'Test' %}
+        {% xlsheader %}
+            {% xlsleft %}
+                {% xlsdrawing 'http://www.gravatar.com/avatar/0d9079a1311d9f89b0b28b13cea56a70?s=40' %}
+            {% endxlsleft %}
+            {% xlscenter %}Header{% endxlscenter %}
+        {% endxlsheader %}
+        {% xlsfooter %}
+            {% xlsleft %}Footer{% endxlsleft %}
+            {% xlsright %}
+                {% xlsdrawing 'http://www.gravatar.com/avatar/0d9079a1311d9f89b0b28b13cea56a70?s=20' %}
+            {% endxlsright %}
+        {% endxlsfooter %}
+    {% endxlssheet %}
+{% endxlsdocument %}

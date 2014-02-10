@@ -1,8 +1,8 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Tests;
+namespace MewesK\TwigExcelBundle\Tests;
 
-use MewesK\PhpExcelTwigExtensionBundle\Twig\PhpExcelExtension;
+use MewesK\TwigExcelBundle\Twig\TwigExcelExtension;
 use Twig_Environment;
 
 class TwigTest extends \PHPUnit_Framework_TestCase
@@ -56,10 +56,11 @@ class TwigTest extends \PHPUnit_Framework_TestCase
                 'documentSimple',
                 'documentIndices',
                 'drawingSimple',
-                'drawingHeaderFooter',
-                'documentMultiSheet'
+                'headerFooterDrawing',
+                'documentMultiSheet',
+                'drawingProperties'
             ))), array('strict_variables' => true));
-        $this->environment->addExtension(new PhpExcelExtension());
+        $this->environment->addExtension(new TwigExcelExtension());
         $this->environment->setCache(__DIR__.'/Temporary/');
     }
 
@@ -161,8 +162,8 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
             $drawing = $drawings[0];
             $this->assertNotNull($drawing, 'Drawing is null');
-            $this->assertEquals(100, $drawing->getWidth(), 'Drawing width does not equal 100px');
-            $this->assertEquals(100, $drawing->getHeight(), 'Drawing height does not equal 100px');
+            $this->assertEquals(100, $drawing->getWidth(), 'Drawing width does not equal 100');
+            $this->assertEquals(100, $drawing->getHeight(), 'Drawing height does not equal 100');
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
@@ -172,7 +173,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      * @depends testDrawingSimple
      * @dataProvider formatProvider
      */
-    public function testDrawingHeaderFooter($format)
+    public function testHeaderFooterDrawing($format)
     {
         // header drawings are not supported by the Excel5 writer
         if ($format == 'xls') {
@@ -180,26 +181,83 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         }
 
         try {
-            $phpExcel = $this->getPhpExcelObject('drawingHeaderFooter', $format);
+            $phpExcel = $this->getPhpExcelObject('headerFooterDrawing', $format);
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
 
-            $drawings = $sheet->getHeaderFooter()->getImages();
+            $headerFooter = $sheet->getHeaderFooter();
+            $this->assertNotNull($headerFooter, 'HeaderFooter does not exist');
+            $this->assertContains('&L&G', $headerFooter->getOddHeader(), 'Header does not contain "&L&G"');
+            $this->assertContains('&CHeader', $headerFooter->getOddHeader(), 'Header does not contain "&CHeader"');
+            $this->assertContains('&LFooter', $headerFooter->getOddFooter(), 'Footer does not contain "&LFooter"');
+            $this->assertContains('&R&G', $headerFooter->getOddFooter(), 'Footer does not contain "&R&G"');
+
+            $drawings = $headerFooter->getImages();
             $this->assertCount(2, $drawings, 'Sheet has not exactly 2 drawings');
             $this->assertArrayHasKey('LH', $drawings, 'Header drawing does not exist');
             $this->assertArrayHasKey('RF', $drawings, 'Footer drawing does not exist');
 
             $drawing = $drawings['LH'];
             $this->assertNotNull($drawing, 'Header drawing is null');
-            $this->assertEquals(40, $drawing->getWidth(), 'Width does not equal 40px');
-            $this->assertEquals(40, $drawing->getHeight(), 'Height does not equal 40px');
+            $this->assertEquals(40, $drawing->getWidth(), 'Width does not equal 40');
+            $this->assertEquals(40, $drawing->getHeight(), 'Height does not equal 40');
 
             $drawing = $drawings['RF'];
             $this->assertNotNull($drawing, 'Footer drawing is null');
-            $this->assertEquals(20, $drawing->getWidth(), 'Footer drawing width does not equal 20px');
-            $this->assertEquals(20, $drawing->getHeight(), 'Footer drawing height does not equal 20px');
+            $this->assertEquals(20, $drawing->getWidth(), 'Footer drawing width does not equal 20');
+            $this->assertEquals(20, $drawing->getHeight(), 'Footer drawing height does not equal 20');
+        } catch (\Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @depends testDrawingSimple
+     * @dataProvider formatProvider
+     */
+    public function testDrawingProperties($format)
+    {
+        try {
+            $phpExcel = $this->getPhpExcelObject('drawingProperties', $format);
+
+            // tests
+            $sheet = $phpExcel->getSheetByName('Test');
+            $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
+
+            $drawings = $sheet->getDrawingCollection();
+            $this->assertCount(1, $drawings, 'Sheet has not exactly one drawing');
+            $this->assertArrayHasKey(0, $drawings, 'Drawing does not exist');
+
+            $drawing = $drawings[0];
+            $this->assertNotNull($drawing, 'Drawing is null');
+
+            $this->assertEquals('B2', $drawing->getCoordinates(), 'Drawing coordinates does not equal "B2"');
+            $this->assertEquals(200, $drawing->getHeight(), 'Drawing height does not equal 200');
+            $this->assertEquals(false, $drawing->getResizeProportional(), 'Drawing resizeProportional does not equal false');
+            $this->assertEquals(300, $drawing->getWidth(), 'Drawing width does not equal 300');
+
+            if ($format != 'xls') {
+                $this->assertEquals('Test Description', $drawing->getDescription(), 'Drawing description does not equal "Test Description"');
+                $this->assertEquals('Test Name', $drawing->getName(), 'Drawing name does not equal "Test Name"');
+                $this->assertEquals(30, $drawing->getOffsetX(), 'Drawing offsetX does not equal 30');
+                $this->assertEquals(20, $drawing->getOffsetY(), 'Drawing offsetY does not equal 20');
+                $this->assertEquals(45, $drawing->getRotation(), 'Drawing rotation does not equal 45');
+            }
+
+            $shadow = $drawing->getShadow();
+            $this->assertNotNull($shadow, 'Shadow is null');
+
+            if ($format != 'xls') {
+                $this->assertEquals('ctr', $shadow->getAlignment(), 'Shadow alignment does not equal "ctr"');
+                $this->assertEquals(100, $shadow->getAlpha(), 'Shadow alpha does not equal 100');
+                $this->assertEquals(11, $shadow->getBlurRadius(), 'Shadow blurRadius does not equal 11');
+                $this->assertEquals('0000cc', $shadow->getColor()->getRGB(), 'Shadow color does not equal "0000cc"');
+                $this->assertEquals(30, $shadow->getDirection(), 'Shadow direction does not equal 30');
+                $this->assertEquals(4, $shadow->getDistance(), 'Shadow distance does not equal 4');
+                $this->assertEquals(true, $shadow->getVisible(), 'Shadow visible does not equal true');
+            }
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }

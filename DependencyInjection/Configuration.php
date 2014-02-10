@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\DependencyInjection;
+namespace MewesK\TwigExcelBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
 
-        //$rootNode = $treeBuilder->root('d4e_php_excel');
+        //$rootNode = $treeBuilder->root('excel_twig');
 
         return $treeBuilder;
     }
