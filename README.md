@@ -1,6 +1,6 @@
 # TwigExcelBundle (alpha)
 
-[![Build Status](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle.png?branch=master)](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle)
+[![Build Status](https://travis-ci.org/MewesK/TwigExcelBundle.png?branch=master)](https://travis-ci.org/MewesK/TwigExcelBundle)
 
 This Symfony2 bundle provides a PhpExcel integration for Twig.
 
