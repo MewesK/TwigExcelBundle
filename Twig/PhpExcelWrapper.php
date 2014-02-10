@@ -16,7 +16,7 @@ class PhpExcelWrapper {
     /**
      * @var
      */
-    protected $context;
+    public $context;
 
     /**
      * @var \PHPExcel
@@ -46,11 +46,11 @@ class PhpExcelWrapper {
     /**
      * @var int
      */
-    protected $row;
+    public $row;
     /**
      * @var string
      */
-    protected $column;
+    public $column;
     /**
      * @var string
      */
@@ -59,23 +59,23 @@ class PhpExcelWrapper {
     /**
      * @var array
      */
-    protected $documentMappings;
+    public $documentMappings;
     /**
      * @var array
      */
-    protected $sheetMappings;
+    public $sheetMappings;
     /**
      * @var array
      */
-    protected $footerHeaderMappings;
+    public $footerHeaderMappings;
     /**
      * @var array
      */
-    protected $cellMappings;
+    public $cellMappings;
     /**
      * @var array
      */
-    protected $drawingMappings;
+    public $drawingMappings;
     
 
     public function __construct($context) {
