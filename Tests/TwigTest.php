@@ -1,8 +1,8 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Tests;
+namespace MewesK\TwigExcelBundle\Tests;
 
-use MewesK\PhpExcelTwigExtensionBundle\Twig\PhpExcelExtension;
+use MewesK\TwigExcelBundle\Twig\TwigExcelExtension;
 use Twig_Environment;
 
 class TwigTest extends \PHPUnit_Framework_TestCase
@@ -56,11 +56,11 @@ class TwigTest extends \PHPUnit_Framework_TestCase
                 'documentSimple',
                 'documentIndices',
                 'drawingSimple',
-                'drawingHeaderFooter',
+                'headerFooterDrawing',
                 'documentMultiSheet',
                 'drawingProperties'
             ))), array('strict_variables' => true));
-        $this->environment->addExtension(new PhpExcelExtension());
+        $this->environment->addExtension(new TwigExcelExtension());
         $this->environment->setCache(__DIR__.'/Temporary/');
     }
 
@@ -173,7 +173,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      * @depends testDrawingSimple
      * @dataProvider formatProvider
      */
-    public function testDrawingHeaderFooter($format)
+    public function testHeaderFooterDrawing($format)
     {
         // header drawings are not supported by the Excel5 writer
         if ($format == 'xls') {
@@ -181,13 +181,20 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         }
 
         try {
-            $phpExcel = $this->getPhpExcelObject('drawingHeaderFooter', $format);
+            $phpExcel = $this->getPhpExcelObject('headerFooterDrawing', $format);
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
 
-            $drawings = $sheet->getHeaderFooter()->getImages();
+            $headerFooter = $sheet->getHeaderFooter();
+            $this->assertNotNull($headerFooter, 'HeaderFooter does not exist');
+            $this->assertContains('&L&G', $headerFooter->getOddHeader(), 'Header does not contain "&L&G"');
+            $this->assertContains('&CHeader', $headerFooter->getOddHeader(), 'Header does not contain "&CHeader"');
+            $this->assertContains('&LFooter', $headerFooter->getOddFooter(), 'Footer does not contain "&LFooter"');
+            $this->assertContains('&R&G', $headerFooter->getOddFooter(), 'Footer does not contain "&R&G"');
+
+            $drawings = $headerFooter->getImages();
             $this->assertCount(2, $drawings, 'Sheet has not exactly 2 drawings');
             $this->assertArrayHasKey('LH', $drawings, 'Header drawing does not exist');
             $this->assertArrayHasKey('RF', $drawings, 'Footer drawing does not exist');

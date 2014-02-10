@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig;
+namespace MewesK\TwigExcelBundle\Twig;
 
 class PhpExcelWrapper {
 
@@ -23,25 +23,45 @@ class PhpExcelWrapper {
      */
     public $documentObject;
     /**
+     * @var array
+     */
+    public $documentAttributes;
+    /**
      * @var \PHPExcel_Worksheet
      */
     public $sheetObject;
     /**
-     * @var \PHPExcel_Worksheet_HeaderFooter
+     * @var array
      */
-    public $footerObject;
+    public $sheetAttributes;
     /**
      * @var \PHPExcel_Worksheet_HeaderFooter
      */
-    public $headerObject;
+    public $headerFooterObject;
+    /**
+     * @var array
+     */
+    public $headerFooterAttributes;
+    /**
+     * @var array
+     */
+    public $alignmentAttributes;
     /**
      * @var \PhpExcel_Cell
      */
     public $cellObject;
     /**
+     * @var array
+     */
+    public $cellAttributes;
+    /**
      * @var \PHPExcel_Worksheet_Drawing | \PHPExcel_Worksheet_HeaderFooterDrawing
      */
     public $drawingObject;
+    /**
+     * @var array
+     */
+    public $drawingAttributes;
 
     /**
      * @var int
@@ -51,10 +71,6 @@ class PhpExcelWrapper {
      * @var string
      */
     public $column;
-    /**
-     * @var string
-     */
-    public $format;
 
     /**
      * @var array
@@ -83,12 +99,20 @@ class PhpExcelWrapper {
 
         $this->documentObject = null;
         $this->sheetObject = null;
+        $this->headerFooterObject = null;
         $this->cellObject = null;
         $this->drawingObject = null;
+
+        $this->documentAttributes = array();
+        $this->sheetAttributes = array();
+        $this->headerFooterAttributes = array();
+        $this->alignmentAttributes = array();
+        $this->cellAttributes = array();
+        $this->drawingAttributes = array();
+        
         $this->row = null;
         $this->column = null;
-        $this->format = null;
-
+        
         $this->documentMappings = array();
         $this->sheetMappings = array();
         $this->footerHeaderMappings = array();
@@ -115,7 +139,7 @@ class PhpExcelWrapper {
         $this->documentMappings['creator'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setCreator($value); };
         $this->documentMappings['defaultStyle'] = function($value) use ($wrapper) { $wrapper->documentObject->getDefaultStyle()->applyFromArray($value); };
         $this->documentMappings['description'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setDescription($value); };
-        $this->documentMappings['format'] = function($value) use ($wrapper) { $wrapper->format = $value; };
+        $this->documentMappings['format'] = function($value) use ($wrapper) { $wrapper->documentAttributes['format'] = $value; };
         $this->documentMappings['keywords'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setKeywords($value); };
         $this->documentMappings['lastModifiedBy'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setLastModifiedBy($value); };
         $this->documentMappings['manager'] = function($value) use ($wrapper) { $wrapper->documentObject->getProperties()->setManager($value); };
@@ -192,9 +216,8 @@ class PhpExcelWrapper {
     protected function initFooterHeaderPropertyMappings() {
         $wrapper = $this; // PHP 5.3 fix
 
-        $this->footerHeaderMappings['__object'] = function($value) use ($wrapper) { return $wrapper->footerObject ? $wrapper->footerObject : $wrapper->headerObject; };
-        $this->footerHeaderMappings['scaleWithDocument'] = function($value) use ($wrapper) { $wrapper->footerHeaderMappings['__object']->setScaleWithDocument($value); };
-        $this->footerHeaderMappings['alignWithMargins'] = function($value) use ($wrapper) { $wrapper->footerHeaderMappings['__object']->setAlignWithMargins($value); };
+        $this->footerHeaderMappings['scaleWithDocument'] = function($value) use ($wrapper) { $wrapper->headerFooterObject->setScaleWithDocument($value); };
+        $this->footerHeaderMappings['alignWithMargins'] = function($value) use ($wrapper) { $wrapper->headerFooterObject->setAlignWithMargins($value); };
     }
 
     protected function initCellPropertyMappings() {
@@ -246,6 +269,7 @@ class PhpExcelWrapper {
     public function startDocument(array $properties = null) {
         $this->documentObject = new \PHPExcel();
         $this->documentObject->removeSheetByIndex(0);
+        $this->documentAttributes['properties'] = $properties ? $properties : array();
 
         if ($properties != null) {
             $this->setProperties($properties, $this->documentMappings);
@@ -254,15 +278,20 @@ class PhpExcelWrapper {
 
     public function endDocument() {
         $format = null;
-        if ($this->format != null) {
-            $format = $this->format;
-        } else {
+
+        // try document property
+        if (array_key_exists('format', $this->documentAttributes)) {
+            $format = $this->documentAttributes['format'];
+        }
+        // try symfony request
+        else {
             $app = $this->context && isset($this->context["app"]) ? $this->context["app"] : null;
             $request = $app && isset($app['request']) ? $app['request'] : null;
             $format = $request && isset($request['requestFormat']) ? $request['requestFormat'] : null;
         }
+        // set default
         if ($format == null || empty($format)) {
-            $format = 'xls';
+            $format = 'xlsx';
         }
 
         $writerType = null;
@@ -286,6 +315,7 @@ class PhpExcelWrapper {
         \PHPExcel_IOFactory::createWriter($this->documentObject, $writerType)->save('php://output');
 
         $this->documentObject = null;
+        $this->documentAttributes = array();
     }
 
     public function startSheet($index, array $properties = null) {
@@ -297,6 +327,8 @@ class PhpExcelWrapper {
         }
 
         $this->sheetObject = $this->documentObject->setActiveSheetIndexByName($index);
+        $this->sheetAttributes['index'] = $index;
+        $this->sheetAttributes['properties'] = $properties ? $properties : array();
         
         if ($properties != null) {
             $this->setProperties($properties, $this->sheetMappings);
@@ -305,6 +337,7 @@ class PhpExcelWrapper {
 
     public function endSheet() {
         $this->sheetObject = null;
+        $this->sheetAttributes = array();
         $this->row = null;
     }
 
@@ -341,85 +374,121 @@ class PhpExcelWrapper {
         if ($properties != null) {
             $this->setProperties($properties, $this->cellMappings);
         }
+
+        $this->cellAttributes['value'] = $value;
+        $this->cellAttributes['properties'] = $properties ? $properties : array();
     }
 
     public function endCell() {
         $this->cellObject = null;
+        $this->cellAttributes = array();
     }
 
-    public function startHeaderFooter($type = null, $value = null, array $properties = null) {
+    public function startHeaderFooter($type, array $properties = null) {
         if ($this->sheetObject == null) {
             throw new \LogicException();
         }
-
-        $headerObject = $this->sheetObject->getHeaderFooter();
-
-        switch($type) {
-            case 'header':
-            case 'oddHeader':
-            case 'evenHeader':
-            case 'firstHeader':
-                $this->headerObject = $headerObject;
-                break;
-            case 'footer':
-            case 'oddFooter':
-            case 'evenFooter':
-            case 'firstFooter':
-                $this->footerObject = $headerObject;
-                break;
-            default:
-                throw new \InvalidArgumentException();
+        if (array_search(strtolower($type), array('header', 'oddheader', 'evenheader', 'firstheader', 'footer', 'oddfooter', 'evenfooter', 'firstfooter')) === false) {
+            throw new \InvalidArgumentException();
         }
 
-        $this->sheetObject->setHeaderFooter($headerObject);
+        $this->headerFooterObject = $this->sheetObject->getHeaderFooter();
+        $this->headerFooterAttributes['value'] = array('left' => null, 'center' => null, 'right' => null); // will be generated by the alignment tags
+        $this->headerFooterAttributes['type'] = $type;
+        $this->headerFooterAttributes['properties'] = $properties ? $properties : array();
 
         if ($properties != null) {
             $this->setProperties($properties, $this->footerHeaderMappings);
         }
     }
 
-    public function endHeaderFooter($type = null, $value = null) {
-        switch($type) {
+    public function endHeaderFooter() {
+        $value = implode('', $this->headerFooterAttributes['value']);
+
+        switch(strtolower($this->headerFooterAttributes['type'])) {
             case 'header':
-                $this->headerObject->setOddHeader($value);
-                $this->headerObject->setEvenHeader($value);
-                $this->headerObject->setFirstHeader($value);
+                $this->headerFooterObject->setOddHeader($value);
+                $this->headerFooterObject->setEvenHeader($value);
+                $this->headerFooterObject->setFirstHeader($value);
                 break;
             case 'footer':
-                $this->footerObject->setOddFooter($value);
-                $this->footerObject->setEvenFooter($value);
-                $this->footerObject->setFirstFooter($value);
+                $this->headerFooterObject->setOddFooter($value);
+                $this->headerFooterObject->setEvenFooter($value);
+                $this->headerFooterObject->setFirstFooter($value);
                 break;
-            case 'oddHeader':
-                $this->headerObject->setDifferentOddEven(true);
-                $this->headerObject->setOddHeader($value);
+            case 'oddheader':
+                $this->headerFooterObject->setDifferentOddEven(true);
+                $this->headerFooterObject->setOddHeader($value);
                 break;
-            case 'oddFooter':
-                $this->footerObject->setDifferentOddEven(true);
-                $this->footerObject->setOddFooter($value);
+            case 'oddfooter':
+                $this->headerFooterObject->setDifferentOddEven(true);
+                $this->headerFooterObject->setOddFooter($value);
                 break;
-            case 'evenHeader':
-                $this->headerObject->setDifferentOddEven(true);
-                $this->headerObject->setEvenHeader($value);
+            case 'evenheader':
+                $this->headerFooterObject->setDifferentOddEven(true);
+                $this->headerFooterObject->setEvenHeader($value);
                 break;
-            case 'evenFooter':
-                $this->footerObject->setDifferentOddEven(true);
-                $this->footerObject->setEvenFooter($value);
+            case 'evenfooter':
+                $this->headerFooterObject->setDifferentOddEven(true);
+                $this->headerFooterObject->setEvenFooter($value);
                 break;
-            case 'firstHeader':
-                $this->headerObject->setDifferentFirst(true);
-                $this->headerObject->setFirstHeader($value);
+            case 'firstheader':
+                $this->headerFooterObject->setDifferentFirst(true);
+                $this->headerFooterObject->setFirstHeader($value);
                 break;
-            case 'firstFooter':
-                $this->footerObject->setDifferentFirst(true);
-                $this->footerObject->setFirstFooter($value);
+            case 'firstfooter':
+                $this->headerFooterObject->setDifferentFirst(true);
+                $this->headerFooterObject->setFirstFooter($value);
                 break;
             default:
                 throw new \InvalidArgumentException();
         }
 
-        $this->footerObject = null;
-        $this->headerObject = null;
+        $this->headerFooterObject = null;
+        $this->headerFooterAttributes = array();
+    }
+
+    public function startAlignment($type = null, array $properties = null) {
+        $this->alignmentAttributes['type'] = $type;
+        $this->alignmentAttributes['properties'] = $properties;
+
+        switch(strtolower($this->alignmentAttributes['type'])) {
+            case 'left':
+                $this->headerFooterAttributes['value']['left'] = '&L';
+                break;
+            case 'center':
+                $this->headerFooterAttributes['value']['center'] = '&C';
+                break;
+            case 'right':
+                $this->headerFooterAttributes['value']['right'] = '&R';
+                break;
+            default:
+                throw new \InvalidArgumentException();
+        }
+    }
+
+    public function endAlignment($value = null) {
+        switch(strtolower($this->alignmentAttributes['type'])) {
+            case 'left':
+                if (strpos($this->headerFooterAttributes['value']['left'], '&G') === false) {
+                    $this->headerFooterAttributes['value']['left'] .= $value;
+                }
+                break;
+            case 'center':
+                if (strpos($this->headerFooterAttributes['value']['center'], '&G') === false) {
+                    $this->headerFooterAttributes['value']['center'] .= $value;
+                }
+                break;
+            case 'right':
+                if (strpos($this->headerFooterAttributes['value']['right'], '&G') === false) {
+                    $this->headerFooterAttributes['value']['right'] .= $value;
+                }
+                break;
+            default:
+                throw new \InvalidArgumentException();
+        }
+
+        $this->alignmentAttributes = array();
     }
     
     public function startDrawing($path, array $properties = null) {
@@ -448,15 +517,44 @@ class PhpExcelWrapper {
             throw new \LogicException();
         }
 
-        if ($this->headerObject) {
+        if ($this->headerFooterObject) {
+            $location = '';
+            switch(strtolower($this->alignmentAttributes['type'])) {
+                case 'left':
+                    $location .= 'L';
+                    $this->headerFooterAttributes['value']['left'] .= '&G';
+                    break;
+                case 'center':
+                    $location .= 'C';
+                    $this->headerFooterAttributes['value']['center'] .= '&G';
+                    break;
+                case 'right':
+                    $location .= 'R';
+                    $this->headerFooterAttributes['value']['right'] .= '&G';
+                    break;
+                default:
+                    throw new \InvalidArgumentException();
+            }
+            switch(strtolower($this->headerFooterAttributes['type'])) {
+                case 'header':
+                case 'oddheader':
+                case 'evenheader':
+                case 'firstheader':
+                    $location .= 'H';
+                    break;
+                case 'footer':
+                case 'oddfooter':
+                case 'evenfooter':
+                case 'firstfooter':
+                    $location .= 'F';
+                    break;
+                default:
+                    throw new \InvalidArgumentException();
+            }
+
             $this->drawingObject = new \PHPExcel_Worksheet_HeaderFooterDrawing();
             $this->drawingObject->setPath($tempPath);
-            $this->drawingObject->setHeight(40);
-            $this->headerObject->addImage($this->drawingObject, isset($properties['location']) ? $properties['location'] : 'LH');
-        } elseif ($this->footerObject) {
-            $this->drawingObject = new \PHPExcel_Worksheet_HeaderFooterDrawing();
-            $this->drawingObject->setPath($tempPath);
-            $this->footerObject->addImage($this->drawingObject, isset($properties['location']) ? $properties['location'] : 'LF');
+            $this->headerFooterObject->addImage($this->drawingObject, $location);
         } else {
             $this->drawingObject = new \PHPExcel_Worksheet_Drawing();
             $this->drawingObject->setWorksheet($this->sheetObject);
@@ -470,6 +568,7 @@ class PhpExcelWrapper {
 
     public function endDrawing() {
         $this->drawingObject = null;
+        $this->drawingAttributes = array();
     }
 
     //

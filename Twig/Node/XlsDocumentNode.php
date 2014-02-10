@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig\Node;
+namespace MewesK\TwigExcelBundle\Twig\Node;
 use Twig_Compiler;
 use Twig_Node;
 use Twig_Node_Expression;
@@ -22,7 +22,7 @@ class XlsDocumentNode extends Twig_Node
             ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
-            ->write('$phpExcel = new MewesK\PhpExcelTwigExtensionBundle\Twig\PhpExcelWrapper($context);'.PHP_EOL)
+            ->write('$phpExcel = new MewesK\TwigExcelBundle\Twig\PhpExcelWrapper($context);'.PHP_EOL)
             ->write('$phpExcel->startDocument($documentProperties);'.PHP_EOL)
             ->write('unset($documentProperties);'.PHP_EOL)
 

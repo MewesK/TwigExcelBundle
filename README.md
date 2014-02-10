@@ -1,4 +1,4 @@
-# PhpExcel Twig Extension Bundle (alpha)
+# TwigExcelBundle (alpha)
 
 [![Build Status](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle.png?branch=dev)](https://travis-ci.org/MewesK/PhpExcelTwigExtensionBundle)
 
@@ -11,13 +11,13 @@ This Symfony2 bundle provides a PhpExcel integration for Twig.
 ```js
 {
     "require": {
-        "mewesk/phpexcel-twig-extension-bundle": "1.0.*@dev"
+        "mewesk/twig-excel-bundle": "1.0.*@dev"
     }
 }
 ```
 
 ```bash
-$ php composer.phar update mewesk/phpexcel-twig-extension-bundle
+$ php composer.phar update mewesk/twig-excel-bundle
 ```
 
 ### Step 2: Enable the bundle
@@ -29,7 +29,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new MewesK\PhpExcelTwigExtension\PhpExcelTwigExtensionBundle(),
+        new MewesK\TwigExcelBundle\TwigExcelBundle(),
     );
 }
 ```
@@ -109,7 +109,7 @@ style2 | array | | Standard PhpExcel style array
         ...
     {% endxlsdocument %}
 
- * Cannot contain 'xlsdocument', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * Cannot contain 'xlsdocument', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell', 'xlsleft', 'xlscenter', 'xlsright' or 'xlsdrawing' tags
  * May contain one or more 'xlssheet' tags
 
 #### Attributes
@@ -182,7 +182,7 @@ title | string
         ...
         {% endxlssheet %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlscell' or 'xlsdrawing' tags
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlscell', 'xlsleft', 'xlscenter' or 'xlsright' tags
  * May contain one or more 'xlsheader', 'xlsfooter', 'xlsrow' and 'xlsdrawing' tags
 
 #### Attributes
@@ -339,8 +339,8 @@ zoomScale | int
         ...
     {% endxlsheader %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlscell' tags
- * May contain one or more 'xlsdrawing' tags (not supported in Excel5 files)
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * May contain one 'xlsleft', 'xlscenter' and 'xlsright'
 
 #### Attributes
 
@@ -370,8 +370,8 @@ alignWithMargins | boolean
         ...
     {% endxlsfooter %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlscell' tags
- * May contain one or more 'xlsdrawing' tags (not supported in Excel5 files)
+ * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
+ * May contain one 'xlsleft', 'xlscenter' and 'xlsright'
 
 #### Attributes
 
@@ -394,6 +394,8 @@ alignWithMargins | boolean
     {# ... #}
 {% xlsfooter %}
 ```
+
+### TODO xlsleft, xlscenter, xlsright
 
 ### xlsrow
 
@@ -508,14 +510,13 @@ Name | Type | Optional | Description
 path | string
 properties | array | X
 
-#### Properties (WIP)
+#### Properties
 
 Name | Type | Description | XLS
 ---- | ---- | ----------- | ---
 coordinates | string | Cell coordinates like 'A1' | X
 description | string
 height | int | | X
-location | string | Only used inside a header/footer. Possible values are defined in PHPExcel_Worksheet_HeaderFooter
 name | string
 offsetX | int
 offsetY | int

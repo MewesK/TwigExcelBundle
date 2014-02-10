@@ -1,8 +1,8 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig\TokenParser;
+namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
-use MewesK\PhpExcelTwigExtensionBundle\Twig\Node\XlsFooterNode;
+use MewesK\TwigExcelBundle\Twig\Node\XlsFooterNode;
 use Twig_Node_Expression_Array;
 use Twig_Node_Expression_Constant;
 use Twig_Token;

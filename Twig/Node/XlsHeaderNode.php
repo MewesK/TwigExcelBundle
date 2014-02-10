@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig\Node;
+namespace MewesK\TwigExcelBundle\Twig\Node;
 use Twig_Compiler;
 use Twig_Node;
 use Twig_Node_Expression;
@@ -28,13 +28,12 @@ class XlsHeaderNode extends Twig_Node
             ->raw(';'.PHP_EOL)
 
             ->write('$phpExcel->startHeaderFooter($headerType, $headerProperties);'.PHP_EOL)
-            ->write('unset($headerProperties);'.PHP_EOL)
+            ->write('unset($headerType, $headerProperties);'.PHP_EOL)
 
-            ->write("ob_start();\n")
             ->subcompile($this->getNode('body'))
-            ->write('$headerValue = trim(ob_get_clean());'.PHP_EOL)
 
-            ->write('$phpExcel->endHeaderFooter($headerType, $headerValue);'.PHP_EOL)
-            ->write('unset($headerType, $headerValue);'.PHP_EOL);
+            ->addDebugInfo($this)
+
+            ->write('$phpExcel->endHeaderFooter();'.PHP_EOL);
     }
 }

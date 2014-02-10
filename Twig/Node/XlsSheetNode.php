@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig\Node;
+namespace MewesK\TwigExcelBundle\Twig\Node;
 use Twig_Compiler;
 use Twig_Node;
 use Twig_Node_Expression;

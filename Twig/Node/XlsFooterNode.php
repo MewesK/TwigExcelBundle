@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\Twig\Node;
+namespace MewesK\TwigExcelBundle\Twig\Node;
 use Twig_Compiler;
 use Twig_Node;
 use Twig_Node_Expression;
@@ -28,13 +28,12 @@ class XlsFooterNode extends Twig_Node
             ->raw(';'.PHP_EOL)
 
             ->write('$phpExcel->startHeaderFooter($footerType, $footerProperties);'.PHP_EOL)
-            ->write('unset($footerProperties);'.PHP_EOL)
+            ->write('unset($footerType, $footerProperties);'.PHP_EOL)
 
-            ->write("ob_start();\n")
             ->subcompile($this->getNode('body'))
-            ->write('$footerValue = trim(ob_get_clean());'.PHP_EOL)
 
-            ->write('$phpExcel->endHeaderFooter($footerType, $footerValue);'.PHP_EOL)
-            ->write('unset($footerType, $footerValue);'.PHP_EOL);
+            ->addDebugInfo($this)
+
+            ->write('$phpExcel->endHeaderFooter();'.PHP_EOL);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\PhpExcelTwigExtensionBundle\EventListener;
+namespace MewesK\TwigExcelBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
