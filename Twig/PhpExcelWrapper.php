@@ -586,7 +586,7 @@ class PhpExcelWrapper {
     private function setProperties(array $properties, array $mappings) {
         foreach ($properties as $key => $value) {
             if (array_key_exists($key, $mappings)) {
-                if (is_array($value) && is_array($mappings)) {
+                if (is_array($value) && is_array($mappings) && $key != 'style') {
                     if (array_key_exists('__multi', $mappings) && $mappings['__multi'] === true) {
                         foreach ($value as $_key => $_value) {
                             $this->setPropertiesByKey($_key, $_value, $mappings[$key]);
@@ -595,7 +595,7 @@ class PhpExcelWrapper {
                         $this->setProperties($value, $mappings[$key]);
                     }
                 } else {
-                    $mappings[$key](trim($value));
+                    $mappings[$key]($value);
                 }
             }
         }
@@ -607,7 +607,7 @@ class PhpExcelWrapper {
                 if (is_array($value)) {
                     $this->setPropertiesByKey($key, $value, $mappings[$_key]);
                 } else {
-                    $mappings[$_key]($key, trim($value));
+                    $mappings[$_key]($key, $value);
                 }
             }
         }

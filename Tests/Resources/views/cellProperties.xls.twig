@@ -1,0 +1,30 @@
+{% xlsdocument %}
+    {% xlssheet 'Test' %}
+        {% xlsrow %}
+            {% xlscell 0 {
+                'break': 1,
+                'dataValidation': {
+                    'allowBlank': true,
+                    'error': 'Test error',
+                    'errorStyle': 'information',
+                    'errorTitle': 'Test errorTitle',
+                    'formula1': '',
+                    'formula2': '',
+                    'operator': '',
+                    'prompt': 'Test prompt',
+                    'promptTitle': 'Test promptTitle',
+                    'showDropDown': true,
+                    'showErrorMessage': true,
+                    'showInputMessage': true,
+                    'type': 'custom'
+                },
+                'style': {
+                    'font': {
+                        'size': '18'
+                    }
+                },
+                'url': 'http://example.com/'
+            } %}Foo{% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+{% endxlsdocument %}

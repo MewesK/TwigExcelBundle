@@ -109,7 +109,6 @@ style2 | array | | Standard PhpExcel style array
         ...
     {% endxlsdocument %}
 
- * Cannot contain 'xlsdocument', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell', 'xlsleft', 'xlscenter', 'xlsright' or 'xlsdrawing' tags
  * May contain one or more 'xlssheet' tags
 
 #### Attributes
@@ -182,7 +181,6 @@ title | string
         ...
         {% endxlssheet %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlscell', 'xlsleft', 'xlscenter' or 'xlsright' tags
  * May contain one or more 'xlsheader', 'xlsfooter', 'xlsrow' and 'xlsdrawing' tags
 
 #### Attributes
@@ -339,14 +337,13 @@ zoomScale | int
         ...
     {% endxlsheader %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
- * May contain one 'xlsleft', 'xlscenter' and 'xlsright'
+ * May contain one 'xlsleft', 'xlscenter' and 'xlsright' tag
 
 #### Attributes
 
 Name | Type | Optional | Description
 ---- | ---- | -------- | -----------
-type | string | X | Possible types are 'header' (default), 'oddHeader', 'evenHeader', 'firstHeader'
+type | string | X | Possible types are 'header' (default), 'oddHeader' (xlsx), 'evenHeader' (xlsx), 'firstHeader' (xlsx)
 properties | array | X
 
 #### Properties
@@ -370,14 +367,13 @@ alignWithMargins | boolean
         ...
     {% endxlsfooter %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
- * May contain one 'xlsleft', 'xlscenter' and 'xlsright'
+ * May contain one 'xlsleft', 'xlscenter' and 'xlsright' tag
 
 #### Attributes
 
 Name | Type | Optional | Description
 ---- | ---- | -------- | -----------
-type | string | X | Possible types are 'footer' (default), 'oddFooter', 'evenFooter', 'firstFooter'
+type | string | X | Possible types are 'footer' (default), 'oddFooter' (xlsx), 'evenFooter' (xlsx), 'firstFooter' (xlsx)
 properties | array | X
 
 #### Properties
@@ -403,8 +399,8 @@ alignWithMargins | boolean
         ...
     {% endxlsrow %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter' or 'xlsdrawing' tags
  * May contain one or more 'xlscell' tags
+
  * If 'index' is not defined it will default to 1 for the first usage per sheet
  * For each further usage it will increase the index by 1 automatically (1, 2, 3, ...)
 
@@ -428,7 +424,6 @@ index | int | | A row index >=1
         ...
     {% endxlscell %}
 
- * Cannot contain 'xlsdocument', 'xlssheet', 'xlsrow', 'xlsheader', 'xlsfooter', 'xlscell' or 'xlsdrawing' tags
  * If 'index' is not defined it will default to 0 for the first usage per row
  * For each further usage it will increase the index by 1 automatically (0, 1, 2, ...)
 
@@ -443,7 +438,7 @@ properties | array | X
 
 Name | Type | Description | XLS
 ---- | ---- | ----------- | ---
-break | int | Possible values are defined in PHPExcel_Worksheet
+break | int | Possible values are defined in PHPExcel_Worksheet | X
 dataValidation | array
  + allowBlank | boolean
  + error | string
@@ -458,8 +453,8 @@ dataValidation | array
  + showErrorMessage | boolean
  + showInputMessage | boolean
  + type | string | Possible values are defined in PHPExcel_Cell_DataValidation
-style | array | Standard PhpExcel style array
-url | string
+style | array | Standard PhpExcel style array | X
+url | string | | X
     
 #### Example
 
@@ -500,8 +495,6 @@ url | string
 ### xlsdrawing
 
     {% xlsdrawing [path:string] [properties:array] %}
-
- * Cannot contain anything
 
 #### Attributes
 

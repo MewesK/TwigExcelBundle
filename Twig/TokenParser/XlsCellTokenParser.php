@@ -13,7 +13,7 @@ class XlsCellTokenParser extends Twig_TokenParser
     public function parse(Twig_Token $token)
     {
         $index = new Twig_Node_Expression_Constant(null, $token->getLine());
-        if (!$this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
+        if (!$this->parser->getStream()->test(Twig_Token::PUNCTUATION_TYPE) && !$this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
             $index = $this->parser->getExpressionParser()->parseExpression();
         }
 

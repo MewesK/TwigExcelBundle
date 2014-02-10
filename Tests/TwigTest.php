@@ -9,6 +9,10 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 {
     private $environment;
 
+    //
+    // Helper
+    //
+
     private function getLoaderArray(array $templateNames = array()) {
         $loaderArray = array();
         foreach($templateNames as $templateName) {
@@ -41,6 +45,10 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         return $reader->load(__DIR__.'/Temporary/'.$templateName.'.'.$format);
     }
 
+    //
+    // PhpUnit
+    //
+
     public function formatProvider() {
         return array(
             array('xls'),
@@ -53,12 +61,15 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp() {
         $this->environment = new Twig_Environment(new \Twig_Loader_Array($this->getLoaderArray(array(
-                'documentSimple',
-                'documentIndices',
-                'drawingSimple',
-                'headerFooterDrawing',
+                'cellIndex',
+                'cellProperties',
                 'documentMultiSheet',
-                'drawingProperties'
+                'documentSimple',
+                'drawingProperties',
+                'drawingSimple',
+                'headerFooterComplex',
+                'headerFooterDrawing',
+                'rowIndex'
             ))), array('strict_variables' => true));
         $this->environment->addExtension(new TwigExcelExtension());
         $this->environment->setCache(__DIR__.'/Temporary/');
@@ -86,12 +97,40 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
-            $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
+            $this->assertNotNull($sheet, 'Sheet does not exist');
 
-            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'A1 does not equal "Foo"');
-            $this->assertEquals('Bar', $sheet->getCell('B1')->getValue(), 'B1 does not equal "Bar"');
-            $this->assertEquals('Hello', $sheet->getCell('A2')->getValue(), 'A2 does not equal "Hello"');
-            $this->assertEquals('World', $sheet->getCell('B2')->getValue(), 'B2 does not equal "World"');
+            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            $this->assertEquals('Bar', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            $this->assertEquals('Hello', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            $this->assertEquals('World', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+        } catch (\Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    //
+    // Tests depending on testDocumentSimple
+    //
+
+    /**
+     * @depends testDocumentSimple
+     * @dataProvider formatProvider
+     */
+    public function testCellIndex($format)
+    {
+        try {
+            $phpExcel = $this->getPhpExcelObject('cellIndex', $format);
+
+            // tests
+            $sheet = $phpExcel->getSheetByName('Test');
+            $this->assertNotNull($sheet, 'Sheet does not exist');
+
+            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            $this->assertNotEquals('Bar',$sheet->getCell('C1')->getValue(),  'Unexpected value in C1');
+            $this->assertEquals('Lorem', $sheet->getCell('C1')->getValue(), 'Unexpected value in C1');
+            $this->assertEquals('Ipsum', $sheet->getCell('D1')->getValue(), 'Unexpected value in D1');
+            $this->assertEquals('Hello', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            $this->assertEquals('World', $sheet->getCell('E1')->getValue(), 'Unexpected value in E1');
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
@@ -101,21 +140,52 @@ class TwigTest extends \PHPUnit_Framework_TestCase
      * @depends testDocumentSimple
      * @dataProvider formatProvider
      */
-    public function testDocumentManualIndex($format)
+    public function testCellProperties($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('documentIndices', $format);
+            $phpExcel = $this->getPhpExcelObject('cellProperties', $format);
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
-            $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
+            $this->assertNotNull($sheet, 'Sheet does not exist');
 
-            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'A1 does not equal "Foo"');
-            $this->assertEquals('Bar',$sheet->getCell('C1')->getValue(),  'C1 does not equal "Bar"');
-            $this->assertEquals('Lorem', $sheet->getCell('C3')->getValue(), 'C3 does not equal "Lorem"');
-            $this->assertEquals('Ipsum', $sheet->getCell('D3')->getValue(), 'D3 does not equal "Ipsum"');
-            $this->assertEquals('Hello', $sheet->getCell('B4')->getValue(), 'B4 does not equal "Hello"');
-            $this->assertEquals('World', $sheet->getCell('D4')->getValue(), 'D4 does not equal "World"');
+            $breaks = $sheet->getBreaks();
+            $this->assertCount(1, $breaks, 'Unexpected break count');
+            $this->assertArrayHasKey('A1', $breaks, 'Break does not exist');
+
+            $break = $breaks['A1'];
+            $this->assertNotNull($break, 'Break is null');
+
+            $cell = $sheet->getCell('A1');
+            $this->assertNotNull($cell, 'Cell does not exist');
+
+            $dataValidation = $cell->getDataValidation();
+            $this->assertNotNull($dataValidation, 'DataValidation does not exist');
+
+            if ($format != 'xls') {
+                $this->assertEquals(true, $dataValidation->getAllowBlank(), 'Unexpected value in allowBlank');
+                $this->assertEquals('Test error', $dataValidation->getError(), 'Unexpected value in error');
+                $this->assertEquals('information', $dataValidation->getErrorStyle(), 'Unexpected value in errorStyle');
+                $this->assertEquals('Test errorTitle', $dataValidation->getErrorTitle(), 'Unexpected value in errorTitle');
+                $this->assertEquals('', $dataValidation->getFormula1(), 'Unexpected value in formula1');
+                $this->assertEquals('', $dataValidation->getFormula2(), 'Unexpected value in formula2');
+                $this->assertEquals('', $dataValidation->getOperator(), 'Unexpected value in operator');
+                $this->assertEquals('Test prompt', $dataValidation->getPrompt(), 'Unexpected value in prompt');
+                $this->assertEquals('Test promptTitle', $dataValidation->getPromptTitle(), 'Unexpected value in promptTitle');
+                $this->assertEquals(true, $dataValidation->getShowDropDown(), 'Unexpected value in showDropDown');
+                $this->assertEquals(true, $dataValidation->getShowErrorMessage(), 'Unexpected value in showErrorMessage');
+                $this->assertEquals(true, $dataValidation->getShowInputMessage(), 'Unexpected value in showInputMessage');
+                $this->assertEquals('custom', $dataValidation->getType(), 'Unexpected value in type');
+            }
+
+            $style = $cell->getStyle();
+            $this->assertNotNull($style, 'Style does not exist');
+
+            $font = $style->getFont();
+            $this->assertNotNull($font, 'Font does not exist');
+            $this->assertEquals(18, $font->getSize(), 'Unexpected value in size');
+
+            $this->assertEquals('http://example.com/', $cell->getHyperlink()->getUrl(), 'Unexpected value in url');
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
@@ -133,11 +203,11 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             // tests
             $sheet = $phpExcel->getSheetByName('Test 1');
             $this->assertNotNull($sheet, 'Sheet "Test 1" does not exist');
-            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'A1 does not equal "Foo"');
+            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
 
             $sheet = $phpExcel->getSheetByName('Test 2');
             $this->assertNotNull($sheet, 'Sheet "Test 2" does not exist');
-            $this->assertEquals('Bar', $sheet->getCell('A1')->getValue(), 'A1 does not equal "Bar"');
+            $this->assertEquals('Bar', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
@@ -154,20 +224,79 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
-            $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
+            $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $drawings = $sheet->getDrawingCollection();
-            $this->assertCount(1, $drawings, 'Sheet has not exactly one drawing');
+            $this->assertCount(1, $drawings, 'Unexpected drawing count');
             $this->assertArrayHasKey(0, $drawings, 'Drawing does not exist');
 
             $drawing = $drawings[0];
             $this->assertNotNull($drawing, 'Drawing is null');
-            $this->assertEquals(100, $drawing->getWidth(), 'Drawing width does not equal 100');
-            $this->assertEquals(100, $drawing->getHeight(), 'Drawing height does not equal 100');
+            $this->assertEquals(100, $drawing->getWidth(), 'Unexpected value in width');
+            $this->assertEquals(100, $drawing->getHeight(), 'Unexpected value in height');
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
+
+    /**
+     * @depends testDocumentSimple
+     * @dataProvider formatProvider
+     */
+    public function testHeaderFooterComplex($format)
+    {
+        try {
+            $phpExcel = $this->getPhpExcelObject('headerFooterComplex', $format);
+
+            // tests
+            $sheet = $phpExcel->getSheetByName('Test');
+            $this->assertNotNull($sheet, 'Sheet does not exist');
+
+            $headerFooter = $sheet->getHeaderFooter();
+            $this->assertNotNull($headerFooter, 'HeaderFooter does not exist');
+            
+            $this->assertEquals('&LoddHeader left&CoddHeader center&RoddHeader right', $headerFooter->getOddHeader(), 'Unexpected value in oddHeader');
+            $this->assertEquals('&LoddFooter left&CoddFooter center&RoddFooter right', $headerFooter->getOddFooter(), 'Unexpected value in oddFooter');
+
+            if ($format != 'xls') {
+                $this->assertEquals('&LfirstHeader left&CfirstHeader center&RfirstHeader right', $headerFooter->getFirstHeader(), 'Unexpected value in firstHeader');
+                $this->assertEquals('&LevenHeader left&CevenHeader center&RevenHeader right', $headerFooter->getEvenHeader(), 'Unexpected value in evenHeader');
+                $this->assertEquals('&LfirstFooter left&CfirstFooter center&RfirstFooter right', $headerFooter->getFirstFooter(), 'Unexpected value in firstFooter');
+                $this->assertEquals('&LevenFooter left&CevenFooter center&RevenFooter right', $headerFooter->getEvenFooter(), 'Unexpected value in evenFooter');
+            }
+        }
+        catch (\Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @depends testDocumentSimple
+     * @dataProvider formatProvider
+     */
+    public function testRowIndex($format)
+    {
+        try {
+            $phpExcel = $this->getPhpExcelObject('rowIndex', $format);
+
+            // tests
+            $sheet = $phpExcel->getSheetByName('Test');
+            $this->assertNotNull($sheet, 'Sheet does not exist');
+
+            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            $this->assertNotEquals('Bar',$sheet->getCell('A3')->getValue(),  'Unexpected value in A3');
+            $this->assertEquals('Lorem', $sheet->getCell('A3')->getValue(), 'Unexpected value in A3');
+            $this->assertEquals('Ipsum', $sheet->getCell('A4')->getValue(), 'Unexpected value in A4');
+            $this->assertEquals('Hello', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            $this->assertEquals('World', $sheet->getCell('A5')->getValue(), 'Unexpected value in A5');
+        } catch (\Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    //
+    // Tests depending on testDrawingSimple
+    //
 
     /**
      * @depends testDrawingSimple
@@ -185,14 +314,16 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
-            $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
+            $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $headerFooter = $sheet->getHeaderFooter();
             $this->assertNotNull($headerFooter, 'HeaderFooter does not exist');
-            $this->assertContains('&L&G', $headerFooter->getOddHeader(), 'Header does not contain "&L&G"');
-            $this->assertContains('&CHeader', $headerFooter->getOddHeader(), 'Header does not contain "&CHeader"');
-            $this->assertContains('&LFooter', $headerFooter->getOddFooter(), 'Footer does not contain "&LFooter"');
-            $this->assertContains('&R&G', $headerFooter->getOddFooter(), 'Footer does not contain "&R&G"');
+            $this->assertEquals('&L&G&CHeader', $headerFooter->getFirstHeader(), 'Unexpected value in firstHeader');
+            $this->assertEquals('&L&G&CHeader', $headerFooter->getEvenHeader(), 'Unexpected value in evenHeader');
+            $this->assertEquals('&L&G&CHeader', $headerFooter->getOddHeader(), 'Unexpected value in oddHeader');
+            $this->assertEquals('&LFooter&R&G', $headerFooter->getFirstFooter(), 'Unexpected value in firstFooter');
+            $this->assertEquals('&LFooter&R&G', $headerFooter->getEvenFooter(), 'Unexpected value in evenFooter');
+            $this->assertEquals('&LFooter&R&G', $headerFooter->getOddFooter(), 'Unexpected value in oddFooter');
 
             $drawings = $headerFooter->getImages();
             $this->assertCount(2, $drawings, 'Sheet has not exactly 2 drawings');
@@ -201,13 +332,13 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
             $drawing = $drawings['LH'];
             $this->assertNotNull($drawing, 'Header drawing is null');
-            $this->assertEquals(40, $drawing->getWidth(), 'Width does not equal 40');
-            $this->assertEquals(40, $drawing->getHeight(), 'Height does not equal 40');
+            $this->assertEquals(40, $drawing->getWidth(), 'Unexpected value in width');
+            $this->assertEquals(40, $drawing->getHeight(), 'Unexpected value in height');
 
             $drawing = $drawings['RF'];
             $this->assertNotNull($drawing, 'Footer drawing is null');
-            $this->assertEquals(20, $drawing->getWidth(), 'Footer drawing width does not equal 20');
-            $this->assertEquals(20, $drawing->getHeight(), 'Footer drawing height does not equal 20');
+            $this->assertEquals(20, $drawing->getWidth(), 'Unexpected value in width');
+            $this->assertEquals(20, $drawing->getHeight(), 'Unexpected value in height');
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
@@ -224,39 +355,39 @@ class TwigTest extends \PHPUnit_Framework_TestCase
 
             // tests
             $sheet = $phpExcel->getSheetByName('Test');
-            $this->assertNotNull($sheet, 'Sheet "Test" does not exist');
+            $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $drawings = $sheet->getDrawingCollection();
-            $this->assertCount(1, $drawings, 'Sheet has not exactly one drawing');
+            $this->assertCount(1, $drawings, 'Unexpected drawing count');
             $this->assertArrayHasKey(0, $drawings, 'Drawing does not exist');
 
             $drawing = $drawings[0];
             $this->assertNotNull($drawing, 'Drawing is null');
 
-            $this->assertEquals('B2', $drawing->getCoordinates(), 'Drawing coordinates does not equal "B2"');
-            $this->assertEquals(200, $drawing->getHeight(), 'Drawing height does not equal 200');
-            $this->assertEquals(false, $drawing->getResizeProportional(), 'Drawing resizeProportional does not equal false');
-            $this->assertEquals(300, $drawing->getWidth(), 'Drawing width does not equal 300');
+            $this->assertEquals('B2', $drawing->getCoordinates(), 'Unexpected value in coordinates');
+            $this->assertEquals(200, $drawing->getHeight(), 'Unexpected value in height');
+            $this->assertEquals(false, $drawing->getResizeProportional(), 'Unexpected value in resizeProportional');
+            $this->assertEquals(300, $drawing->getWidth(), 'Unexpected value in width');
 
             if ($format != 'xls') {
-                $this->assertEquals('Test Description', $drawing->getDescription(), 'Drawing description does not equal "Test Description"');
-                $this->assertEquals('Test Name', $drawing->getName(), 'Drawing name does not equal "Test Name"');
-                $this->assertEquals(30, $drawing->getOffsetX(), 'Drawing offsetX does not equal 30');
-                $this->assertEquals(20, $drawing->getOffsetY(), 'Drawing offsetY does not equal 20');
-                $this->assertEquals(45, $drawing->getRotation(), 'Drawing rotation does not equal 45');
+                $this->assertEquals('Test Description', $drawing->getDescription(), 'Unexpected value in description');
+                $this->assertEquals('Test Name', $drawing->getName(), 'Unexpected value in name');
+                $this->assertEquals(30, $drawing->getOffsetX(), 'Unexpected value in offsetX');
+                $this->assertEquals(20, $drawing->getOffsetY(), 'Unexpected value in offsetY');
+                $this->assertEquals(45, $drawing->getRotation(), 'Unexpected value in rotation');
             }
 
             $shadow = $drawing->getShadow();
             $this->assertNotNull($shadow, 'Shadow is null');
 
             if ($format != 'xls') {
-                $this->assertEquals('ctr', $shadow->getAlignment(), 'Shadow alignment does not equal "ctr"');
-                $this->assertEquals(100, $shadow->getAlpha(), 'Shadow alpha does not equal 100');
-                $this->assertEquals(11, $shadow->getBlurRadius(), 'Shadow blurRadius does not equal 11');
-                $this->assertEquals('0000cc', $shadow->getColor()->getRGB(), 'Shadow color does not equal "0000cc"');
-                $this->assertEquals(30, $shadow->getDirection(), 'Shadow direction does not equal 30');
-                $this->assertEquals(4, $shadow->getDistance(), 'Shadow distance does not equal 4');
-                $this->assertEquals(true, $shadow->getVisible(), 'Shadow visible does not equal true');
+                $this->assertEquals('ctr', $shadow->getAlignment(), 'Unexpected value in alignment');
+                $this->assertEquals(100, $shadow->getAlpha(), 'Unexpected value in alpha');
+                $this->assertEquals(11, $shadow->getBlurRadius(), 'Unexpected value in blurRadius');
+                $this->assertEquals('0000cc', $shadow->getColor()->getRGB(), 'Unexpected value in color');
+                $this->assertEquals(30, $shadow->getDirection(), 'Unexpected value in direction');
+                $this->assertEquals(4, $shadow->getDistance(), 'Unexpected value in distance');
+                $this->assertEquals(true, $shadow->getVisible(), 'Unexpected value in visible');
             }
         } catch (\Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());

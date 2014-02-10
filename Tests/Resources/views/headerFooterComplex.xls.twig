@@ -1,0 +1,34 @@
+{% xlsdocument %}
+    {% xlssheet 'Test' %}
+        {% xlsheader 'firstHeader' %}
+            {% xlsleft %}firstHeader left{% endxlsleft %}
+            {% xlscenter %}firstHeader center{% endxlscenter %}
+            {% xlsright %}firstHeader right{% endxlsright %}
+        {% endxlsheader %}
+        {% xlsheader 'evenHeader' %}
+            {% xlsleft %}evenHeader left{% endxlsleft %}
+            {% xlscenter %}evenHeader center{% endxlscenter %}
+            {% xlsright %}evenHeader right{% endxlsright %}
+        {% endxlsheader %}
+        {% xlsheader 'oddHeader' %}
+            {% xlsleft %}oddHeader left{% endxlsleft %}
+            {% xlscenter %}oddHeader center{% endxlscenter %}
+            {% xlsright %}oddHeader right{% endxlsright %}
+        {% endxlsheader %}
+        {% xlsfooter 'firstFooter' %}
+            {% xlsleft %}firstFooter left{% endxlsleft %}
+            {% xlscenter %}firstFooter center{% endxlscenter %}
+            {% xlsright %}firstFooter right{% endxlsright %}
+        {% endxlsfooter %}
+        {% xlsfooter 'evenFooter' %}
+            {% xlsleft %}evenFooter left{% endxlsleft %}
+            {% xlscenter %}evenFooter center{% endxlscenter %}
+            {% xlsright %}evenFooter right{% endxlsright %}
+        {% endxlsfooter %}
+        {% xlsfooter 'oddFooter' %}
+            {% xlsleft %}oddFooter left{% endxlsleft %}
+            {% xlscenter %}oddFooter center{% endxlscenter %}
+            {% xlsright %}oddFooter right{% endxlsright %}
+        {% endxlsfooter %}
+    {% endxlssheet %}
+{% endxlsdocument %}

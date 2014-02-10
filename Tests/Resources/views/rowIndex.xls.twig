@@ -1,0 +1,22 @@
+{% xlsdocument %}
+    {% xlssheet 'Test' %}
+        {% xlsrow %}
+            {% xlscell %}Foo{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow 3 %}
+            {% xlscell %}Bar{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow 3 %}
+            {% xlscell %}Lorem{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow %}
+            {% xlscell %}Ipsum{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow 2 %}
+            {% xlscell %}Hello{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow 5 %}
+            {% xlscell %}World{% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+{% endxlsdocument %}
