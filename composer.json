@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "This Symfony2 bundle provides a PhpExcel integration for Twig",
     "keywords": ["excel","phpexcel","twig","symfony","symfony2"],
-    "homepage": "https://github.com/mewesk/twig-excel-bundle",
+    "homepage": "https://github.com/MewesK/TwigExcelBundle",
     "license": "MIT",
     "authors": [
         {
