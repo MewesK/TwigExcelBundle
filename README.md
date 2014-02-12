@@ -356,7 +356,7 @@ alignWithMargins | boolean
 #### Example
 
 ```lua
-{% xlsheader 'first' %}
+{% xlsheader 'firstHeader' %}
     {# ... #}
 {% endxlsheader %}
 ```
