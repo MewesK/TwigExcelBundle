@@ -1,0 +1,16 @@
+{% xlsdocument %}
+    {% xlssheet 'Test' %}
+        {% xlsheader {
+            'scaleWithDocument': false,
+            'alignWithMargins': true
+        } %}
+            {% xlscenter %}Header{% endxlscenter %}
+        {% endxlsheader %}
+        {% xlsfooter {
+            'scaleWithDocument': false,
+            'alignWithMargins': false
+        } %}
+            {% xlscenter %}Footer{% endxlscenter %}
+        {% endxlsfooter %}
+    {% endxlssheet %}
+{% endxlsdocument %}

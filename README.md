@@ -358,7 +358,7 @@ alignWithMargins | boolean
 ```lua
 {% xlsheader 'first' %}
     {# ... #}
-{% endxlsrow %}
+{% endxlsheader %}
 ```
 
 ### xlsfooter
@@ -386,12 +386,45 @@ alignWithMargins | boolean
 #### Example
 
 ```lua
-{% xlsfooter 'first' %}
+{% xlsfooter 'firstFooter' %}
     {# ... #}
-{% xlsfooter %}
+{% endxlsfooter %}
 ```
 
-### TODO xlsleft, xlscenter, xlsright
+### xlsleft, xlscenter, xlsright
+
+    {% xlsleft %}
+        ...
+    {% endxlsleft %}
+
+    {% xlscenter %}
+        ...
+    {% endxlscenter %}
+
+    {% xlsright %}
+        ...
+    {% endxlsright %}
+
+ * May contain one 'xlsdrawing' tag
+
+ * These tags replace the &L, &C and &R format codes.
+ * All other codes can be found at: https://github.com/PHPOffice/PHPExcel/blob/develop/Documentation/markdown/Overview/08-Recipes.md#setting-the-print-header-and-footer-of-a-worksheet
+
+#### Example
+
+```lua
+{% xlsheader %}
+    {% xlsleft %}
+        Left part of the header
+    {% endxlsleft %}
+    {% xlscenter %}
+        Center part of the header
+    {% endxlscenter %}
+    {% xlsright %}
+        Right part of the header
+    {% endxlsright %}
+{% endxlsheader %}
+```
 
 ### xlsrow
 
@@ -495,6 +528,8 @@ url | string | | X
 ### xlsdrawing
 
     {% xlsdrawing [path:string] [properties:array] %}
+
+ * If the xlsdrawing is used in a header/footer it automatically adds the &G code to be displayed
 
 #### Attributes
 
