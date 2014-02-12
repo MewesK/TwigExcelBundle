@@ -132,12 +132,12 @@ keywords | string | | X
 lastModifiedBy | string | | X
 manager | string
 modified | datetime | Can be null, timestamp or a strtotime compatible string | X
-security | array
-+ lockRevision | boolean
-+ lockStructure | boolean
-+ lockWindows | boolean
-+ revisionsPassword | string
-+ workbookPassword | string
+security | array | Cannot be tested - not supported by the reader
++ lockRevision | boolean | Cannot be tested - not supported by the reader
++ lockStructure | boolean | Cannot be tested - not supported by the reader
++ lockWindows | boolean | Cannot be tested - not supported by the reader
++ revisionsPassword | string | Cannot be tested - not supported by the reader
++ workbookPassword | string | Cannot be tested - not supported by the reader
 subject | string | | X
 title | string | | X
 

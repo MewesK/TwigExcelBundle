@@ -74,7 +74,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        //exec('rm -rf '.__DIR__.'/Temporary/');
+        exec('rm -rf '.__DIR__.'/Temporary/');
     }
 
     //
@@ -197,12 +197,29 @@ class TwigTest extends PHPUnit_Framework_TestCase
             $this->assertLessThanOrEqual(946771200, $properties->getCreated(), 'Unexpected value in created');
             $this->assertEquals('Test creator', $properties->getCreator(), 'Unexpected value in creator');
 
+            $defaultStyle = $document->getDefaultStyle();
+            $this->assertNotNull($defaultStyle, 'DefaultStyle does not exist');
+
+            $font = $defaultStyle->getFont();
+            $this->assertNotNull($font, 'Font does not exist');
+            $this->assertEquals(18, $font->getSize(), 'Unexpected value in size');
+
             $this->assertEquals('Test description', $properties->getDescription(), 'Unexpected value in description');
             $this->assertEquals('Test keywords', $properties->getKeywords(), 'Unexpected value in keywords');
             // +/- 24h range to allow possible timezone differences (946684800)
             $this->assertGreaterThanOrEqual(946598400, $properties->getModified(), 'Unexpected value in modified');
             $this->assertLessThanOrEqual(946771200, $properties->getModified(), 'Unexpected value in modified');
             $this->assertEquals('Test modifier', $properties->getLastModifiedBy(), 'Unexpected value in lastModifiedBy');
+
+            $security = $document->getSecurity();
+            $this->assertNotNull($security, 'Security does not exist');
+
+            // Not supported by the readers - cannot be tested
+            //$this->assertEquals(true, $security->getLockRevision(), 'Unexpected value in lockRevision');
+            //$this->assertEquals(true, $security->getLockStructure(), 'Unexpected value in lockStructure');
+            //$this->assertEquals(true, $security->getLockWindows(), 'Unexpected value in lockWindows');
+            //$this->assertEquals('test', $security->getRevisionsPassword(), 'Unexpected value in revisionsPassword');
+            //$this->assertEquals('test', $security->getWorkbookPassword(), 'Unexpected value in workbookPassword');
 
             $this->assertEquals('Test subject', $properties->getSubject(), 'Unexpected value in subject');
             $this->assertEquals('Test title', $properties->getTitle(), 'Unexpected value in title');
