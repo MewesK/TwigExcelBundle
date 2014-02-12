@@ -74,7 +74,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        exec('rm -rf '.__DIR__.'/Temporary/');
+        //exec('rm -rf '.__DIR__.'/Temporary/');
     }
 
     //
@@ -153,27 +153,6 @@ class TwigTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(18, $font->getSize(), 'Unexpected value in size');
 
             $this->assertEquals('http://example.com/', $cell->getHyperlink()->getUrl(), 'Unexpected value in url');
-        } catch (Twig_Error_Runtime $e) {
-            $this->fail($e->getMessage());
-        }
-    }
-
-    /**
-     * @dataProvider formatProvider
-     */
-    public function testDocumentMultiSheet($format)
-    {
-        try {
-            $document = $this->getDocument('documentMultiSheet', $format);
-            $this->assertNotNull($document, 'Document does not exist');
-
-            $sheet = $document->getSheetByName('Test 1');
-            $this->assertNotNull($sheet, 'Sheet "Test 1" does not exist');
-            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
-
-            $sheet = $document->getSheetByName('Test 2');
-            $this->assertNotNull($sheet, 'Sheet "Test 2" does not exist');
-            $this->assertEquals('Bar', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
         } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
@@ -455,6 +434,75 @@ class TwigTest extends PHPUnit_Framework_TestCase
             $this->assertEquals('Ipsum', $sheet->getCell('A4')->getValue(), 'Unexpected value in A4');
             $this->assertEquals('Hello', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
             $this->assertEquals('World', $sheet->getCell('A5')->getValue(), 'Unexpected value in A5');
+        } catch (Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @dataProvider formatProvider
+     */
+    public function testSheetComplex($format)
+    {
+        try {
+            $document = $this->getDocument('sheetComplex', $format);
+            $this->assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheetByName('Test 1');
+            $this->assertNotNull($sheet, 'Sheet "Test 1" does not exist');
+            $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            $this->assertEquals('Bar', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+
+            $sheet = $document->getSheetByName('Test 2');
+            $this->assertNotNull($sheet, 'Sheet "Test 2" does not exist');
+            $this->assertEquals('Hello World', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+        } catch (Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @dataProvider formatProvider
+     */
+    public function testSheetProperties($format)
+    {
+        try {
+            $document = $this->getDocument('sheetProperties', $format);
+            $this->assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheetByName('Test');
+            $this->assertNotNull($sheet, 'Sheet does not exist');
+
+            $defaultColumnDimension = $sheet->getDefaultColumnDimension();
+            $this->assertNotNull($defaultColumnDimension, 'DefaultColumnDimension does not exist');
+            /*$this->assertEquals(false, $defaultColumnDimension->getAutoSize(), 'Unexpected value in autoSize');
+            $this->assertEquals(false, $defaultColumnDimension->getCollapsed(), 'Unexpected value in collapsed');
+            $this->assertEquals(0, $defaultColumnDimension->getOutlineLevel(), 'Unexpected value in outlineLevel');
+            $this->assertEquals(true, $defaultColumnDimension->getVisible(), 'Unexpected value in visible');
+            //$this->assertEquals(200, $defaultColumnDimension->getWidth(), 'Unexpected value in width');
+            $this->assertEquals(0, $defaultColumnDimension->getXfIndex(), 'Unexpected value in xfIndex');*/
+
+            $columnDimension = $sheet->getColumnDimension('D');
+            /*$this->assertNotNull($columnDimension, 'ColumnDimension does not exist');
+            $this->assertEquals(true, $columnDimension->getAutoSize(), 'Unexpected value in autoSize');
+            $this->assertEquals(true, $columnDimension->getCollapsed(), 'Unexpected value in collapsed');
+            $this->assertEquals(1, $columnDimension->getOutlineLevel(), 'Unexpected value in outlineLevel');
+            $this->assertEquals(false, $columnDimension->getVisible(), 'Unexpected value in visible');
+            //$this->assertEquals(200, $columnDimension->getWidth(), 'Unexpected value in width');
+            $this->assertEquals(1, $columnDimension->getXfIndex(), 'Unexpected value in xfIndex');*/
+
+            $this->assertEquals(true, $sheet->getPrintGridlines(), 'Unexpected value in printGridlines');
+            $this->assertEquals(true, $sheet->getRightToLeft(), 'Unexpected value in rightToLeft');
+
+            // Not supported by the readers - cannot be tested
+            //$this->assertEquals(false, $sheet->getShowGridlines(), 'Unexpected value in showGridlines');
+            $this->assertEquals('c0c0c0', strtolower($sheet->getTabColor()->getRGB()), 'Unexpected value in tabColor');
+            $this->assertEquals(75, $sheet->getSheetView()->getZoomScale(), 'Unexpected value in zoomScale');
+
+
+            if ($format != 'xls') {
+
+            }
         } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }

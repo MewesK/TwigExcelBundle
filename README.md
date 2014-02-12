@@ -197,10 +197,10 @@ Name | Type | Description | XLS
 columnDimension | array | Contains one or more arrays. Possible keys are 'default' or a valid column name like 'A'
  + autoSize | boolean
  + collapsed | boolean
- + columnIndex | int | A column index >=0
+ + columnIndex | string | Does not work in PhpExcel?
  + outlineLevel | int
  + visible | boolean
- + width | double
+ + width | double | Does not work in PhpExcel?
  + xfIndex | int
 pageMargins | array
  + top | double
@@ -247,7 +247,7 @@ rowDimension | array | Contains one or more arrays. Possible keys are 'default' 
  + xfIndex | int
  + zeroHeight | boolean
 sheetState | string
-showGridlines | boolean
+showGridlines | boolean | Cannot be tested - not supported by the reader
 tabColor | string
 zoomScale | int
 
@@ -259,13 +259,13 @@ zoomScale | int
         'default': {
             autoSize: false,
             collapsed: false,
-            columnIndex: 'A',
             outlineLevel: 0,
             visible: true,
             width: -1,
             xfIndex: 0
         },
         'D': {
+            columnIndex: 2,
             visible: false
         }
     },

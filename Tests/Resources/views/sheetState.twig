@@ -1,0 +1,12 @@
+{% xlsdocument %}
+    {% xlssheet 'Test 1' { 'sheetState': 'veryHidden' } %}
+        {% xlsrow %}
+            {% xlscell %}Foo{% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+    {% xlssheet 'Test 2' %}
+        {% xlsrow %}
+            {% xlscell %}Hello World{% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+{% endxlsdocument %}

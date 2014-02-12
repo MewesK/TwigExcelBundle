@@ -6,7 +6,12 @@
     {% endxlssheet %}
     {% xlssheet 'Test 2' %}
         {% xlsrow %}
-            {% xlscell %}Bar{% endxlscell %}
+            {% xlscell %}Hello World{% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+    {% xlssheet 'Test 1' %}
+        {% xlsrow %}
+            {% xlscell 1 %}Bar{% endxlscell %}
         {% endxlsrow %}
     {% endxlssheet %}
 {% endxlsdocument %}

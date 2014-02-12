@@ -331,6 +331,7 @@ class PhpExcelWrapper {
         $this->sheetAttributes['properties'] = $properties ? $properties : array();
         
         if ($properties != null) {
+            //FIXME
             $this->setProperties($properties, $this->sheetMappings);
         }
     }
