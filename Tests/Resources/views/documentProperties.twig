@@ -1,0 +1,29 @@
+{% xlsdocument {
+    'category': 'Test category',
+    'company': 'Test company',
+    'created': '2000/01/01',
+    'creator': 'Test creator',
+    'defaultStyle': {
+        'font': {
+            'name': 'Verdana',
+            'size': '18'
+        }
+    },
+    'description': 'Test description',
+    'keywords': 'Test keywords',
+    'lastModifiedBy': 'Test modifier',
+    'manager': 'Test manager',
+    'modified': '2000/01/01',
+    'security': {
+        'lockRevision': false,
+        'lockStructure': false,
+        'lockWindows': false,
+        'revisionsPassword': 'test',
+        'workbookPassword': 'test'
+    },
+    'subject': 'Test subject',
+    'title': 'Test title'
+} %}
+    {% xlssheet 'Test' %}
+    {% endxlssheet %}
+{% endxlsdocument %}

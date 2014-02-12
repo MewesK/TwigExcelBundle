@@ -22,7 +22,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
     // Helper
     //
 
-    private function getPhpExcelObject($templateName, $format) {
+    private function getDocument($templateName, $format) {
         // generate source from template
         $source = self::$environment->loadTemplate($templateName.'.twig')->render(
             array('app' => array('request' => array('requestFormat' => $format)))
@@ -74,7 +74,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        exec('rm -rf '.__DIR__.'/Temporary/');
+        //exec('rm -rf '.__DIR__.'/Temporary/');
     }
 
     //
@@ -87,10 +87,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
     public function testCellIndex($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('cellIndex', $format);
+            $document = $this->getDocument('cellIndex', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $document->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
@@ -110,10 +110,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
     public function testCellProperties($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('cellProperties', $format);
+            $document = $this->getDocument('cellProperties', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $document->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $breaks = $sheet->getBreaks();
@@ -164,16 +164,53 @@ class TwigTest extends PHPUnit_Framework_TestCase
     public function testDocumentMultiSheet($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('documentMultiSheet', $format);
+            $document = $this->getDocument('documentMultiSheet', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test 1');
+            $sheet = $document->getSheetByName('Test 1');
             $this->assertNotNull($sheet, 'Sheet "Test 1" does not exist');
             $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
 
-            $sheet = $phpExcel->getSheetByName('Test 2');
+            $sheet = $document->getSheetByName('Test 2');
             $this->assertNotNull($sheet, 'Sheet "Test 2" does not exist');
             $this->assertEquals('Bar', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+        } catch (Twig_Error_Runtime $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @dataProvider formatProvider
+     */
+    public function testDocumentProperties($format)
+    {
+        try {
+            $document = $this->getDocument('documentProperties', $format);
+            $this->assertNotNull($document, 'Document does not exist');
+
+            $properties = $document->getProperties();
+            $this->assertNotNull($properties, 'Properties do not exist');
+
+            $this->assertEquals('Test category', $properties->getCategory(), 'Unexpected value in category');
+            // +/- 24h range to allow possible timezone differences (946684800)
+            $this->assertGreaterThanOrEqual(946598400, $properties->getCreated(), 'Unexpected value in created');
+            $this->assertLessThanOrEqual(946771200, $properties->getCreated(), 'Unexpected value in created');
+            $this->assertEquals('Test creator', $properties->getCreator(), 'Unexpected value in creator');
+
+            $this->assertEquals('Test description', $properties->getDescription(), 'Unexpected value in description');
+            $this->assertEquals('Test keywords', $properties->getKeywords(), 'Unexpected value in keywords');
+            // +/- 24h range to allow possible timezone differences (946684800)
+            $this->assertGreaterThanOrEqual(946598400, $properties->getModified(), 'Unexpected value in modified');
+            $this->assertLessThanOrEqual(946771200, $properties->getModified(), 'Unexpected value in modified');
+            $this->assertEquals('Test modifier', $properties->getLastModifiedBy(), 'Unexpected value in lastModifiedBy');
+
+            $this->assertEquals('Test subject', $properties->getSubject(), 'Unexpected value in subject');
+            $this->assertEquals('Test title', $properties->getTitle(), 'Unexpected value in title');
+
+            if ($format != 'xls') {
+                $this->assertEquals('Test company', $properties->getCompany(), 'Unexpected value in company');
+                $this->assertEquals('Test manager', $properties->getManager(), 'Unexpected value in manager');
+            }
         } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
@@ -185,10 +222,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
     public function testDocumentSimple($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('documentSimple', $format);
+            $document = $this->getDocument('documentSimple', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $document->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
@@ -206,10 +243,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
     public function testDrawingProperties($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('drawingProperties', $format);
+            $document = $this->getDocument('drawingProperties', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $document->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $drawings = $sheet->getDrawingCollection();
@@ -255,10 +292,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
     public function testDrawingSimple($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('drawingSimple', $format);
+            $document = $this->getDocument('drawingSimple', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $document->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $drawings = $sheet->getDrawingCollection();
@@ -280,10 +317,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
     public function testHeaderFooterComplex($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('headerFooterComplex', $format);
+            $document = $this->getDocument('headerFooterComplex', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $document->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $headerFooter = $sheet->getHeaderFooter();
@@ -315,10 +352,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
         }
 
         try {
-            $phpExcel = $this->getPhpExcelObject('headerFooterDrawing', $format);
+            $document = $this->getDocument('headerFooterDrawing', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $document->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $headerFooter = $sheet->getHeaderFooter();
@@ -359,10 +396,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
             return;
         }
         try {
-            $phpExcel = $this->getPhpExcelObject('headerFooterProperties', $format);
+            $document = $this->getDocument('headerFooterProperties', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $document->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $headerFooter = $sheet->getHeaderFooter();
@@ -389,10 +426,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
     public function testRowIndex($format)
     {
         try {
-            $phpExcel = $this->getPhpExcelObject('rowIndex', $format);
+            $document = $this->getDocument('rowIndex', $format);
+            $this->assertNotNull($document, 'Document does not exist');
 
-            // tests
-            $sheet = $phpExcel->getSheetByName('Test');
+            $sheet = $document->getSheetByName('Test');
             $this->assertNotNull($sheet, 'Sheet does not exist');
 
             $this->assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');

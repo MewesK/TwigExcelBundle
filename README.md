@@ -109,7 +109,7 @@ style2 | array | | Standard PhpExcel style array
         ...
     {% endxlsdocument %}
 
- * May contain one or more 'xlssheet' tags
+ * Must contain one or more 'xlssheet' tags
 
 #### Attributes
 
@@ -121,25 +121,25 @@ properties | array | X
 
 Name | Type | Description | XLS
 ---- | ---- | ----------- | ---
-category | string
+category | string | | X
 company | string
-created | datetime
-creator | string
+created | datetime | Can be null, timestamp or a strtotime compatible string | X
+creator | string | | X
 defaultStyle | array | Standard PhpExcel style array
-description | string
-format | string | Possible formats are 'csv', 'html', 'pdf', 'xls, 'xlsx'
-keywords | string
-lastModifiedBy | string
+description | string | | X
+format | string | Possible formats are 'csv', 'html', 'pdf', 'xls, 'xlsx' | X
+keywords | string | | X
+lastModifiedBy | string | | X
 manager | string
-modified | datetime
+modified | datetime | Can be null, timestamp or a strtotime compatible string | X
 security | array
 + lockRevision | boolean
 + lockStructure | boolean
 + lockWindows | boolean
 + revisionsPassword | string
 + workbookPassword | string
-subject | string
-title | string
+subject | string | | X
+title | string | | X
 
 #### Example
 
@@ -147,7 +147,7 @@ title | string
 {% xlsdocument {
     category: 'Test category',
     company: 'Test company',
-    created: 'now'|date('DATE_ATOM'),
+    created: '2000/01/01',
     creator: 'Tester',
     defaultStyle: {
         font: {
@@ -160,12 +160,12 @@ title | string
     keywords: 'Test',
     lastModifiedBy: 'Tester',
     manager: 'Tester',
-    modified: 'now'|date('DATE_ATOM'),
+    modified: '2000/01/01',
     security: {
         lockRevision: true,
         lockStructure: true,
         lockWindows: true,
-        revisionsPassword: 'test'
+        revisionsPassword: 'test',
         workbookPassword: 'test'
     },
     subject: 'Test',

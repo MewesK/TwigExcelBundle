@@ -26,10 +26,13 @@ class XlsSheetNode extends Twig_Node
             ->raw(';'.PHP_EOL)
 
             ->write('$phpExcel->startSheet($sheetIndex, $sheetProperties);'.PHP_EOL)
-            ->write('unset($sheetIndex, $sheetProperties);'.PHP_EOL)
+            ->write('unset($sheetIndex, $sheetProperties);'.PHP_EOL);
 
-            ->subcompile($this->getNode('body'))
+        if ($this->hasNode('body')) {
+        $compiler->subcompile($this->getNode('body'));
+        }
 
+        $compiler
             ->addDebugInfo($this)
 
             ->write('$phpExcel->endSheet();'.PHP_EOL);
