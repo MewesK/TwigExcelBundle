@@ -20,7 +20,7 @@ use Twig_SimpleFunction;
 class TwigExcelExtension extends Twig_Extension
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFunctions()
     {
@@ -30,7 +30,7 @@ class TwigExcelExtension extends Twig_Extension
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getTokenParsers()
     {
@@ -49,7 +49,7 @@ class TwigExcelExtension extends Twig_Extension
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getNodeVisitors()
     {
@@ -59,7 +59,7 @@ class TwigExcelExtension extends Twig_Extension
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {

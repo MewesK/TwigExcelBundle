@@ -22,7 +22,7 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface {
     protected $path = array();
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function enterNode(Twig_NodeInterface $node, Twig_Environment $env)
     {
@@ -65,7 +65,7 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function leaveNode(Twig_NodeInterface $node, Twig_Environment $env)
     {
@@ -75,7 +75,7 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface {
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPriority()
     {

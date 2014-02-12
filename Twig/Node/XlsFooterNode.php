@@ -4,11 +4,10 @@ namespace MewesK\TwigExcelBundle\Twig\Node;
 use Twig_Compiler;
 use Twig_Node;
 use Twig_Node_Expression;
-use Twig_NodeInterface;
 
 class XlsFooterNode extends Twig_Node
 {
-    public function __construct(Twig_Node_Expression $type, Twig_Node_Expression $properties, Twig_NodeInterface $body, $line, $tag = 'xlsfooter')
+    public function __construct(Twig_Node_Expression $type, Twig_Node_Expression $properties, Twig_Node $body, $line, $tag = 'xlsfooter')
     {
         parent::__construct(array('type' => $type, 'properties' => $properties, 'body' => $body), array(), $line, $tag);
     }

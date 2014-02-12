@@ -2,28 +2,29 @@
 
 namespace MewesK\TwigExcelBundle\Tests;
 
+use InvalidArgumentException;
 use MewesK\TwigExcelBundle\Twig\TwigExcelExtension;
+use PHPExcel_Reader_Excel2007;
+use PHPExcel_Reader_Excel5;
+use PHPUnit_Framework_TestCase;
 use Twig_Environment;
+use Twig_Error_Runtime;
+use Twig_Loader_Filesystem;
 
-class TwigTest extends \PHPUnit_Framework_TestCase
+class TwigTest extends PHPUnit_Framework_TestCase
 {
-    private $environment;
+    /**
+     * @var Twig_Environment
+     */
+    protected static $environment;
 
     //
     // Helper
     //
 
-    private function getLoaderArray(array $templateNames = array()) {
-        $loaderArray = array();
-        foreach($templateNames as $templateName) {
-            $loaderArray[$templateName] = file_get_contents(__DIR__.'/Resources/views/'.$templateName.'.xls.twig');
-        }
-        return $loaderArray;
-    }
-
     private function getPhpExcelObject($templateName, $format) {
         // generate source from template
-        $source = $this->environment->loadTemplate($templateName)->render(
+        $source = self::$environment->loadTemplate($templateName.'.twig')->render(
             array('app' => array('request' => array('requestFormat' => $format)))
         );
 
@@ -34,13 +35,13 @@ class TwigTest extends \PHPUnit_Framework_TestCase
         $reader = null;
         switch($format) {
             case 'xls':
-                $reader = new \PHPExcel_Reader_Excel5();
+                $reader = new PHPExcel_Reader_Excel5();
                 break;
             case 'xlsx':
-                $reader = new \PHPExcel_Reader_Excel2007();
+                $reader = new PHPExcel_Reader_Excel2007();
                 break;
             default:
-                throw new \InvalidArgumentException();
+                throw new InvalidArgumentException();
         }
         return $reader->load(__DIR__.'/Temporary/'.$templateName.'.'.$format);
     }
@@ -57,31 +58,23 @@ class TwigTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function setUp() {
-        $this->environment = new Twig_Environment(new \Twig_Loader_Array($this->getLoaderArray(array(
-                'cellIndex',
-                'cellProperties',
-                'documentMultiSheet',
-                'documentSimple',
-                'drawingProperties',
-                'drawingSimple',
-                'headerFooterComplex',
-                'headerFooterDrawing',
-                'headerFooterProperties',
-                'rowIndex'
-            ))), array('strict_variables' => true));
-        $this->environment->addExtension(new TwigExcelExtension());
-        $this->environment->setCache(__DIR__.'/Temporary/');
+    public static function setUpBeforeClass() {
+        self::$environment = new Twig_Environment(
+            new Twig_Loader_Filesystem(__DIR__.'/Resources/views/'),
+            array('strict_variables' => true)
+        );
+        self::$environment->addExtension(new TwigExcelExtension());
+        self::$environment->setCache(__DIR__.'/Temporary/');
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    protected function tearDown()
+    public static function tearDownAfterClass()
     {
-        //exec('rm -rf '.__DIR__.'/Temporary/');
+        exec('rm -rf '.__DIR__.'/Temporary/');
     }
 
     //
@@ -106,7 +99,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('Ipsum', $sheet->getCell('D1')->getValue(), 'Unexpected value in D1');
             $this->assertEquals('Hello', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
             $this->assertEquals('World', $sheet->getCell('E1')->getValue(), 'Unexpected value in E1');
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -160,7 +153,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(18, $font->getSize(), 'Unexpected value in size');
 
             $this->assertEquals('http://example.com/', $cell->getHyperlink()->getUrl(), 'Unexpected value in url');
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -181,7 +174,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $sheet = $phpExcel->getSheetByName('Test 2');
             $this->assertNotNull($sheet, 'Sheet "Test 2" does not exist');
             $this->assertEquals('Bar', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -202,7 +195,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('Bar', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
             $this->assertEquals('Hello', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
             $this->assertEquals('World', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -251,7 +244,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals(4, $shadow->getDistance(), 'Unexpected value in distance');
                 $this->assertEquals(true, $shadow->getVisible(), 'Unexpected value in visible');
             }
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -276,7 +269,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $this->assertNotNull($drawing, 'Drawing is null');
             $this->assertEquals(100, $drawing->getWidth(), 'Unexpected value in width');
             $this->assertEquals(100, $drawing->getHeight(), 'Unexpected value in height');
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -306,7 +299,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals('&LevenFooter left&CevenFooter center&RevenFooter right', $headerFooter->getEvenFooter(), 'Unexpected value in evenFooter');
             }
         }
-        catch (\Twig_Error_Runtime $e) {
+        catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -351,7 +344,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $this->assertNotNull($drawing, 'Footer drawing is null');
             $this->assertEquals(20, $drawing->getWidth(), 'Unexpected value in width');
             $this->assertEquals(20, $drawing->getHeight(), 'Unexpected value in height');
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -385,7 +378,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(false, $headerFooter->getAlignWithMargins(), 'Unexpected value in alignWithMargins');
             $this->assertEquals(false, $headerFooter->getScaleWithDocument(), 'Unexpected value in scaleWithDocument');
         }
-        catch (\Twig_Error_Runtime $e) {
+        catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -408,7 +401,7 @@ class TwigTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('Ipsum', $sheet->getCell('A4')->getValue(), 'Unexpected value in A4');
             $this->assertEquals('Hello', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
             $this->assertEquals('World', $sheet->getCell('A5')->getValue(), 'Unexpected value in A5');
-        } catch (\Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             $this->fail($e->getMessage());
         }
     }

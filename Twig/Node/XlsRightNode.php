@@ -4,11 +4,10 @@ namespace MewesK\TwigExcelBundle\Twig\Node;
 
 use Twig_Compiler;
 use Twig_Node;
-use Twig_NodeInterface;
 
 class XlsRightNode extends Twig_Node
 {
-    public function __construct(Twig_NodeInterface $body, $line, $tag = 'xlsright')
+    public function __construct(Twig_Node $body, $line, $tag = 'xlsright')
     {
         parent::__construct(array('body' => $body), array(), $line, $tag);
     }

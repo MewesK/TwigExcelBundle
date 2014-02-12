@@ -3,7 +3,6 @@
 namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
 use MewesK\TwigExcelBundle\Twig\Node\XlsRowNode;
-use Twig_Node_Expression_Array;
 use Twig_Node_Expression_Constant;
 use Twig_Token;
 use Twig_TokenParser;

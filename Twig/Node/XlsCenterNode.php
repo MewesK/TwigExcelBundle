@@ -4,11 +4,10 @@ namespace MewesK\TwigExcelBundle\Twig\Node;
 
 use Twig_Compiler;
 use Twig_Node;
-use Twig_NodeInterface;
 
 class XlsCenterNode extends Twig_Node
 {
-    public function __construct(Twig_NodeInterface $body, $line, $tag = 'xlscenter')
+    public function __construct(Twig_Node $body, $line, $tag = 'xlscenter')
     {
         parent::__construct(array('body' => $body), array(), $line, $tag);
     }
