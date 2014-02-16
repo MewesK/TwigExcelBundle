@@ -195,11 +195,11 @@ properties | array | X
 Name | Type | Description | XLS
 ---- | ---- | ----------- | ---
 columnDimension | array | Contains one or more arrays. Possible keys are 'default' or a valid column name like 'A'
- + autoSize | boolean
- + collapsed | boolean
+ + autoSize | boolean | Does not work in PhpExcel?
+ + collapsed | boolean | Does not work in PhpExcel?
  + columnIndex | string | Does not work in PhpExcel?
  + outlineLevel | int
- + visible | boolean
+ + visible | boolean | Does not work in PhpExcel?
  + width | double | Does not work in PhpExcel?
  + xfIndex | int
 pageMargins | array
