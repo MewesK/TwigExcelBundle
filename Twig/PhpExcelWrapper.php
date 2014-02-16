@@ -191,6 +191,7 @@ class PhpExcelWrapper {
         $this->sheetMappings['protection']['insertHyperlinks'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setInsertHyperlinks($value); };
         $this->sheetMappings['protection']['insertRows'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setInsertRows($value); };
         $this->sheetMappings['protection']['objects'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setObjects($value); };
+        $this->sheetMappings['protection']['password'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setPassword($value); };
         $this->sheetMappings['protection']['pivotTables'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setPivotTables($value); };
         $this->sheetMappings['protection']['scenarios'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setScenarios($value); };
         $this->sheetMappings['protection']['selectLockedCells'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setSelectLockedCells($value); };

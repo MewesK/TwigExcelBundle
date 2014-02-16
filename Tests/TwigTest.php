@@ -466,9 +466,9 @@ class TwigTest extends PHPUnit_Framework_TestCase
      */
     public function testSheetProperties($format)
     {
-        if ($format == 'xls') {
-            return;
-        }
+        //if ($format == 'xls') {
+            //return;
+        //}
         try {
             $document = $this->getDocument('sheetProperties', $format);
             $this->assertNotNull($document, 'Document does not exist');
@@ -493,6 +493,47 @@ class TwigTest extends PHPUnit_Framework_TestCase
             //$this->assertEquals(false, $columnDimension->getVisible(), 'Unexpected value in visible');
             $this->assertEquals(200, $columnDimension->getWidth(), 'Unexpected value in width');
             $this->assertEquals(0, $columnDimension->getXfIndex(), 'Unexpected value in xfIndex');
+
+            $pageMargins = $sheet->getPageMargins();
+            $this->assertNotNull($pageMargins, 'PageMargins does not exist');
+            $this->assertEquals(1, $pageMargins->getTop(), 'Unexpected value in top');
+            $this->assertEquals(1, $pageMargins->getBottom(), 'Unexpected value in bottom');
+            $this->assertEquals(0.75, $pageMargins->getLeft(), 'Unexpected value in left');
+            $this->assertEquals(0.75, $pageMargins->getRight(), 'Unexpected value in right');
+            $this->assertEquals(0.5, $pageMargins->getHeader(), 'Unexpected value in header');
+            $this->assertEquals(0.5, $pageMargins->getFooter(), 'Unexpected value in footer');
+
+            $pageSetup = $sheet->getPageSetup();
+            $this->assertNotNull($pageSetup, 'PageSetup does not exist');
+            $this->assertEquals(1, $pageSetup->getFitToHeight(), 'Unexpected value in fitToHeight');
+            $this->assertEquals(false, $pageSetup->getFitToPage(), 'Unexpected value in fitToPage');
+            $this->assertEquals(1, $pageSetup->getFitToWidth(), 'Unexpected value in fitToWidth');
+            $this->assertEquals(false, $pageSetup->getHorizontalCentered(), 'Unexpected value in horizontalCentered');
+            $this->assertEquals('landscape', $pageSetup->getOrientation(), 'Unexpected value in orientation');
+            $this->assertEquals(9, $pageSetup->getPaperSize(), 'Unexpected value in paperSize');
+            $this->assertEquals('A1:B1', $pageSetup->getPrintArea(), 'Unexpected value in printArea');
+            $this->assertEquals(100, $pageSetup->getScale(), 'Unexpected value in scale');
+            $this->assertEquals(false, $pageSetup->getVerticalCentered(), 'Unexpected value in verticalCentered');
+
+            $protection = $sheet->getProtection();
+            $this->assertNotNull($protection, 'Protection does not exist');
+            $this->assertEquals(true, $protection->getAutoFilter(), 'Unexpected value in autoFilter');
+            $this->assertEquals(true, $protection->getDeleteColumns(), 'Unexpected value in deleteColumns');
+            $this->assertEquals(true, $protection->getDeleteRows(), 'Unexpected value in deleteRows');
+            $this->assertEquals(true, $protection->getFormatCells(), 'Unexpected value in formatCells');
+            $this->assertEquals(true, $protection->getFormatColumns(), 'Unexpected value in formatColumns');
+            $this->assertEquals(true, $protection->getFormatRows(), 'Unexpected value in formatRows');
+            $this->assertEquals(true, $protection->getInsertColumns(), 'Unexpected value in insertColumns');
+            $this->assertEquals(true, $protection->getInsertHyperlinks(), 'Unexpected value in insertHyperlinks');
+            $this->assertEquals(true, $protection->getInsertRows(), 'Unexpected value in insertRows');
+            $this->assertEquals(true, $protection->getObjects(), 'Unexpected value in objects');
+            $this->assertEquals(\PHPExcel_Shared_PasswordHasher::hashPassword('testpassword'), $protection->getPassword(), 'Unexpected value in password');
+            $this->assertEquals(true, $protection->getPivotTables(), 'Unexpected value in pivotTables');
+            $this->assertEquals(true, $protection->getScenarios(), 'Unexpected value in scenarios');
+            $this->assertEquals(true, $protection->getSelectLockedCells(), 'Unexpected value in selectLockedCells');
+            $this->assertEquals(true, $protection->getSelectUnlockedCells(), 'Unexpected value in selectUnlockedCells');
+            $this->assertEquals(true, $protection->getSheet(), 'Unexpected value in sheet');
+            $this->assertEquals(true, $protection->getSort(), 'Unexpected value in sort');
 
             $this->assertEquals(true, $sheet->getPrintGridlines(), 'Unexpected value in printGridlines');
             $this->assertEquals(true, $sheet->getRightToLeft(), 'Unexpected value in rightToLeft');

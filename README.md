@@ -230,6 +230,7 @@ protection | array
  + insertHyperlinks | boolean
  + insertRows | boolean
  + objects | boolean
+ + password | string
  + pivotTables | boolean
  + scenarios | boolean
  + selectLockedCells | boolean
