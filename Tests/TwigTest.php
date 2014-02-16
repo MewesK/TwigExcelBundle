@@ -480,6 +480,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
             $this->assertNotNull($defaultColumnDimension, 'DefaultColumnDimension does not exist');
             //$this->assertEquals(true, $defaultColumnDimension->getAutoSize(), 'Unexpected value in autoSize');
             //$this->assertEquals(false, $defaultColumnDimension->getCollapsed(), 'Unexpected value in collapsed');
+            //$this->assertEquals(1, $defaultColumnDimension->getColumnIndex(), 'Unexpected value in columnIndex');
             $this->assertEquals(0, $defaultColumnDimension->getOutlineLevel(), 'Unexpected value in outlineLevel');
             //$this->assertEquals(true, $defaultColumnDimension->getVisible(), 'Unexpected value in visible');
             $this->assertEquals(-1, $defaultColumnDimension->getWidth(), 'Unexpected value in width');
@@ -489,6 +490,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
             $this->assertNotNull($columnDimension, 'ColumnDimension does not exist');
             //$this->assertEquals(false, $columnDimension->getAutoSize(), 'Unexpected value in autoSize');
             //$this->assertEquals(true, $columnDimension->getCollapsed(), 'Unexpected value in collapsed');
+            //$this->assertEquals(1, $columnDimension->getColumnIndex(), 'Unexpected value in columnIndex');
             $this->assertEquals(1, $columnDimension->getOutlineLevel(), 'Unexpected value in outlineLevel');
             //$this->assertEquals(false, $columnDimension->getVisible(), 'Unexpected value in visible');
             $this->assertEquals(200, $columnDimension->getWidth(), 'Unexpected value in width');
@@ -537,6 +539,26 @@ class TwigTest extends PHPUnit_Framework_TestCase
 
             $this->assertEquals(true, $sheet->getPrintGridlines(), 'Unexpected value in printGridlines');
             $this->assertEquals(true, $sheet->getRightToLeft(), 'Unexpected value in rightToLeft');
+
+            $defaultRowDimension = $sheet->getDefaultRowDimension();
+            $this->assertNotNull($defaultRowDimension, 'DefaultRowDimension does not exist');
+            //$this->assertEquals(false, $defaultRowDimension->getCollapsed(), 'Unexpected value in collapsed');
+            $this->assertEquals(0, $defaultRowDimension->getOutlineLevel(), 'Unexpected value in outlineLevel');
+            $this->assertEquals(-1, $defaultRowDimension->getRowHeight(), 'Unexpected value in rowHeight');
+            //$this->assertEquals(1, $defaultRowDimension->getRowIndex(), 'Unexpected value in rowIndex');
+            //$this->assertEquals(true, $defaultRowDimension->getVisible(), 'Unexpected value in visible');
+            $this->assertEquals(0, $defaultRowDimension->getXfIndex(), 'Unexpected value in xfIndex');
+            //$this->assertEquals(false, $defaultRowDimension->getzeroHeight(), 'Unexpected value in zeroHeight');
+
+            $rowDimension = $sheet->getRowDimension(2);
+            $this->assertNotNull($rowDimension, 'RowDimension does not exist');
+            //$this->assertEquals(true, $rowDimension->getCollapsed(), 'Unexpected value in collapsed');
+            $this->assertEquals(1, $rowDimension->getOutlineLevel(), 'Unexpected value in outlineLevel');
+            $this->assertEquals(30, $rowDimension->getRowHeight(), 'Unexpected value in rowHeight');
+            //$this->assertEquals(1, $rowDimension->getRowIndex(), 'Unexpected value in rowIndex');
+            //$this->assertEquals(false, $rowDimension->getVisible(), 'Unexpected value in visible');
+            $this->assertEquals(0, $rowDimension->getXfIndex(), 'Unexpected value in xfIndex');
+            //$this->assertEquals(true, $rowDimension->getzeroHeight(), 'Unexpected value in zeroHeight');
 
             // Not supported by the readers - cannot be tested
             //$this->assertEquals(false, $sheet->getShowGridlines(), 'Unexpected value in showGridlines');

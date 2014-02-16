@@ -200,7 +200,7 @@ columnDimension | array | Contains one or more arrays. Possible keys are 'defaul
  + columnIndex | string | Does not work in PhpExcel?
  + outlineLevel | int
  + visible | boolean | Does not work in PhpExcel?
- + width | double | Does not work in PhpExcel?
+ + width | double
  + xfIndex | int
 pageMargins | array
  + top | double
@@ -240,13 +240,13 @@ protection | array
 printGridlines | boolean
 rightToLeft | boolean
 rowDimension | array | Contains one or more arrays. Possible keys are 'default' or a row index >=1
- + collapsed | boolean
+ + collapsed | boolean | Does not work in PhpExcel?
  + outlineLevel | int
  + rowHeight | double
- + rowIndex | int | A row index >=1
- + visible | boolean
+ + rowIndex | int | Does not work in PhpExcel?
+ + visible | boolean | Does not work in PhpExcel?
  + xfIndex | int
- + zeroHeight | boolean
+ + zeroHeight | boolean | Does not work in PhpExcel?
 sheetState | string
 showGridlines | boolean | Cannot be tested - not supported by the reader
 tabColor | string
