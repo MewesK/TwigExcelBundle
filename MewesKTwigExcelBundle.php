@@ -8,10 +8,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class MewesKTwigExcelBundle extends Bundle
 {
-    public function load(array $configs, ContainerBuilder $container)
-    {
-        $configuration = new Configuration();
-
-        $config = $this->processConfiguration($configuration, $configs);
-    }
 }
