@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class MewesKTwigExcelBundleExtension extends Extension
+class MewesKTwigExcelExtension extends Extension
 {
     /**
      * {@inheritDoc}
