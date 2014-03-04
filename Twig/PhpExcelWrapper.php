@@ -287,8 +287,8 @@ class PhpExcelWrapper {
         // try symfony request
         else {
             $app = $this->context && isset($this->context["app"]) ? $this->context["app"] : null;
-            $request = $app && isset($app['request']) ? $app['request'] : null;
-            $format = $request && isset($request['requestFormat']) ? $request['requestFormat'] : null;
+            $request = $app && $app->getRequest() ? $app->getRequest() : null;
+            $format = $request && $request->getRequestFormat() ? $request->getRequestFormat() : null;
         }
         // set default
         if ($format == null || empty($format)) {

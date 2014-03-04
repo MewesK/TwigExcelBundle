@@ -7,6 +7,7 @@ use MewesK\TwigExcelBundle\Twig\TwigExcelExtension;
 use PHPExcel_Reader_Excel2007;
 use PHPExcel_Reader_Excel5;
 use PHPUnit_Framework_TestCase;
+use stdClass;
 use Twig_Environment;
 use Twig_Error_Runtime;
 use Twig_Loader_Filesystem;
@@ -24,9 +25,9 @@ class TwigTest extends PHPUnit_Framework_TestCase
 
     private function getDocument($templateName, $format) {
         // generate source from template
-        $source = self::$environment->loadTemplate($templateName.'.twig')->render(
-            array('app' => array('request' => array('requestFormat' => $format)))
-        );
+        $source = self::$environment
+			->loadTemplate($templateName.'.twig')
+			->render(array('app' => new MockGlobalVariables($format)));
 
         // save source
         file_put_contents(__DIR__.'/Temporary/'.$templateName.'.'.$format, $source);
