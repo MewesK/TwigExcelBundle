@@ -29,4 +29,12 @@ class MockGlobalVariables
     {
         return new MockRequest($this->requestFormat);
     }
+
+    /**
+     * @return string
+     */
+    public function getRequestFormat()
+    {
+        return $this->requestFormat;
+    }
 } 

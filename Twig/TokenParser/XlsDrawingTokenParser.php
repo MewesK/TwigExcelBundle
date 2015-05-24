@@ -3,16 +3,14 @@
 namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
 use MewesK\TwigExcelBundle\Twig\Node\XlsDrawingNode;
-use Twig_Node_Expression_Array;
 use Twig_Token;
-use Twig_TokenParser;
 
 /**
  * Class XlsDrawingTokenParser
  *
  * @package MewesK\TwigExcelBundle\Twig\TokenParser
  */
-class XlsDrawingTokenParser extends Twig_TokenParser
+class XlsDrawingTokenParser extends AbstractTokenParser
 {
     /**
      * @param Twig_Token $token
@@ -22,15 +20,12 @@ class XlsDrawingTokenParser extends Twig_TokenParser
      */
     public function parse(Twig_Token $token)
     {
+        // parse attributes
         $path = $this->parser->getExpressionParser()->parseExpression();
-
-        $properties = new Twig_Node_Expression_Array([], $token->getLine());
-        if (!$this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
-            $properties = $this->parser->getExpressionParser()->parseExpression();
-        }
-
+        $properties = $this->parseProperties($token);
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
+        // return node
         return new XlsDrawingNode($path, $properties, $token->getLine(), $this->getTag());
     }
 

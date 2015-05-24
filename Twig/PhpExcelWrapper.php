@@ -304,9 +304,9 @@ class PhpExcelWrapper
         }
         // try symfony request
         else {
-            $app = is_array($this->context) && isset($this->context['app']) ? $this->context['app'] : null;
-            $request = $app && $app->getRequest() ? $app->getRequest() : null;
-            $format = $request && $request->getRequestFormat() ? $request->getRequestFormat() : null;
+            $app = is_array($this->context) && array_key_exists('app', $this->context) ? $this->context['app'] : null;
+            $request = $app && is_callable([$app, 'getRequest']) ? $app->getRequest() : null;
+            $format = $request && is_callable([$app, 'getRequestFormat']) ? $request->getRequestFormat() : null;
         }
         // set default
         if ($format === null || !is_string($format)) {
@@ -559,7 +559,7 @@ class PhpExcelWrapper
     {
         $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
         $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'xlsdrawing' . '_' . md5($path) .
-            (!empty($pathExtension) ? '.'.$pathExtension : '');
+            ($pathExtension ? '.'.$pathExtension : '');
 
         // make local copy of the asset
         if (!file_exists($tempPath)) {

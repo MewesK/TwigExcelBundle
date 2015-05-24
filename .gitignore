@@ -6,4 +6,3 @@ composer.lock
 composer.phar
 phpunit.phar
 phpunit.xml
-.DS_Store
