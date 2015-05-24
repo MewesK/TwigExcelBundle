@@ -190,6 +190,13 @@ class TwigTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * The following attributes are not supported by the readers and therefore cannot be tested:
+     * $security->getLockRevision() -> true
+     * $security->getLockStructure() -> true
+     * $security->getLockWindows() -> true
+     * $security->getRevisionsPassword() -> 'test'
+     * $security->getWorkbookPassword() -> 'test'
+     * 
      * @param string $format
      *
      * @throws \PHPExcel_Exception
@@ -198,12 +205,6 @@ class TwigTest extends PHPUnit_Framework_TestCase
      */
     public function testDocumentProperties($format)
     {
-        // Not supported by the readers - cannot be tested
-        // $security->getLockRevision() -> true
-        // $security->getLockStructure() -> true
-        // $security->getLockWindows() -> true
-        // $security->getRevisionsPassword() -> 'test'
-        // $security->getWorkbookPassword() -> 'test'
 
         try {
             $document = $this->getDocument('documentProperties', $format);
@@ -539,6 +540,25 @@ class TwigTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * The following attributes are not supported by the readers and therefore cannot be tested:
+     * $columnDimension->getAutoSize() -> false
+     * $columnDimension->getCollapsed() -> true
+     * $columnDimension->getColumnIndex() -> 1
+     * $columnDimension->getVisible() -> false
+     * $defaultColumnDimension->getAutoSize() -> true
+     * $defaultColumnDimension->getCollapsed() -> false
+     * $defaultColumnDimension->getColumnIndex() -> 1
+     * $defaultColumnDimension->getVisible() -> true
+     * $defaultRowDimension->getCollapsed() -> false
+     * $defaultRowDimension->getRowIndex() -> 1
+     * $defaultRowDimension->getVisible() -> true
+     * $defaultRowDimension->getzeroHeight() -> false
+     * $rowDimension->getCollapsed() -> true
+     * $rowDimension->getRowIndex() -> 1
+     * $rowDimension->getVisible() -> false
+     * $rowDimension->getzeroHeight() -> true
+     * $sheet->getShowGridlines() -> false
+     * 
      * @param string $format
      *
      * @throws \PHPExcel_Exception
@@ -547,25 +567,6 @@ class TwigTest extends PHPUnit_Framework_TestCase
      */
     public function testSheetProperties($format)
     {
-        // Not supported by the readers - cannot be tested
-        // $columnDimension->getAutoSize() -> false
-        // $columnDimension->getCollapsed() -> true
-        // $columnDimension->getColumnIndex() -> 1
-        // $columnDimension->getVisible() -> false
-        // $defaultColumnDimension->getAutoSize() -> true
-        // $defaultColumnDimension->getCollapsed() -> false
-        // $defaultColumnDimension->getColumnIndex() -> 1
-        // $defaultColumnDimension->getVisible() -> true
-        // $defaultRowDimension->getCollapsed() -> false
-        // $defaultRowDimension->getRowIndex() -> 1
-        // $defaultRowDimension->getVisible() -> true
-        // $defaultRowDimension->getzeroHeight() -> false
-        // $rowDimension->getCollapsed() -> true
-        // $rowDimension->getRowIndex() -> 1
-        // $rowDimension->getVisible() -> false
-        // $rowDimension->getzeroHeight() -> true
-        // $sheet->getShowGridlines() -> false
-
         try {
             $document = $this->getDocument('sheetProperties', $format);
             static::assertNotNull($document, 'Document does not exist');
