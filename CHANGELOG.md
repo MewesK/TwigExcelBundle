@@ -1,4 +1,4 @@
-## 1.1.0-beta (2015-05-24)
+## 1.1.x-dev (2015-05-24)
 
  * Fixed minimum PHP version to >=5.4 (short array syntax)
  * Added .ODS to the supported formats

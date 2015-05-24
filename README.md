@@ -1,4 +1,4 @@
-# TwigExcelBundle (alpha)
+# TwigExcelBundle
 
 [![Build Status](https://travis-ci.org/MewesK/TwigExcelBundle.png?branch=master)](https://travis-ci.org/MewesK/TwigExcelBundle)
 

@@ -33,7 +33,8 @@ class TwigTest extends PHPUnit_Framework_TestCase
      *
      * @return \PHPExcel
      */
-    private function getDocument($templateName, $format) {
+    private function getDocument($templateName, $format)
+    {
         // generate source from template
         $source = self::$environment
 			->loadTemplate($templateName.'.twig')
@@ -43,7 +44,6 @@ class TwigTest extends PHPUnit_Framework_TestCase
         file_put_contents(__DIR__.'/Temporary/'.$templateName.'.'.$format, $source);
 
         // load source
-        $reader = null;
         switch($format) {
             case 'xls':
                 $reader = new PHPExcel_Reader_Excel5();
@@ -64,7 +64,8 @@ class TwigTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function formatProvider() {
+    public function formatProvider()
+    {
         return [
             ['xls'],
             ['xlsx']
@@ -74,7 +75,8 @@ class TwigTest extends PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         self::$environment = new Twig_Environment(
             new Twig_Loader_Filesystem(__DIR__.'/Resources/views/'),
             ['strict_variables' => true]
