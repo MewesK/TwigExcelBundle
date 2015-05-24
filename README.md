@@ -5,14 +5,24 @@
 
 This Symfony2 bundle provides a PhpExcel integration for Twig.
 
+## Supported output formats
+
+The supported output formats are directly based on the capabilities of PhpExcel.
+
+ * .CSV (only basic data output)
+ * .ODS (only basic data output)
+ * .PDF (based on the .XLSX output)
+ * .XLS (limited functionality)
+ * .XLSX 
+
 ## Software requirements
 
 The following software is required to use PHPExcel/TwigExcelBundle:
 
-PHP version 5.4.0 or newer
-PHP extension php_zip enabled
-PHP extension php_xml enabled
-PHP extension php_gd2 enabled (if not compiled in)
+ * PHP version 5.4.0 or newer
+ * PHP extension php_zip enabled
+ * PHP extension php_xml enabled
+ * PHP extension php_gd2 enabled (if not compiled in)
 
 ## Installation
 
