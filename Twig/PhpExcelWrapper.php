@@ -318,7 +318,7 @@ class PhpExcelWrapper
                 $writerType = 'CSV';
                 break;
             case 'ods':
-                $writerType = 'OOCalc';
+                $writerType = 'OpenDocument';
                 break;
             case 'pdf':
                 $writerType = 'PDF';

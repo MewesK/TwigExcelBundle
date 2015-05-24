@@ -30,7 +30,7 @@ class XlsFooterTokenParser extends AbstractTokenParser
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
         // parse body
-        $body = $this->parseBody($token);
+        $body = $this->parseBody();
 
         // return node
         return new XlsFooterNode($type, $properties, $body, $token->getLine(), $this->getTag());

@@ -14,6 +14,7 @@ use MewesK\TwigExcelBundle\Twig\Node\XlsRowNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode;
 use Twig_Environment;
 use Twig_Error_Syntax;
+use Twig_Node;
 use Twig_NodeInterface;
 use Twig_NodeVisitorInterface;
 
@@ -100,12 +101,12 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface
     //
 
     /**
-     * @param Twig_NodeInterface $node
+     * @param Twig_Node $node
      * @param array $allowedParents
      *
      * @throws Twig_Error_Syntax
      */
-    private function checkAllowedParents(Twig_NodeInterface $node, array $allowedParents) {
+    private function checkAllowedParents(Twig_Node $node, array $allowedParents) {
         $parentName = null;
 
         foreach(array_reverse($this->path) as $className) {

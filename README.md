@@ -1,6 +1,7 @@
 # TwigExcelBundle
 
 [![Build Status](https://travis-ci.org/MewesK/TwigExcelBundle.png?branch=master)](https://travis-ci.org/MewesK/TwigExcelBundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/283cfe57-6ee4-4102-8fff-da3f6e668e8f/mini.png)](https://insight.sensiolabs.com/projects/283cfe57-6ee4-4102-8fff-da3f6e668e8f)
 
 This Symfony2 bundle provides a PhpExcel integration for Twig.
 
@@ -128,27 +129,27 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description | XLS
----- | ---- | ----------- | ---
+Name | Type | Description | XLS | ODS
+---- | ---- | ----------- | --- | ---
 category | string | | X
 company | string
-created | datetime | Can be null, timestamp or a strtotime compatible string | X
-creator | string | | X
+created | datetime | Can be null, timestamp or a strtotime compatible string | X | X
+creator | string | | X | X
 defaultStyle | array | Standard PhpExcel style array
-description | string | | X
+description | string | | X | X
 format | string | Possible formats are 'csv', 'html', 'pdf', 'xls, 'xlsx' | X
 keywords | string | | X
 lastModifiedBy | string | | X
 manager | string
-modified | datetime | Can be null, timestamp or a strtotime compatible string | X
+modified | datetime | Can be null, timestamp or a strtotime compatible string | X | X
 security | array | Cannot be tested - not supported by the reader
 + lockRevision | boolean | Cannot be tested - not supported by the reader
 + lockStructure | boolean | Cannot be tested - not supported by the reader
 + lockWindows | boolean | Cannot be tested - not supported by the reader
 + revisionsPassword | string | Cannot be tested - not supported by the reader
 + workbookPassword | string | Cannot be tested - not supported by the reader
-subject | string | | X
-title | string | | X
+subject | string | | X | X
+title | string | | X | X
 
 #### Example
 
@@ -201,8 +202,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description | XLS
----- | ---- | ----------- | ---
+Name | Type | Description | XLS | ODS
+---- | ---- | ----------- | --- | ---
 columnDimension | array | Contains one or more arrays. Possible keys are 'default' or a valid column name like 'A'
  + autoSize | boolean | Does not work in PhpExcel?
  + collapsed | boolean | Does not work in PhpExcel?
@@ -348,6 +349,7 @@ zoomScale | int
     {% endxlsheader %}
 
  * May contain one 'xlsleft', 'xlscenter' and 'xlsright' tag
+ * Not supported by the OpenDocument writer
 
 #### Attributes
 
@@ -358,8 +360,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description | XLS
----- | ---- | ----------- | ---
+Name | Type | Description | XLS | ODS
+---- | ---- | ----------- | --- | ---
 scaleWithDocument | boolean
 alignWithMargins | boolean
 
@@ -378,6 +380,7 @@ alignWithMargins | boolean
     {% endxlsfooter %}
 
  * May contain one 'xlsleft', 'xlscenter' and 'xlsright' tag
+ * Not supported by the OpenDocument writer
 
 #### Attributes
 
@@ -388,8 +391,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description | XLS
----- | ---- | ----------- | ---
+Name | Type | Description | XLS | ODS
+---- | ---- | ----------- | --- | ---
 scaleWithDocument | boolean
 alignWithMargins | boolean
 
@@ -415,7 +418,8 @@ alignWithMargins | boolean
         ...
     {% endxlsright %}
 
- * May contain one 'xlsdrawing' tag
+ * May contain one 'xlsdrawing' tag (not supported by the Excel5 and OpenDocument writer)
+ * Not supported by the OpenDocument writer
 
  * These tags replace the &L, &C and &R format codes.
  * All other codes can be found at: https://github.com/PHPOffice/PHPExcel/blob/develop/Documentation/markdown/Overview/08-Recipes.md#setting-the-print-header-and-footer-of-a-worksheet
@@ -479,8 +483,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description | XLS
----- | ---- | ----------- | ---
+Name | Type | Description | XLS | ODS
+---- | ---- | ----------- | --- | ---
 break | int | Possible values are defined in PHPExcel_Worksheet | X
 dataValidation | array
  + allowBlank | boolean
@@ -540,6 +544,7 @@ url | string | | X
     {% xlsdrawing [path:string] [properties:array] %}
 
  * If the xlsdrawing is used in a header/footer it automatically adds the &G code to be displayed
+ * Not supported by the OpenDocument writer
 
 #### Attributes
 
@@ -550,8 +555,8 @@ properties | array | X
 
 #### Properties
 
-Name | Type | Description | XLS
----- | ---- | ----------- | ---
+Name | Type | Description | XLS | ODS
+---- | ---- | ----------- | --- | ---
 coordinates | string | Cell coordinates like 'A1' | X
 description | string
 height | int | | X

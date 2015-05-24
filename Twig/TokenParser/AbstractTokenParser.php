@@ -29,12 +29,10 @@ abstract class AbstractTokenParser extends Twig_TokenParser
     }
 
     /**
-     * @param Twig_Token $token
-     *
      * @return \Twig_Node
      * @throws \Twig_Error_Syntax
      */
-    protected function parseBody(Twig_Token $token)
+    protected function parseBody()
     {
         $tokenParser = $this; // PHP 5.3 fix
         $body = $this->parser->subparse(function(Twig_Token $token) use ($tokenParser) { return $token->test('end'.$tokenParser->getTag()); }, true);

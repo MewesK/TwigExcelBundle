@@ -71,7 +71,15 @@ class TwigExcelExtension extends Twig_Extension
         return 'excel_extension';
     }
 
-    public function mergeStyles(array $style1, array $style2) {
+    /**
+     * @param array $style1
+     * @param array $style2
+     *
+     * @return array
+     * @throws Twig_Error_Runtime
+     */
+    public function mergeStyles(array $style1, array $style2)
+    {
         if (!is_array($style1) || !is_array($style2)) {
             throw new Twig_Error_Runtime('The xlsmergestyles function only works with arrays.');
         }
