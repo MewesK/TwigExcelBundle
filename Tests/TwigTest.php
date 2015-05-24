@@ -45,7 +45,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
         file_put_contents(__DIR__.'/Temporary/'.$templateName.'.'.$format, $source);
 
         // load source
-        switch($format) {
+        switch ($format) {
             case 'ods':
                 $reader = new PHPExcel_Reader_OOCalc();
                 break;

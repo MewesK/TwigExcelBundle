@@ -313,7 +313,7 @@ class PhpExcelWrapper
             $format = 'xlsx';
         }
 
-        switch(strtolower($format)) {
+        switch (strtolower($format)) {
             case 'csv':
                 $writerType = 'CSV';
                 break;
@@ -454,7 +454,7 @@ class PhpExcelWrapper
     {
         $value = implode('', $this->headerFooterAttributes['value']);
 
-        switch(strtolower($this->headerFooterAttributes['type'])) {
+        switch (strtolower($this->headerFooterAttributes['type'])) {
             case 'header':
                 $this->headerFooterObject->setOddHeader($value);
                 $this->headerFooterObject->setEvenHeader($value);
@@ -506,7 +506,7 @@ class PhpExcelWrapper
         $this->alignmentAttributes['type'] = $type;
         $this->alignmentAttributes['properties'] = $properties;
 
-        switch(strtolower($this->alignmentAttributes['type'])) {
+        switch (strtolower($this->alignmentAttributes['type'])) {
             case 'left':
                 $this->headerFooterAttributes['value']['left'] = '&L';
                 break;
@@ -526,7 +526,7 @@ class PhpExcelWrapper
      */
     public function endAlignment($value = null)
     {
-        switch(strtolower($this->alignmentAttributes['type'])) {
+        switch (strtolower($this->alignmentAttributes['type'])) {
             case 'left':
                 if (strpos($this->headerFooterAttributes['value']['left'], '&G') === false) {
                     $this->headerFooterAttributes['value']['left'] .= $value;
@@ -584,7 +584,7 @@ class PhpExcelWrapper
 
         if ($this->headerFooterObject) {
             $location = '';
-            switch(strtolower($this->alignmentAttributes['type'])) {
+            switch (strtolower($this->alignmentAttributes['type'])) {
                 case 'left':
                     $location .= 'L';
                     $this->headerFooterAttributes['value']['left'] .= '&G';
@@ -600,7 +600,7 @@ class PhpExcelWrapper
                 default:
                     throw new \InvalidArgumentException();
             }
-            switch(strtolower($this->headerFooterAttributes['type'])) {
+            switch (strtolower($this->headerFooterAttributes['type'])) {
                 case 'header':
                 case 'oddheader':
                 case 'evenheader':

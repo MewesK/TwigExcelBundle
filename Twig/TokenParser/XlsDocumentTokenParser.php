@@ -49,7 +49,8 @@ class XlsDocumentTokenParser extends AbstractTokenParser
     /**
      * @param Twig_Node $node
      */
-    private function removeTextNodesRecursively(Twig_Node &$node) {
+    private function removeTextNodesRecursively(Twig_Node &$node)
+    {
         foreach ($node->getIterator() as $key => $subNode)  {
             if ($subNode instanceof Twig_Node_Text) {
                 $node->removeNode($key);
