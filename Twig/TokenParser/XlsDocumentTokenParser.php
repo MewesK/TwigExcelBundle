@@ -13,11 +13,22 @@ use Twig_Node_Text;
 use Twig_Token;
 use Twig_TokenParser;
 
+/**
+ * Class XlsDocumentTokenParser
+ *
+ * @package MewesK\TwigExcelBundle\Twig\TokenParser
+ */
 class XlsDocumentTokenParser extends Twig_TokenParser
 {
+    /**
+     * @param Twig_Token $token
+     *
+     * @return XlsDocumentNode
+     * @throws \Twig_Error_Syntax
+     */
     public function parse(Twig_Token $token)
     {
-        $properties = new Twig_Node_Expression_Array(array(), $token->getLine());
+        $properties = new Twig_Node_Expression_Array([], $token->getLine());
         if (!$this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
             $properties = $this->parser->getExpressionParser()->parseExpression();
         }
@@ -32,17 +43,23 @@ class XlsDocumentTokenParser extends Twig_TokenParser
         return new XlsDocumentNode($properties, $body, $token->getLine(), $this->getTag());
     }
 
+    /**
+     * @return string
+     */
     public function getTag()
     {
         return 'xlsdocument';
     }
 
+    /**
+     * @param Twig_Node $node
+     */
     private function removeTextNodesRecursively(Twig_Node &$node) {
         foreach ($node->getIterator() as $key => $subNode)  {
             if ($subNode instanceof Twig_Node_Text) {
                 $node->removeNode($key);
             }
-            else if ($subNode instanceof Twig_Node && !(
+            elseif ($subNode instanceof Twig_Node && !(
                     $subNode instanceof XlsCellNode ||
                     $subNode instanceof XlsLeftNode ||
                     $subNode instanceof XlsCenterNode ||

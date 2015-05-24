@@ -1,17 +1,32 @@
 <?php
 
 namespace MewesK\TwigExcelBundle\Twig\Node;
+
 use Twig_Compiler;
 use Twig_Node;
 use Twig_Node_Expression;
 
+/**
+ * Class XlsRowNode
+ *
+ * @package MewesK\TwigExcelBundle\Twig\Node
+ */
 class XlsRowNode extends Twig_Node
 {
-    public function __construct(Twig_Node_Expression $index, Twig_Node $body, $line, $tag = 'xlsrow')
+    /**
+     * @param Twig_Node_Expression $index
+     * @param Twig_Node $body
+     * @param int $line
+     * @param string $tag
+     */
+    public function __construct(Twig_Node_Expression $index, Twig_Node $body, $line = 0, $tag = 'xlsrow')
     {
-        parent::__construct(array('index' => $index, 'body' => $body), array(), $line, $tag);
+        parent::__construct(['index' => $index, 'body' => $body], [], $line, $tag);
     }
 
+    /**
+     * @param Twig_Compiler $compiler
+     */
     public function compile(Twig_Compiler $compiler)
     {
         $compiler

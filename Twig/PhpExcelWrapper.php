@@ -2,10 +2,15 @@
 
 namespace MewesK\TwigExcelBundle\Twig;
 
-class PhpExcelWrapper {
-
+/**
+ * Class PhpExcelWrapper
+ *
+ * @package MewesK\TwigExcelBundle\Twig
+ */
+class PhpExcelWrapper
+{
     /**
-     * @var string
+     * @var int
      */
     public static $COLUMN_DEFAULT = 0;
     /**
@@ -14,10 +19,9 @@ class PhpExcelWrapper {
     public static $ROW_DEFAULT = 1;
 
     /**
-     * @var
+     * @var array
      */
     public $context;
-
     /**
      * @var \PHPExcel
      */
@@ -62,16 +66,14 @@ class PhpExcelWrapper {
      * @var array
      */
     public $drawingAttributes;
-
     /**
      * @var int
      */
     public $row;
     /**
-     * @var string
+     * @var int
      */
     public $column;
-
     /**
      * @var array
      */
@@ -92,9 +94,11 @@ class PhpExcelWrapper {
      * @var array
      */
     public $drawingMappings;
-    
 
-    public function __construct($context) {
+    /**
+     * @param array $context
+     */
+    public function __construct(array $context = []) {
         $this->context = $context;
 
         $this->documentObject = null;
@@ -103,21 +107,21 @@ class PhpExcelWrapper {
         $this->cellObject = null;
         $this->drawingObject = null;
 
-        $this->documentAttributes = array();
-        $this->sheetAttributes = array();
-        $this->headerFooterAttributes = array();
-        $this->alignmentAttributes = array();
-        $this->cellAttributes = array();
-        $this->drawingAttributes = array();
+        $this->documentAttributes = [];
+        $this->sheetAttributes = [];
+        $this->headerFooterAttributes = [];
+        $this->alignmentAttributes = [];
+        $this->cellAttributes = [];
+        $this->drawingAttributes = [];
         
         $this->row = null;
         $this->column = null;
         
-        $this->documentMappings = array();
-        $this->sheetMappings = array();
-        $this->footerHeaderMappings = array();
-        $this->cellMappings = array();
-        $this->drawingMappings = array();
+        $this->documentMappings = [];
+        $this->sheetMappings = [];
+        $this->footerHeaderMappings = [];
+        $this->cellMappings = [];
+        $this->drawingMappings = [];
 
         $this->initDocumentPropertyMappings();
         $this->initSheetPropertyMappings();
@@ -157,7 +161,7 @@ class PhpExcelWrapper {
         $wrapper = $this; // PHP 5.3 fix
 
         $this->sheetMappings['columnDimension']['__multi'] = true;
-        $this->sheetMappings['columnDimension']['__object'] = function($key) use ($wrapper) { return $key == 'default' ? $wrapper->sheetObject->getDefaultColumnDimension() : $wrapper->sheetObject->getColumnDimension($key); };
+        $this->sheetMappings['columnDimension']['__object'] = function($key) use ($wrapper) { return $key === 'default' ? $wrapper->sheetObject->getDefaultColumnDimension() : $wrapper->sheetObject->getColumnDimension($key); };
         $this->sheetMappings['columnDimension']['autoSize'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setAutoSize($value); };
         $this->sheetMappings['columnDimension']['collapsed'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setCollapsed($value); };
         $this->sheetMappings['columnDimension']['columnIndex'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['columnDimension']['__object']($key)->setColumnIndex($value); };
@@ -200,7 +204,7 @@ class PhpExcelWrapper {
         $this->sheetMappings['protection']['sort'] = function($value) use ($wrapper) { $wrapper->sheetObject->getProtection()->setSort($value); };
         $this->sheetMappings['rightToLeft'] = function($value) use ($wrapper) { $wrapper->sheetObject->setRightToLeft($value); };
         $this->sheetMappings['rowDimension']['__multi'] = true;
-        $this->sheetMappings['rowDimension']['__object'] = function($key) use ($wrapper) { return $key == 'default' ? $wrapper->sheetObject->getDefaultRowDimension() : $wrapper->sheetObject->getRowDimension($key); };
+        $this->sheetMappings['rowDimension']['__object'] = function($key) use ($wrapper) { return $key === 'default' ? $wrapper->sheetObject->getDefaultRowDimension() : $wrapper->sheetObject->getRowDimension($key); };
         $this->sheetMappings['rowDimension']['collapsed'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setCollapsed($value); };
         $this->sheetMappings['rowDimension']['outlineLevel'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setOutlineLevel($value); };
         $this->sheetMappings['rowDimension']['rowHeight'] = function($key, $value) use ($wrapper) { $wrapper->sheetMappings['rowDimension']['__object']($key)->setRowHeight($value); };
@@ -256,7 +260,7 @@ class PhpExcelWrapper {
         $this->drawingMappings['shadow']['alignment'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setAlignment($value); };
         $this->drawingMappings['shadow']['alpha'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setAlpha($value); };
         $this->drawingMappings['shadow']['blurRadius'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setBlurRadius($value); };
-        $this->drawingMappings['shadow']['color'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->getColor()->setRgb($value); };
+        $this->drawingMappings['shadow']['color'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->getColor()->setRGB($value); };
         $this->drawingMappings['shadow']['direction'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setDirection($value); };
         $this->drawingMappings['shadow']['distance'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setDistance($value); };
         $this->drawingMappings['shadow']['visible'] = function($value) use ($wrapper) { $wrapper->drawingObject->getShadow()->setVisible($value); };
@@ -267,16 +271,24 @@ class PhpExcelWrapper {
     // Tags
     //
 
+    /**
+     * @param null|array $properties
+     *
+     * @throws \PHPExcel_Exception
+     */
     public function startDocument(array $properties = null) {
         $this->documentObject = new \PHPExcel();
         $this->documentObject->removeSheetByIndex(0);
-        $this->documentAttributes['properties'] = $properties ? $properties : array();
+        $this->documentAttributes['properties'] = $properties ?: [];
 
-        if ($properties != null) {
+        if ($properties !== null) {
             $this->setProperties($properties, $this->documentMappings);
         }
     }
 
+    /**
+     * @throws \PHPExcel_Reader_Exception
+     */
     public function endDocument() {
         $format = null;
 
@@ -286,12 +298,12 @@ class PhpExcelWrapper {
         }
         // try symfony request
         else {
-            $app = $this->context && isset($this->context["app"]) ? $this->context["app"] : null;
+            $app = $this->context && isset($this->context['app']) ? $this->context['app'] : null;
             $request = $app && $app->getRequest() ? $app->getRequest() : null;
             $format = $request && $request->getRequestFormat() ? $request->getRequestFormat() : null;
         }
         // set default
-        if ($format == null || empty($format)) {
+        if ($format === null || !is_string($format)) {
             $format = 'xlsx';
         }
 
@@ -300,27 +312,36 @@ class PhpExcelWrapper {
             case 'csv':
                 $writerType = 'CSV';
                 break;
+            case 'ods':
+                $writerType = 'OOCalc';
+                break;
+            case 'pdf':
+                $writerType = 'PDF';
+                break;
             case 'xls':
                 $writerType = 'Excel5';
                 break;
             case 'xlsx':
                 $writerType = 'Excel2007';
                 break;
-            case 'pdf':
-                $writerType = 'PDF';
-                break;
-            case 'default':
+            default:
                 throw new \InvalidArgumentException();
         }
 
         \PHPExcel_IOFactory::createWriter($this->documentObject, $writerType)->save('php://output');
 
         $this->documentObject = null;
-        $this->documentAttributes = array();
+        $this->documentAttributes = [];
     }
 
+    /**
+     * @param string $index
+     * @param null|array $properties
+     *
+     * @throws \PHPExcel_Exception
+     */
     public function startSheet($index, array $properties = null) {
-        if ($index == null || empty($index)) {
+        if ($index === null || !is_string($index)) {
             throw new \InvalidArgumentException();
         }
         if (!$this->documentObject->sheetNameExists($index)) {
@@ -329,76 +350,90 @@ class PhpExcelWrapper {
 
         $this->sheetObject = $this->documentObject->setActiveSheetIndexByName($index);
         $this->sheetAttributes['index'] = $index;
-        $this->sheetAttributes['properties'] = $properties ? $properties : array();
+        $this->sheetAttributes['properties'] = $properties ?: [];
         
-        if ($properties != null) {
+        if ($properties !== null) {
             $this->setProperties($properties, $this->sheetMappings);
         }
     }
 
     public function endSheet() {
         $this->sheetObject = null;
-        $this->sheetAttributes = array();
+        $this->sheetAttributes = [];
         $this->row = null;
     }
 
+    /**
+     * @param null|int $index
+     */
     public function startRow($index = null) {
-        if ($this->sheetObject == null) {
+        if ($this->sheetObject === null) {
             throw new \LogicException();
         }
         if ($index !== null && !is_int($index)) {
             throw new \InvalidArgumentException();
         }
 
-        $this->row = $index == null ? $this->increaseRow() : $index;
+        $this->row = $index === null ? $this->increaseRow() : $index;
     }
 
     public function endRow() {
         $this->column = null;
     }
 
+    /**
+     * @param null|int $index
+     * @param null|mixed $value
+     * @param null|array $properties
+     *
+     * @throws \PHPExcel_Exception
+     */
     public function startCell($index = null, $value = null, array $properties = null) {
-        if ($this->sheetObject == null) {
+        if ($this->sheetObject === null) {
             throw new \LogicException();
         }
         if ($index !== null && !is_int($index)) {
             throw new \InvalidArgumentException();
         }
 
-        $this->column = $index == null ? $this->increaseColumn() : $index;
+        $this->column = $index === null ? $this->increaseColumn() : $index;
         $this->cellObject = $this->sheetObject->getCellByColumnAndRow($this->column, $this->row);
 
         if ($value !== null) {
             $this->cellObject->setValue($value);
         }
         
-        if ($properties != null) {
+        if ($properties !== null) {
             $this->setProperties($properties, $this->cellMappings);
         }
 
         $this->cellAttributes['value'] = $value;
-        $this->cellAttributes['properties'] = $properties ? $properties : array();
+        $this->cellAttributes['properties'] = $properties ?: [];
     }
 
     public function endCell() {
         $this->cellObject = null;
-        $this->cellAttributes = array();
+        $this->cellAttributes = [];
     }
 
+    /**
+     * @param string $type
+     * @param null|array $properties
+     */
     public function startHeaderFooter($type, array $properties = null) {
-        if ($this->sheetObject == null) {
+        if ($this->sheetObject === null) {
             throw new \LogicException();
         }
-        if (array_search(strtolower($type), array('header', 'oddheader', 'evenheader', 'firstheader', 'footer', 'oddfooter', 'evenfooter', 'firstfooter')) === false) {
+        if (in_array(strtolower($type), ['header', 'oddheader', 'evenheader', 'firstheader', 'footer', 'oddfooter', 'evenfooter', 'firstfooter'], true) === false) {
             throw new \InvalidArgumentException();
         }
 
         $this->headerFooterObject = $this->sheetObject->getHeaderFooter();
-        $this->headerFooterAttributes['value'] = array('left' => null, 'center' => null, 'right' => null); // will be generated by the alignment tags
+        $this->headerFooterAttributes['value'] = ['left' => null, 'center' => null, 'right' => null]; // will be generated by the alignment tags
         $this->headerFooterAttributes['type'] = $type;
-        $this->headerFooterAttributes['properties'] = $properties ? $properties : array();
+        $this->headerFooterAttributes['properties'] = $properties ?: [];
 
-        if ($properties != null) {
+        if ($properties !== null) {
             $this->setProperties($properties, $this->footerHeaderMappings);
         }
     }
@@ -446,9 +481,13 @@ class PhpExcelWrapper {
         }
 
         $this->headerFooterObject = null;
-        $this->headerFooterAttributes = array();
+        $this->headerFooterAttributes = [];
     }
 
+    /**
+     * @param null|string $type
+     * @param null|array $properties
+     */
     public function startAlignment($type = null, array $properties = null) {
         $this->alignmentAttributes['type'] = $type;
         $this->alignmentAttributes['properties'] = $properties;
@@ -468,6 +507,9 @@ class PhpExcelWrapper {
         }
     }
 
+    /**
+     * @param null|string $value
+     */
     public function endAlignment($value = null) {
         switch(strtolower($this->alignmentAttributes['type'])) {
             case 'left':
@@ -489,13 +531,19 @@ class PhpExcelWrapper {
                 throw new \InvalidArgumentException();
         }
 
-        $this->alignmentAttributes = array();
+        $this->alignmentAttributes = [];
     }
-    
+
+    /**
+     * @param string $path
+     * @param array $properties
+     *
+     * @throws \PHPExcel_Exception
+     */
     public function startDrawing($path, array $properties = null) {
-        $pathInfo = pathinfo($path, PATHINFO_EXTENSION);
+        $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
         $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'xlsdrawing' . '_' . md5($path) .
-            (isset($pathInfo['extension']) && !empty($pathInfo['extension']) ? '.'.$pathInfo['extension'] : '');
+            (!empty($pathExtension) ? '.'.$pathExtension : '');
 
         // make local copy of the asset
         if (!file_exists($tempPath)) {
@@ -514,7 +562,7 @@ class PhpExcelWrapper {
             unset($data, $temp);
         }
 
-        if ($this->sheetObject == null) {
+        if ($this->sheetObject === null) {
             throw new \LogicException();
         }
 
@@ -562,32 +610,42 @@ class PhpExcelWrapper {
             $this->drawingObject->setPath($tempPath);
         }
 
-        if ($properties != null) {
+        if ($properties !== null) {
             $this->setProperties($properties, $this->drawingMappings);
         }
     }
 
     public function endDrawing() {
         $this->drawingObject = null;
-        $this->drawingAttributes = array();
+        $this->drawingAttributes = [];
     }
 
     //
     // Helper
     //
 
+    /**
+     * @return int|null
+     */
     private function increaseRow() {
         return $this->row === null ? self::$ROW_DEFAULT : $this->row + 1;
     }
 
+    /**
+     * @return int|null
+     */
     private function increaseColumn() {
         return $this->column === null ? self::$COLUMN_DEFAULT : $this->column + 1;
     }
 
+    /**
+     * @param array $properties
+     * @param array $mappings
+     */
     private function setProperties(array $properties, array $mappings) {
         foreach ($properties as $key => $value) {
             if (array_key_exists($key, $mappings)) {
-                if (is_array($value) && is_array($mappings) && $key != 'style' && $key != 'defaultStyle') {
+                if (is_array($value) && is_array($mappings) && $key !== 'style' && $key !== 'defaultStyle') {
                     if (array_key_exists('__multi', $mappings[$key]) && $mappings[$key]['__multi'] === true) {
                         foreach ($value as $_key => $_value) {
                             $this->setPropertiesByKey($_key, $_value, $mappings[$key]);
@@ -602,6 +660,11 @@ class PhpExcelWrapper {
         }
     }
 
+    /**
+     * @param string $key
+     * @param array $properties
+     * @param array $mappings
+     */
     private function setPropertiesByKey($key, array $properties, array $mappings) {
         foreach ($properties as $_key => $value) {
             if (array_key_exists($_key, $mappings)) {

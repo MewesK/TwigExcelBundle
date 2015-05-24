@@ -1,17 +1,32 @@
 <?php
 
 namespace MewesK\TwigExcelBundle\Twig\Node;
+
 use Twig_Compiler;
 use Twig_Node;
 use Twig_Node_Expression;
 
+/**
+ * Class XlsDrawingNode
+ *
+ * @package MewesK\TwigExcelBundle\Twig\Node
+ */
 class XlsDrawingNode extends Twig_Node
 {
-    public function __construct(Twig_Node_Expression $path, Twig_Node_Expression $properties, $line, $tag = 'xlsdrawing')
+    /**
+     * @param Twig_Node_Expression $path
+     * @param Twig_Node_Expression $properties
+     * @param int $line
+     * @param string $tag
+     */
+    public function __construct(Twig_Node_Expression $path, Twig_Node_Expression $properties, $line = 0, $tag = 'xlsdrawing')
     {
-        parent::__construct(array('path' => $path, 'properties' => $properties), array(), $line, $tag);
+        parent::__construct(['path' => $path, 'properties' => $properties], [], $line, $tag);
     }
 
+    /**
+     * @param Twig_Compiler $compiler
+     */
     public function compile(Twig_Compiler $compiler)
     {
         $compiler

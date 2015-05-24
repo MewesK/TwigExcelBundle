@@ -8,8 +8,19 @@ use Twig_Node_Expression_Constant;
 use Twig_Token;
 use Twig_TokenParser;
 
+/**
+ * Class XlsCellTokenParser
+ *
+ * @package MewesK\TwigExcelBundle\Twig\TokenParser
+ */
 class XlsCellTokenParser extends Twig_TokenParser
 {
+    /**
+     * @param Twig_Token $token
+     *
+     * @return XlsCellNode
+     * @throws \Twig_Error_Syntax
+     */
     public function parse(Twig_Token $token)
     {
         $index = new Twig_Node_Expression_Constant(null, $token->getLine());
@@ -17,7 +28,7 @@ class XlsCellTokenParser extends Twig_TokenParser
             $index = $this->parser->getExpressionParser()->parseExpression();
         }
 
-        $properties = new Twig_Node_Expression_Array(array(), $token->getLine());
+        $properties = new Twig_Node_Expression_Array([], $token->getLine());
         if (!$this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
             $properties = $this->parser->getExpressionParser()->parseExpression();
         }
@@ -30,6 +41,9 @@ class XlsCellTokenParser extends Twig_TokenParser
         return new XlsCellNode($index, $properties, $body, $token->getLine(), $this->getTag());
     }
 
+    /**
+     * @return string
+     */
     public function getTag()
     {
         return 'xlscell';

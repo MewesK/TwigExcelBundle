@@ -6,8 +6,19 @@ use MewesK\TwigExcelBundle\Twig\Node\XlsRightNode;
 use Twig_Token;
 use Twig_TokenParser;
 
+/**
+ * Class XlsRightTokenParser
+ *
+ * @package MewesK\TwigExcelBundle\Twig\TokenParser
+ */
 class XlsRightTokenParser extends Twig_TokenParser
 {
+    /**
+     * @param Twig_Token $token
+     *
+     * @return XlsRightNode
+     * @throws \Twig_Error_Syntax
+     */
     public function parse(Twig_Token $token)
     {
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
@@ -18,6 +29,9 @@ class XlsRightTokenParser extends Twig_TokenParser
         return new XlsRightNode($body, $token->getLine(), $this->getTag());
     }
 
+    /**
+     * @return string
+     */
     public function getTag()
     {
         return 'xlsright';

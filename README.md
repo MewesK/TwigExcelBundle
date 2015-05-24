@@ -4,6 +4,15 @@
 
 This Symfony2 bundle provides a PhpExcel integration for Twig.
 
+## Software requirements
+
+The following software is required to use PHPExcel/TwigExcelBundle:
+
+PHP version 5.4.0 or newer
+PHP extension php_zip enabled
+PHP extension php_xml enabled
+PHP extension php_gd2 enabled (if not compiled in)
+
 ## Installation
 
 ### Step 1: Download using composer
@@ -55,7 +64,7 @@ class HelloController
      */
     public function indexAction($name)
     {
-        return array('data' => array('La', 'Le', 'Lu'));
+        return ['data' => ['La', 'Le', 'Lu']];
     }
 }
 ```

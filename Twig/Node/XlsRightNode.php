@@ -5,13 +5,26 @@ namespace MewesK\TwigExcelBundle\Twig\Node;
 use Twig_Compiler;
 use Twig_Node;
 
+/**
+ * Class XlsRightNode
+ *
+ * @package MewesK\TwigExcelBundle\Twig\Node
+ */
 class XlsRightNode extends Twig_Node
 {
-    public function __construct(Twig_Node $body, $line, $tag = 'xlsright')
+    /**
+     * @param Twig_Node $body
+     * @param int $line
+     * @param string $tag
+     */
+    public function __construct(Twig_Node $body, $line = 0, $tag = 'xlsright')
     {
-        parent::__construct(array('body' => $body), array(), $line, $tag);
+        parent::__construct(['body' => $body], [], $line, $tag);
     }
 
+    /**
+     * @param Twig_Compiler $compiler
+     */
     public function compile(Twig_Compiler $compiler)
     {
         $compiler

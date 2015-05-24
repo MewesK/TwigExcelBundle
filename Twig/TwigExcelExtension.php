@@ -17,6 +17,11 @@ use Twig_Error_Runtime;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
+/**
+ * Class TwigExcelExtension
+ *
+ * @package MewesK\TwigExcelBundle\Twig
+ */
 class TwigExcelExtension extends Twig_Extension
 {
     /**
@@ -24,9 +29,9 @@ class TwigExcelExtension extends Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new Twig_SimpleFunction('xlsmergestyles', array($this, 'mergeStyles'))
-        );
+        return [
+            new Twig_SimpleFunction('xlsmergestyles', [$this, 'mergeStyles'])
+        ];
     }
 
     /**
@@ -34,7 +39,7 @@ class TwigExcelExtension extends Twig_Extension
      */
     public function getTokenParsers()
     {
-        return array(
+        return [
             new XlsCellTokenParser(),
             new XlsDocumentTokenParser(),
             new XlsDrawingTokenParser(),
@@ -45,7 +50,7 @@ class TwigExcelExtension extends Twig_Extension
             new XlsRightTokenParser(),
             new XlsRowTokenParser(),
             new XlsSheetTokenParser()
-        );
+        ];
     }
 
     /**
@@ -53,9 +58,9 @@ class TwigExcelExtension extends Twig_Extension
      */
     public function getNodeVisitors()
     {
-        return array(
+        return [
             new SyntaxCheckNodeVisitor()
-        );
+        ];
     }
 
     /**
