@@ -22,7 +22,7 @@ class PhpExcelWrapper
      */
     private $rowWrapper;
     /**
-     * @var XlsSheetWrapper
+     * @var XlsCellWrapper
      */
     private $cellWrapper;
     /**
