@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.6/phpunit.xsd"
          colors="true"
@@ -7,14 +6,9 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          bootstrap="vendor/autoload.php"
->
+        >
     <php>
-        <!-- Deletes tmp/ -->
-        <env name="DELETE_ALL_FILES" value="true"/>
-        <!-- Deletes tmp/logs/ -->
-        <env name="DELETE_LOG_FILES" value="false"/>
-        <!-- Deletes tmp/cache/ -->
-        <env name="DELETE_CACHE_FILES" value="true"/>
+        <env name="DELETE_TEMP_FILES" value="true"/>
     </php>
 
     <testsuites>

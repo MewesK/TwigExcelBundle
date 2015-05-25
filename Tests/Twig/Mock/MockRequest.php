@@ -1,13 +1,12 @@
 <?php
 
-namespace MewesK\TwigExcelBundle\Tests;
+namespace MewesK\TwigExcelBundle\Tests\Twig\Mock;
 
 /**
- * Class MockGlobalVariables
- *
- * @package MewesK\TwigExcelBundle\Tests
+ * Class MockRequest
+ * @package MewesK\TwigExcelBundle\Tests\Twig\Mock
  */
-class MockGlobalVariables
+class MockRequest
 {
     /**
      * @var string
@@ -20,14 +19,6 @@ class MockGlobalVariables
     public function __construct($requestFormat)
     {
         $this->requestFormat = $requestFormat;
-    }
-
-    /**
-     * @return MockRequest
-     */
-    public function getRequest()
-    {
-        return new MockRequest($this->requestFormat);
     }
 
     /**

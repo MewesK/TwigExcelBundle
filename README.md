@@ -26,7 +26,16 @@ The following software is required to use PHPExcel/TwigExcelBundle:
 
 ## Installation
 
-### Step 1: Download using composer
+### Step 1: Download the Bundle
+
+Open a command console, enter your project directory and execute the
+following command to download the latest stable version of this bundle:
+
+```bash
+$ composer require mewesk/twig-excel-bundle
+```
+
+Or add the following code to your composer.json file and run composer update afterwards:
 
 ```js
 {
@@ -40,17 +49,31 @@ The following software is required to use PHPExcel/TwigExcelBundle:
 $ php composer.phar update mewesk/twig-excel-bundle
 ```
 
-### Step 2: Enable the bundle
+This requires you to have Composer installed globally, as explained
+in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
+of the Composer documentation.
+
+### Step 2: Enable the Bundle
 
 ```php
+<?php
 // app/AppKernel.php
 
-public function registerBundles()
+// ...
+class AppKernel extends Kernel
 {
-    $bundles = array(
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+
+            MewesK\TwigExcelBundle\MewesKTwigExcelBundle(),
+        );
+
         // ...
-        new MewesK\TwigExcelBundle\TwigExcelBundle(),
-    );
+    }
+
+    // ...
 }
 ```
 
@@ -59,6 +82,7 @@ public function registerBundles()
 ### Step 1: Create your controller
 
 ```php
+<?php
 // src/Acme/HelloBundle/Controller/HelloController.php
 
 namespace Acme\HelloBundle\Controller;
