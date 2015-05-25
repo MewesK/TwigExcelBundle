@@ -29,19 +29,15 @@ class XlsDrawingNode extends Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
-        $compiler
-            ->addDebugInfo($this)
-
+        $compiler->addDebugInfo($this)
             ->write('$drawingPath = ')
             ->subcompile($this->getNode('path'))
-            ->raw(';'.PHP_EOL)
-
+            ->raw(';' . PHP_EOL)
             ->write('$drawingProperties = ')
             ->subcompile($this->getNode('properties'))
-            ->raw(';'.PHP_EOL)
-
-            ->write('$phpExcel->startDrawing($drawingPath, $drawingProperties);'.PHP_EOL)
-            ->write('unset($drawingPath, $drawingProperties);'.PHP_EOL)
-            ->write('$phpExcel->endDrawing();'.PHP_EOL);
+            ->raw(';' . PHP_EOL)
+            ->write('$phpExcel->startDrawing($drawingPath, $drawingProperties);' . PHP_EOL)
+            ->write('unset($drawingPath, $drawingProperties);' . PHP_EOL)
+            ->write('$phpExcel->endDrawing();' . PHP_EOL);
     }
 }

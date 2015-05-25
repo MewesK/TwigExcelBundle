@@ -57,22 +57,54 @@ class XlsDrawingWrapper extends AbstractWrapper
     {
         $wrapper = $this; // PHP 5.3 fix
 
-        $this->mappings['coordinates'] = function($value) use ($wrapper) { $wrapper->object->setCoordinates($value); };
-        $this->mappings['description'] = function($value) use ($wrapper) { $wrapper->object->setDescription($value); };
-        $this->mappings['height'] = function($value) use ($wrapper) { $wrapper->object->setHeight($value); };
-        $this->mappings['name'] = function($value) use ($wrapper) { $wrapper->object->setName($value); };
-        $this->mappings['offsetX'] = function($value) use ($wrapper) { $wrapper->object->setOffsetX($value); };
-        $this->mappings['offsetY'] = function($value) use ($wrapper) { $wrapper->object->setOffsetY($value); };
-        $this->mappings['resizeProportional'] = function($value) use ($wrapper) { $wrapper->object->setResizeProportional($value); };
-        $this->mappings['rotation'] = function($value) use ($wrapper) { $wrapper->object->setRotation($value); };
-        $this->mappings['shadow']['alignment'] = function($value) use ($wrapper) { $wrapper->object->getShadow()->setAlignment($value); };
-        $this->mappings['shadow']['alpha'] = function($value) use ($wrapper) { $wrapper->object->getShadow()->setAlpha($value); };
-        $this->mappings['shadow']['blurRadius'] = function($value) use ($wrapper) { $wrapper->object->getShadow()->setBlurRadius($value); };
-        $this->mappings['shadow']['color'] = function($value) use ($wrapper) { $wrapper->object->getShadow()->getColor()->setRGB($value); };
-        $this->mappings['shadow']['direction'] = function($value) use ($wrapper) { $wrapper->object->getShadow()->setDirection($value); };
-        $this->mappings['shadow']['distance'] = function($value) use ($wrapper) { $wrapper->object->getShadow()->setDistance($value); };
-        $this->mappings['shadow']['visible'] = function($value) use ($wrapper) { $wrapper->object->getShadow()->setVisible($value); };
-        $this->mappings['width'] = function($value) use ($wrapper) { $wrapper->object->setWidth($value); };
+        $this->mappings['coordinates'] = function ($value) use ($wrapper) {
+            $wrapper->object->setCoordinates($value);
+        };
+        $this->mappings['description'] = function ($value) use ($wrapper) {
+            $wrapper->object->setDescription($value);
+        };
+        $this->mappings['height'] = function ($value) use ($wrapper) {
+            $wrapper->object->setHeight($value);
+        };
+        $this->mappings['name'] = function ($value) use ($wrapper) {
+            $wrapper->object->setName($value);
+        };
+        $this->mappings['offsetX'] = function ($value) use ($wrapper) {
+            $wrapper->object->setOffsetX($value);
+        };
+        $this->mappings['offsetY'] = function ($value) use ($wrapper) {
+            $wrapper->object->setOffsetY($value);
+        };
+        $this->mappings['resizeProportional'] = function ($value) use ($wrapper) {
+            $wrapper->object->setResizeProportional($value);
+        };
+        $this->mappings['rotation'] = function ($value) use ($wrapper) {
+            $wrapper->object->setRotation($value);
+        };
+        $this->mappings['shadow']['alignment'] = function ($value) use ($wrapper) {
+            $wrapper->object->getShadow()->setAlignment($value);
+        };
+        $this->mappings['shadow']['alpha'] = function ($value) use ($wrapper) {
+            $wrapper->object->getShadow()->setAlpha($value);
+        };
+        $this->mappings['shadow']['blurRadius'] = function ($value) use ($wrapper) {
+            $wrapper->object->getShadow()->setBlurRadius($value);
+        };
+        $this->mappings['shadow']['color'] = function ($value) use ($wrapper) {
+            $wrapper->object->getShadow()->getColor()->setRGB($value);
+        };
+        $this->mappings['shadow']['direction'] = function ($value) use ($wrapper) {
+            $wrapper->object->getShadow()->setDirection($value);
+        };
+        $this->mappings['shadow']['distance'] = function ($value) use ($wrapper) {
+            $wrapper->object->getShadow()->setDistance($value);
+        };
+        $this->mappings['shadow']['visible'] = function ($value) use ($wrapper) {
+            $wrapper->object->getShadow()->setVisible($value);
+        };
+        $this->mappings['width'] = function ($value) use ($wrapper) {
+            $wrapper->object->setWidth($value);
+        };
     }
 
     /**
@@ -84,8 +116,7 @@ class XlsDrawingWrapper extends AbstractWrapper
     public function start($path, array $properties = null)
     {
         $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
-        $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'xlsdrawing' . '_' . md5($path) .
-            ($pathExtension ? '.'.$pathExtension : '');
+        $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'xlsdrawing' . '_' . md5($path) . ($pathExtension ? '.' . $pathExtension : '');
 
         // make local copy of the asset
         if (!file_exists($tempPath)) {

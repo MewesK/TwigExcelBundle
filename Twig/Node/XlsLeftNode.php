@@ -27,16 +27,12 @@ class XlsLeftNode extends Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
-        $compiler
-            ->addDebugInfo($this)
-
-            ->write('$phpExcel->startAlignment(\'left\');'.PHP_EOL)
-
+        $compiler->addDebugInfo($this)
+            ->write('$phpExcel->startAlignment(\'left\');' . PHP_EOL)
             ->write("ob_start();\n")
             ->subcompile($this->getNode('body'))
-            ->write('$leftValue = trim(ob_get_clean());'.PHP_EOL)
-
-            ->write('$phpExcel->endAlignment($leftValue);'.PHP_EOL)
-            ->write('unset($leftValue);'.PHP_EOL);
+            ->write('$leftValue = trim(ob_get_clean());' . PHP_EOL)
+            ->write('$phpExcel->endAlignment($leftValue);' . PHP_EOL)
+            ->write('unset($leftValue);' . PHP_EOL);
     }
 }

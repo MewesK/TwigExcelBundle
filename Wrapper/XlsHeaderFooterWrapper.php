@@ -58,8 +58,12 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
     {
         $wrapper = $this; // PHP 5.3 fix
 
-        $this->mappings['scaleWithDocument'] = function($value) use ($wrapper) { $wrapper->object->setScaleWithDocument($value); };
-        $this->mappings['alignWithMargins'] = function($value) use ($wrapper) { $wrapper->object->setAlignWithMargins($value); };
+        $this->mappings['scaleWithDocument'] = function ($value) use ($wrapper) {
+            $wrapper->object->setScaleWithDocument($value);
+        };
+        $this->mappings['alignWithMargins'] = function ($value) use ($wrapper) {
+            $wrapper->object->setAlignWithMargins($value);
+        };
     }
 
     /**
@@ -71,7 +75,10 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
         if ($this->sheetWrapper->getObject() === null) {
             throw new \LogicException();
         }
-        if (in_array(strtolower($type), ['header', 'oddheader', 'evenheader', 'firstheader', 'footer', 'oddfooter', 'evenfooter', 'firstfooter'], true) === false) {
+        if (in_array(strtolower($type),
+                ['header', 'oddheader', 'evenheader', 'firstheader', 'footer', 'oddfooter', 'evenfooter', 'firstfooter'],
+                true) === false
+        ) {
             throw new \InvalidArgumentException();
         }
 

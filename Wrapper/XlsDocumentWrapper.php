@@ -45,24 +45,60 @@ class XlsDocumentWrapper extends AbstractWrapper
     {
         $wrapper = $this; // PHP 5.3 fix
 
-        $this->mappings['category'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setCategory($value); };
-        $this->mappings['company'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setCompany($value); };
-        $this->mappings['created'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setCreated($value); };
-        $this->mappings['creator'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setCreator($value); };
-        $this->mappings['defaultStyle'] = function($value) use ($wrapper) { $wrapper->object->getDefaultStyle()->applyFromArray($value); };
-        $this->mappings['description'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setDescription($value); };
-        $this->mappings['format'] = function($value) use ($wrapper) { $wrapper->attributes['format'] = $value; };
-        $this->mappings['keywords'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setKeywords($value); };
-        $this->mappings['lastModifiedBy'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setLastModifiedBy($value); };
-        $this->mappings['manager'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setManager($value); };
-        $this->mappings['modified'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setModified($value); };
-        $this->mappings['security']['lockRevision'] = function($value) use ($wrapper) { $wrapper->object->getSecurity()->setLockRevision($value); };
-        $this->mappings['security']['lockStructure'] = function($value) use ($wrapper) { $wrapper->object->getSecurity()->setLockStructure($value); };
-        $this->mappings['security']['lockWindows'] = function($value) use ($wrapper) { $wrapper->object->getSecurity()->setLockWindows($value); };
-        $this->mappings['security']['revisionsPassword'] = function($value) use ($wrapper) { $wrapper->object->getSecurity()->setRevisionsPassword($value); };
-        $this->mappings['security']['workbookPassword'] = function($value) use ($wrapper) { $wrapper->object->getSecurity()->setWorkbookPassword($value); };
-        $this->mappings['subject'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setSubject($value); };
-        $this->mappings['title'] = function($value) use ($wrapper) { $wrapper->object->getProperties()->setTitle($value); };
+        $this->mappings['category'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setCategory($value);
+        };
+        $this->mappings['company'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setCompany($value);
+        };
+        $this->mappings['created'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setCreated($value);
+        };
+        $this->mappings['creator'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setCreator($value);
+        };
+        $this->mappings['defaultStyle'] = function ($value) use ($wrapper) {
+            $wrapper->object->getDefaultStyle()->applyFromArray($value);
+        };
+        $this->mappings['description'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setDescription($value);
+        };
+        $this->mappings['format'] = function ($value) use ($wrapper) {
+            $wrapper->attributes['format'] = $value;
+        };
+        $this->mappings['keywords'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setKeywords($value);
+        };
+        $this->mappings['lastModifiedBy'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setLastModifiedBy($value);
+        };
+        $this->mappings['manager'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setManager($value);
+        };
+        $this->mappings['modified'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setModified($value);
+        };
+        $this->mappings['security']['lockRevision'] = function ($value) use ($wrapper) {
+            $wrapper->object->getSecurity()->setLockRevision($value);
+        };
+        $this->mappings['security']['lockStructure'] = function ($value) use ($wrapper) {
+            $wrapper->object->getSecurity()->setLockStructure($value);
+        };
+        $this->mappings['security']['lockWindows'] = function ($value) use ($wrapper) {
+            $wrapper->object->getSecurity()->setLockWindows($value);
+        };
+        $this->mappings['security']['revisionsPassword'] = function ($value) use ($wrapper) {
+            $wrapper->object->getSecurity()->setRevisionsPassword($value);
+        };
+        $this->mappings['security']['workbookPassword'] = function ($value) use ($wrapper) {
+            $wrapper->object->getSecurity()->setWorkbookPassword($value);
+        };
+        $this->mappings['subject'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setSubject($value);
+        };
+        $this->mappings['title'] = function ($value) use ($wrapper) {
+            $wrapper->object->getProperties()->setTitle($value);
+        };
     }
 
     /**
@@ -89,8 +125,7 @@ class XlsDocumentWrapper extends AbstractWrapper
         // try document property
         if (array_key_exists('format', $this->attributes)) {
             $format = $this->attributes['format'];
-        }
-        // try symfony request
+        } // try symfony request
         else {
             $app = is_array($this->context) && array_key_exists('app', $this->context) ? $this->context['app'] : null;
             $request = $app && is_callable([$app, 'getRequest']) ? $app->getRequest() : null;

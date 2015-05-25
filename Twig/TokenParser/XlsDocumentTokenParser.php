@@ -3,9 +3,9 @@
 namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
 use MewesK\TwigExcelBundle\Twig\Node\XlsCellNode;
+use MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsRightNode;
 use Twig_Node;
 use Twig_Node_Text;
@@ -51,15 +51,10 @@ class XlsDocumentTokenParser extends AbstractTokenParser
      */
     private function removeTextNodesRecursively(Twig_Node &$node)
     {
-        foreach ($node->getIterator() as $key => $subNode)  {
+        foreach ($node->getIterator() as $key => $subNode) {
             if ($subNode instanceof Twig_Node_Text) {
                 $node->removeNode($key);
-            }
-            elseif ($subNode instanceof Twig_Node && !(
-                    $subNode instanceof XlsCellNode ||
-                    $subNode instanceof XlsLeftNode ||
-                    $subNode instanceof XlsCenterNode ||
-                    $subNode instanceof XlsRightNode) && $subNode->count() > 0) {
+            } elseif ($subNode instanceof Twig_Node && !($subNode instanceof XlsCellNode || $subNode instanceof XlsLeftNode || $subNode instanceof XlsCenterNode || $subNode instanceof XlsRightNode) && $subNode->count() > 0) {
                 $this->removeTextNodesRecursively($subNode);
             }
         }

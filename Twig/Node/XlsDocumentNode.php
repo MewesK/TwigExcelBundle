@@ -29,23 +29,17 @@ class XlsDocumentNode extends Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
-        $compiler
-            ->addDebugInfo($this)
-
+        $compiler->addDebugInfo($this)
             ->write('$documentProperties = ')
             ->subcompile($this->getNode('properties'))
-            ->raw(';'.PHP_EOL)
-
-            ->write('$phpExcel = new MewesK\TwigExcelBundle\Wrapper\PhpExcelWrapper($context);'.PHP_EOL)
-            ->write('$phpExcel->startDocument($documentProperties);'.PHP_EOL)
-            ->write('unset($documentProperties);'.PHP_EOL)
-
+            ->raw(';' . PHP_EOL)
+            ->write('$phpExcel = new MewesK\TwigExcelBundle\Wrapper\PhpExcelWrapper($context);' . PHP_EOL)
+            ->write('$phpExcel->startDocument($documentProperties);' . PHP_EOL)
+            ->write('unset($documentProperties);' . PHP_EOL)
             ->subcompile($this->getNode('body'))
-
             ->addDebugInfo($this)
-
-            ->write('$phpExcel->endDocument();'.PHP_EOL)
-            ->write('unset($phpExcel);'.PHP_EOL);
+            ->write('$phpExcel->endDocument();' . PHP_EOL)
+            ->write('unset($phpExcel);' . PHP_EOL);
 
     }
 }

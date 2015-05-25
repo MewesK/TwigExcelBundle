@@ -30,25 +30,18 @@ class XlsFooterNode extends Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
-        $compiler
-            ->addDebugInfo($this)
-
+        $compiler->addDebugInfo($this)
             ->write('$footerType = ')
             ->subcompile($this->getNode('type'))
-            ->raw(';'.PHP_EOL)
-            ->write('$footerType = $footerType ? $footerType : \'footer\';'.PHP_EOL)
-
+            ->raw(';' . PHP_EOL)
+            ->write('$footerType = $footerType ? $footerType : \'footer\';' . PHP_EOL)
             ->write('$footerProperties = ')
             ->subcompile($this->getNode('properties'))
-            ->raw(';'.PHP_EOL)
-
-            ->write('$phpExcel->startHeaderFooter($footerType, $footerProperties);'.PHP_EOL)
-            ->write('unset($footerType, $footerProperties);'.PHP_EOL)
-
+            ->raw(';' . PHP_EOL)
+            ->write('$phpExcel->startHeaderFooter($footerType, $footerProperties);' . PHP_EOL)
+            ->write('unset($footerType, $footerProperties);' . PHP_EOL)
             ->subcompile($this->getNode('body'))
-
             ->addDebugInfo($this)
-
-            ->write('$phpExcel->endHeaderFooter();'.PHP_EOL);
+            ->write('$phpExcel->endHeaderFooter();' . PHP_EOL);
     }
 }

@@ -35,7 +35,10 @@ abstract class AbstractTokenParser extends Twig_TokenParser
     protected function parseBody()
     {
         $tokenParser = $this; // PHP 5.3 fix
-        $body = $this->parser->subparse(function(Twig_Token $token) use ($tokenParser) { return $token->test('end'.$tokenParser->getTag()); }, true);
+        $body = $this->parser->subparse(function (Twig_Token $token) use ($tokenParser) {
+            return $token->test('end' . $tokenParser->getTag());
+        },
+            true);
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
         return $body;

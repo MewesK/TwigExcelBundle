@@ -19,6 +19,10 @@ use Twig_Loader_Filesystem;
  */
 class TwigTest extends PHPUnit_Framework_TestCase
 {
+    const TEMP_PATH = '/../tmp/';
+    const CACHE_PATH = '/../tmp/cache/';
+    const LOG_PATH = '/../tmp/log/';
+
     /**
      * @var Twig_Environment
      */
@@ -37,12 +41,10 @@ class TwigTest extends PHPUnit_Framework_TestCase
     private function getDocument($templateName, $format)
     {
         // generate source from template
-        $source = self::$environment
-			->loadTemplate($templateName.'.twig')
-			->render(['app' => new MockGlobalVariables($format)]);
+        $source = self::$environment->loadTemplate($templateName . '.twig')->render(['app' => new MockGlobalVariables($format)]);
 
         // save source
-        file_put_contents(__DIR__.'/Temporary/'.$templateName.'.'.$format, $source);
+        file_put_contents(__DIR__ . self::CACHE_PATH . $templateName . '.' . $format, $source);
 
         // load source
         switch ($format) {
@@ -58,7 +60,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
             default:
                 throw new InvalidArgumentException();
         }
-        return $reader->load(__DIR__.'/Temporary/'.$templateName.'.'.$format);
+        return $reader->load(__DIR__ . self::CACHE_PATH . $templateName . '.' . $format);
     }
 
     //
@@ -70,11 +72,9 @@ class TwigTest extends PHPUnit_Framework_TestCase
      */
     public function formatProvider()
     {
-        return [
-            ['ods'],
+        return [['ods'],
             ['xls'],
-            ['xlsx']
-        ];
+            ['xlsx']];
     }
 
     /**
@@ -82,12 +82,9 @@ class TwigTest extends PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$environment = new Twig_Environment(
-            new Twig_Loader_Filesystem(__DIR__.'/Resources/views/'),
-            ['strict_variables' => true]
-        );
+        self::$environment = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__ . '/Resources/views/'), ['strict_variables' => true]);
         self::$environment->addExtension(new TwigExcelExtension());
-        self::$environment->setCache(__DIR__.'/Temporary/');
+        self::$environment->setCache(__DIR__ . self::CACHE_PATH);
     }
 
     /**
@@ -95,18 +92,27 @@ class TwigTest extends PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        exec('rm -rf '.__DIR__.'/Temporary/');
+        if (getenv('DELETE_ALL_FILES')) {
+            exec('rm -rf ' . __DIR__ . self::TEMP_PATH);
+            return;
+        }
+        if (getenv('DELETE_LOG_FILES')) {
+            exec('rm -rf ' . __DIR__ . self::LOG_PATH);
+        }
+        if (getenv('DELETE_CACHE_FILES')) {
+            exec('rm -rf ' . __DIR__ . self::CACHE_PATH);
+        }
     }
 
     //
     // Tests
     //
-    
+
     /**
      * @param string $format
      *
      * @throws \PHPExcel_Exception
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testCellIndex($format)
@@ -119,7 +125,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
             static::assertNotNull($sheet, 'Sheet does not exist');
 
             static::assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
-            static::assertNotEquals('Bar',$sheet->getCell('C1')->getValue(),  'Unexpected value in C1');
+            static::assertNotEquals('Bar', $sheet->getCell('C1')->getValue(), 'Unexpected value in C1');
             static::assertEquals('Lorem', $sheet->getCell('C1')->getValue(), 'Unexpected value in C1');
             static::assertEquals('Ipsum', $sheet->getCell('D1')->getValue(), 'Unexpected value in D1');
             static::assertEquals('Hello', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
@@ -133,7 +139,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
      * @param string $format
      *
      * @throws \PHPExcel_Exception
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testCellProperties($format)
@@ -209,9 +215,9 @@ class TwigTest extends PHPUnit_Framework_TestCase
             static::assertTrue($sheet->getCell('A2')->isFormula(), 'Unexpected value in isFormula');
             static::assertEquals(1337, $sheet->getCell('A2')->getCalculatedValue(), 'Unexpected calculated value in A2');
 
-            static::assertEquals('=SUM(A1:B1)', $sheet->getCell('A3')->getValue(),  'Unexpected value in A3');
-            static::assertTrue($sheet->getCell('A3')->isFormula(),  'Unexpected value in isFormula');
-            static::assertEquals(669.5, $sheet->getCell('A3')->getCalculatedValue(),  'Unexpected calculated value in A3');
+            static::assertEquals('=SUM(A1:B1)', $sheet->getCell('A3')->getValue(), 'Unexpected value in A3');
+            static::assertTrue($sheet->getCell('A3')->isFormula(), 'Unexpected value in isFormula');
+            static::assertEquals(669.5, $sheet->getCell('A3')->getCalculatedValue(), 'Unexpected calculated value in A3');
         } catch (Twig_Error_Runtime $e) {
             static::fail($e->getMessage());
         }
@@ -224,11 +230,11 @@ class TwigTest extends PHPUnit_Framework_TestCase
      * $security->getLockWindows() -> true
      * $security->getRevisionsPassword() -> 'test'
      * $security->getWorkbookPassword() -> 'test'
-     * 
+     *
      * @param string $format
      *
      * @throws \PHPExcel_Exception
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testDocumentProperties($format)
@@ -284,7 +290,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
      * @param string $format
      *
      * @throws \PHPExcel_Exception
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testDocumentSimple($format)
@@ -307,7 +313,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param string $format
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testDrawingProperties($format)
@@ -363,7 +369,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param string $format
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testDrawingSimple($format)
@@ -395,7 +401,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param string $format
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testHeaderFooterComplex($format)
@@ -414,25 +420,32 @@ class TwigTest extends PHPUnit_Framework_TestCase
 
             $headerFooter = $sheet->getHeaderFooter();
             static::assertNotNull($headerFooter, 'HeaderFooter does not exist');
-            
+
             static::assertEquals('&LoddHeader left&CoddHeader center&RoddHeader right', $headerFooter->getOddHeader(), 'Unexpected value in oddHeader');
             static::assertEquals('&LoddFooter left&CoddFooter center&RoddFooter right', $headerFooter->getOddFooter(), 'Unexpected value in oddFooter');
 
             if ($format !== 'xls') {
-                static::assertEquals('&LfirstHeader left&CfirstHeader center&RfirstHeader right', $headerFooter->getFirstHeader(), 'Unexpected value in firstHeader');
-                static::assertEquals('&LevenHeader left&CevenHeader center&RevenHeader right', $headerFooter->getEvenHeader(), 'Unexpected value in evenHeader');
-                static::assertEquals('&LfirstFooter left&CfirstFooter center&RfirstFooter right', $headerFooter->getFirstFooter(), 'Unexpected value in firstFooter');
-                static::assertEquals('&LevenFooter left&CevenFooter center&RevenFooter right', $headerFooter->getEvenFooter(), 'Unexpected value in evenFooter');
+                static::assertEquals('&LfirstHeader left&CfirstHeader center&RfirstHeader right',
+                    $headerFooter->getFirstHeader(),
+                    'Unexpected value in firstHeader');
+                static::assertEquals('&LevenHeader left&CevenHeader center&RevenHeader right',
+                    $headerFooter->getEvenHeader(),
+                    'Unexpected value in evenHeader');
+                static::assertEquals('&LfirstFooter left&CfirstFooter center&RfirstFooter right',
+                    $headerFooter->getFirstFooter(),
+                    'Unexpected value in firstFooter');
+                static::assertEquals('&LevenFooter left&CevenFooter center&RevenFooter right',
+                    $headerFooter->getEvenFooter(),
+                    'Unexpected value in evenFooter');
             }
-        }
-        catch (Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             static::fail($e->getMessage());
         }
     }
 
     /**
      * @param string $format
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testHeaderFooterDrawing($format)
@@ -479,7 +492,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param string $format
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testHeaderFooterProperties($format)
@@ -508,8 +521,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
 
             static::assertFalse($headerFooter->getAlignWithMargins(), 'Unexpected value in alignWithMargins');
             static::assertFalse($headerFooter->getScaleWithDocument(), 'Unexpected value in scaleWithDocument');
-        }
-        catch (Twig_Error_Runtime $e) {
+        } catch (Twig_Error_Runtime $e) {
             static::fail($e->getMessage());
         }
     }
@@ -518,7 +530,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
      * @param string $format
      *
      * @throws \PHPExcel_Exception
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testRowIndex($format)
@@ -531,7 +543,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
             static::assertNotNull($sheet, 'Sheet does not exist');
 
             static::assertEquals('Foo', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
-            static::assertNotEquals('Bar',$sheet->getCell('A3')->getValue(),  'Unexpected value in A3');
+            static::assertNotEquals('Bar', $sheet->getCell('A3')->getValue(), 'Unexpected value in A3');
             static::assertEquals('Lorem', $sheet->getCell('A3')->getValue(), 'Unexpected value in A3');
             static::assertEquals('Ipsum', $sheet->getCell('A4')->getValue(), 'Unexpected value in A4');
             static::assertEquals('Hello', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
@@ -545,7 +557,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
      * @param string $format
      *
      * @throws \PHPExcel_Exception
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testSheetComplex($format)
@@ -586,11 +598,11 @@ class TwigTest extends PHPUnit_Framework_TestCase
      * $rowDimension->getVisible() -> false
      * $rowDimension->getzeroHeight() -> true
      * $sheet->getShowGridlines() -> false
-     * 
+     *
      * @param string $format
      *
      * @throws \PHPExcel_Exception
-     * 
+     *
      * @dataProvider formatProvider
      */
     public function testSheetProperties($format)

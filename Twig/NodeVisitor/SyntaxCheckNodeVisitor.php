@@ -37,40 +37,25 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface
     {
         if ($node instanceof XlsDocumentNode) {
             $this->checkAllowedParents($node, []);
-        }
-
-        elseif ($node instanceof XlsSheetNode) {
-            $this->checkAllowedParents($node, [
-                'MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode'
-            ]);
-        }
-
-        elseif ($node instanceof XlsRowNode || $node instanceof XlsFooterNode || $node instanceof XlsHeaderNode) {
-            $this->checkAllowedParents($node, [
-                'MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode'
-            ]);
-        }
-
-        elseif ($node instanceof XlsLeftNode || $node instanceof XlsCenterNode || $node instanceof XlsRightNode) {
-            $this->checkAllowedParents($node, [
-                'MewesK\TwigExcelBundle\Twig\Node\XlsFooterNode',
-                'MewesK\TwigExcelBundle\Twig\Node\XlsHeaderNode'
-            ]);
-        }
-
-        elseif ($node instanceof XlsCellNode) {
-            $this->checkAllowedParents($node, [
-                'MewesK\TwigExcelBundle\Twig\Node\XlsRowNode'
-            ]);
-        }
-
-        elseif ($node instanceof XlsDrawingNode) {
-            $this->checkAllowedParents($node, [
-                'MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode',
-                'MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode',
-                'MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode',
-                'MewesK\TwigExcelBundle\Twig\Node\XlsRightNode'
-            ]);
+        } elseif ($node instanceof XlsSheetNode) {
+            $this->checkAllowedParents($node,
+                ['MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode']);
+        } elseif ($node instanceof XlsRowNode || $node instanceof XlsFooterNode || $node instanceof XlsHeaderNode) {
+            $this->checkAllowedParents($node,
+                ['MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode']);
+        } elseif ($node instanceof XlsLeftNode || $node instanceof XlsCenterNode || $node instanceof XlsRightNode) {
+            $this->checkAllowedParents($node,
+                ['MewesK\TwigExcelBundle\Twig\Node\XlsFooterNode',
+                    'MewesK\TwigExcelBundle\Twig\Node\XlsHeaderNode']);
+        } elseif ($node instanceof XlsCellNode) {
+            $this->checkAllowedParents($node,
+                ['MewesK\TwigExcelBundle\Twig\Node\XlsRowNode']);
+        } elseif ($node instanceof XlsDrawingNode) {
+            $this->checkAllowedParents($node,
+                ['MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode',
+                    'MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode',
+                    'MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode',
+                    'MewesK\TwigExcelBundle\Twig\Node\XlsRightNode']);
         }
 
         $this->path[] = get_class($node);
@@ -106,10 +91,11 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface
      *
      * @throws Twig_Error_Syntax
      */
-    private function checkAllowedParents(Twig_Node $node, array $allowedParents) {
+    private function checkAllowedParents(Twig_Node $node, array $allowedParents)
+    {
         $parentName = null;
 
-        foreach(array_reverse($this->path) as $className) {
+        foreach (array_reverse($this->path) as $className) {
             if (strpos($className, 'MewesK\TwigExcelBundle\Twig\Node\Xls') === 0) {
                 $parentName = $className;
                 break;
@@ -120,14 +106,12 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface
             return;
         }
 
-        foreach($allowedParents as $className) {
+        foreach ($allowedParents as $className) {
             if ($className === $parentName) {
                 return;
             }
         }
 
-        throw new Twig_Error_Syntax(
-            sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), $parentName)
-        );
+        throw new Twig_Error_Syntax(sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), $parentName));
     }
 }

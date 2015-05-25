@@ -30,23 +30,18 @@ class XlsCellNode extends Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
-        $compiler
-            ->addDebugInfo($this)
-
+        $compiler->addDebugInfo($this)
             ->write('$cellIndex = ')
             ->subcompile($this->getNode('index'))
-            ->raw(';'.PHP_EOL)
-
+            ->raw(';' . PHP_EOL)
             ->write("ob_start();\n")
             ->subcompile($this->getNode('body'))
-            ->write('$cellValue = trim(ob_get_clean());'.PHP_EOL)
-
+            ->write('$cellValue = trim(ob_get_clean());' . PHP_EOL)
             ->write('$cellProperties = ')
             ->subcompile($this->getNode('properties'))
-            ->raw(';'.PHP_EOL)
-
-            ->write('$phpExcel->startCell($cellIndex, $cellValue, $cellProperties);'.PHP_EOL)
-            ->write('unset($cellIndex, $cellValue, $cellProperties);'.PHP_EOL)
-            ->write('$phpExcel->endCell();'.PHP_EOL);
+            ->raw(';' . PHP_EOL)
+            ->write('$phpExcel->startCell($cellIndex, $cellValue, $cellProperties);' . PHP_EOL)
+            ->write('unset($cellIndex, $cellValue, $cellProperties);' . PHP_EOL)
+            ->write('$phpExcel->endCell();' . PHP_EOL);
     }
 }

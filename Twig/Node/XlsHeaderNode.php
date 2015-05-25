@@ -30,25 +30,18 @@ class XlsHeaderNode extends Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
-        $compiler
-            ->addDebugInfo($this)
-
+        $compiler->addDebugInfo($this)
             ->write('$headerType = ')
             ->subcompile($this->getNode('type'))
-            ->raw(';'.PHP_EOL)
-            ->write('$headerType = $headerType ? $headerType : \'header\';'.PHP_EOL)
-
+            ->raw(';' . PHP_EOL)
+            ->write('$headerType = $headerType ? $headerType : \'header\';' . PHP_EOL)
             ->write('$headerProperties = ')
             ->subcompile($this->getNode('properties'))
-            ->raw(';'.PHP_EOL)
-
-            ->write('$phpExcel->startHeaderFooter($headerType, $headerProperties);'.PHP_EOL)
-            ->write('unset($headerType, $headerProperties);'.PHP_EOL)
-
+            ->raw(';' . PHP_EOL)
+            ->write('$phpExcel->startHeaderFooter($headerType, $headerProperties);' . PHP_EOL)
+            ->write('unset($headerType, $headerProperties);' . PHP_EOL)
             ->subcompile($this->getNode('body'))
-
             ->addDebugInfo($this)
-
-            ->write('$phpExcel->endHeaderFooter();'.PHP_EOL);
+            ->write('$phpExcel->endHeaderFooter();' . PHP_EOL);
     }
 }

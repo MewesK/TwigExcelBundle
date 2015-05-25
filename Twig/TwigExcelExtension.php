@@ -29,9 +29,7 @@ class TwigExcelExtension extends Twig_Extension
      */
     public function getFunctions()
     {
-        return [
-            new Twig_SimpleFunction('xlsmergestyles', [$this, 'mergeStyles'])
-        ];
+        return [new Twig_SimpleFunction('xlsmergestyles', [$this, 'mergeStyles'])];
     }
 
     /**
@@ -39,8 +37,7 @@ class TwigExcelExtension extends Twig_Extension
      */
     public function getTokenParsers()
     {
-        return [
-            new XlsCellTokenParser(),
+        return [new XlsCellTokenParser(),
             new XlsDocumentTokenParser(),
             new XlsDrawingTokenParser(),
             new XlsFooterTokenParser(),
@@ -49,8 +46,7 @@ class TwigExcelExtension extends Twig_Extension
             new XlsCenterTokenParser(),
             new XlsRightTokenParser(),
             new XlsRowTokenParser(),
-            new XlsSheetTokenParser()
-        ];
+            new XlsSheetTokenParser()];
     }
 
     /**
@@ -58,9 +54,7 @@ class TwigExcelExtension extends Twig_Extension
      */
     public function getNodeVisitors()
     {
-        return [
-            new SyntaxCheckNodeVisitor()
-        ];
+        return [new SyntaxCheckNodeVisitor()];
     }
 
     /**

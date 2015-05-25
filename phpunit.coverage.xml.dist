@@ -33,4 +33,10 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <logging>
+        <log type="coverage-clover" target="tmp/logs/coverage.xml"/>
+        <log type="coverage-html" target="tmp/logs/report" lowUpperBound="35" highLowerBound="70"/>
+        <log type="junit" target="tmp/logs/logfile.xml" logIncompleteSkipped="false"/>
+    </logging>
 </phpunit>
