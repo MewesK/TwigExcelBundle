@@ -1,0 +1,14 @@
+{% xlsdocument %}
+    {% xlssheet 'Test' %}
+        {% xlsrow %}
+            {% xlscell %}667.5{% endxlscell %}
+            {% xlscell %}2{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow %}
+            {% xlscell %}=A1*B1+2{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow %}
+            {% xlscell %}=SUM(A1:B1){% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+{% endxlsdocument %}

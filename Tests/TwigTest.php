@@ -170,7 +170,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
             }
 
             if (!in_array($format, ['ods', 'xls'], true)) {
-                static::assertEquals(true, $dataValidation->getAllowBlank(), 'Unexpected value in allowBlank');
+                static::assertTrue($dataValidation->getAllowBlank(), 'Unexpected value in allowBlank');
                 static::assertEquals('Test error', $dataValidation->getError(), 'Unexpected value in error');
                 static::assertEquals('information', $dataValidation->getErrorStyle(), 'Unexpected value in errorStyle');
                 static::assertEquals('Test errorTitle', $dataValidation->getErrorTitle(), 'Unexpected value in errorTitle');
@@ -179,11 +179,39 @@ class TwigTest extends PHPUnit_Framework_TestCase
                 static::assertEquals('', $dataValidation->getOperator(), 'Unexpected value in operator');
                 static::assertEquals('Test prompt', $dataValidation->getPrompt(), 'Unexpected value in prompt');
                 static::assertEquals('Test promptTitle', $dataValidation->getPromptTitle(), 'Unexpected value in promptTitle');
-                static::assertEquals(true, $dataValidation->getShowDropDown(), 'Unexpected value in showDropDown');
-                static::assertEquals(true, $dataValidation->getShowErrorMessage(), 'Unexpected value in showErrorMessage');
-                static::assertEquals(true, $dataValidation->getShowInputMessage(), 'Unexpected value in showInputMessage');
+                static::assertTrue($dataValidation->getShowDropDown(), 'Unexpected value in showDropDown');
+                static::assertTrue($dataValidation->getShowErrorMessage(), 'Unexpected value in showErrorMessage');
+                static::assertTrue($dataValidation->getShowInputMessage(), 'Unexpected value in showInputMessage');
                 static::assertEquals('custom', $dataValidation->getType(), 'Unexpected value in type');
             }
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $format
+     *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testCellFormula($format)
+    {
+        try {
+            $document = $this->getDocument('cellFormula', $format);
+            static::assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheetByName('Test');
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('=A1*B1+2', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            static::assertTrue($sheet->getCell('A2')->isFormula(), 'Unexpected value in isFormula');
+            static::assertEquals(1337, $sheet->getCell('A2')->getCalculatedValue(), 'Unexpected calculated value in A2');
+
+            static::assertEquals('=SUM(A1:B1)', $sheet->getCell('A3')->getValue(),  'Unexpected value in A3');
+            static::assertTrue($sheet->getCell('A3')->isFormula(),  'Unexpected value in isFormula');
+            static::assertEquals(669.5, $sheet->getCell('A3')->getCalculatedValue(),  'Unexpected calculated value in A3');
         } catch (Twig_Error_Runtime $e) {
             static::fail($e->getMessage());
         }
@@ -305,7 +333,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
 
             static::assertEquals('B2', $drawing->getCoordinates(), 'Unexpected value in coordinates');
             static::assertEquals(200, $drawing->getHeight(), 'Unexpected value in height');
-            static::assertEquals(false, $drawing->getResizeProportional(), 'Unexpected value in resizeProportional');
+            static::assertFalse($drawing->getResizeProportional(), 'Unexpected value in resizeProportional');
             static::assertEquals(300, $drawing->getWidth(), 'Unexpected value in width');
 
             if ($format !== 'xls') {
@@ -326,7 +354,7 @@ class TwigTest extends PHPUnit_Framework_TestCase
                 static::assertEquals('0000cc', $shadow->getColor()->getRGB(), 'Unexpected value in color');
                 static::assertEquals(30, $shadow->getDirection(), 'Unexpected value in direction');
                 static::assertEquals(4, $shadow->getDistance(), 'Unexpected value in distance');
-                static::assertEquals(true, $shadow->getVisible(), 'Unexpected value in visible');
+                static::assertTrue($shadow->getVisible(), 'Unexpected value in visible');
             }
         } catch (Twig_Error_Runtime $e) {
             static::fail($e->getMessage());
@@ -478,8 +506,8 @@ class TwigTest extends PHPUnit_Framework_TestCase
             static::assertEquals('&CFooter', $headerFooter->getEvenFooter(), 'Unexpected value in evenFooter');
             static::assertEquals('&CFooter', $headerFooter->getOddFooter(), 'Unexpected value in oddFooter');
 
-            static::assertEquals(false, $headerFooter->getAlignWithMargins(), 'Unexpected value in alignWithMargins');
-            static::assertEquals(false, $headerFooter->getScaleWithDocument(), 'Unexpected value in scaleWithDocument');
+            static::assertFalse($headerFooter->getAlignWithMargins(), 'Unexpected value in alignWithMargins');
+            static::assertFalse($headerFooter->getScaleWithDocument(), 'Unexpected value in scaleWithDocument');
         }
         catch (Twig_Error_Runtime $e) {
             static::fail($e->getMessage());
@@ -587,11 +615,11 @@ class TwigTest extends PHPUnit_Framework_TestCase
             $pageSetup = $sheet->getPageSetup();
             static::assertNotNull($pageSetup, 'PageSetup does not exist');
             static::assertEquals(1, $pageSetup->getFitToHeight(), 'Unexpected value in fitToHeight');
-            static::assertEquals(false, $pageSetup->getFitToPage(), 'Unexpected value in fitToPage');
+            static::assertFalse($pageSetup->getFitToPage(), 'Unexpected value in fitToPage');
             static::assertEquals(1, $pageSetup->getFitToWidth(), 'Unexpected value in fitToWidth');
-            static::assertEquals(false, $pageSetup->getHorizontalCentered(), 'Unexpected value in horizontalCentered');
+            static::assertFalse($pageSetup->getHorizontalCentered(), 'Unexpected value in horizontalCentered');
             static::assertEquals(100, $pageSetup->getScale(), 'Unexpected value in scale');
-            static::assertEquals(false, $pageSetup->getVerticalCentered(), 'Unexpected value in verticalCentered');
+            static::assertFalse($pageSetup->getVerticalCentered(), 'Unexpected value in verticalCentered');
 
             $defaultRowDimension = $sheet->getDefaultRowDimension();
             static::assertNotNull($defaultRowDimension, 'DefaultRowDimension does not exist');
@@ -618,27 +646,27 @@ class TwigTest extends PHPUnit_Framework_TestCase
                 static::assertEquals('A1:B1', $pageSetup->getPrintArea(), 'Unexpected value in printArea');
 
                 $protection = $sheet->getProtection();
-                static::assertEquals(true, $protection->getAutoFilter(), 'Unexpected value in autoFilter');
+                static::assertTrue($protection->getAutoFilter(), 'Unexpected value in autoFilter');
                 static::assertNotNull($protection, 'Protection does not exist');
-                static::assertEquals(true, $protection->getDeleteColumns(), 'Unexpected value in deleteColumns');
-                static::assertEquals(true, $protection->getDeleteRows(), 'Unexpected value in deleteRows');
-                static::assertEquals(true, $protection->getFormatCells(), 'Unexpected value in formatCells');
-                static::assertEquals(true, $protection->getFormatColumns(), 'Unexpected value in formatColumns');
-                static::assertEquals(true, $protection->getFormatRows(), 'Unexpected value in formatRows');
-                static::assertEquals(true, $protection->getInsertColumns(), 'Unexpected value in insertColumns');
-                static::assertEquals(true, $protection->getInsertHyperlinks(), 'Unexpected value in insertHyperlinks');
-                static::assertEquals(true, $protection->getInsertRows(), 'Unexpected value in insertRows');
-                static::assertEquals(true, $protection->getObjects(), 'Unexpected value in objects');
+                static::assertTrue($protection->getDeleteColumns(), 'Unexpected value in deleteColumns');
+                static::assertTrue($protection->getDeleteRows(), 'Unexpected value in deleteRows');
+                static::assertTrue($protection->getFormatCells(), 'Unexpected value in formatCells');
+                static::assertTrue($protection->getFormatColumns(), 'Unexpected value in formatColumns');
+                static::assertTrue($protection->getFormatRows(), 'Unexpected value in formatRows');
+                static::assertTrue($protection->getInsertColumns(), 'Unexpected value in insertColumns');
+                static::assertTrue($protection->getInsertHyperlinks(), 'Unexpected value in insertHyperlinks');
+                static::assertTrue($protection->getInsertRows(), 'Unexpected value in insertRows');
+                static::assertTrue($protection->getObjects(), 'Unexpected value in objects');
                 static::assertEquals(\PHPExcel_Shared_PasswordHasher::hashPassword('testpassword'), $protection->getPassword(), 'Unexpected value in password');
-                static::assertEquals(true, $protection->getPivotTables(), 'Unexpected value in pivotTables');
-                static::assertEquals(true, $protection->getScenarios(), 'Unexpected value in scenarios');
-                static::assertEquals(true, $protection->getSelectLockedCells(), 'Unexpected value in selectLockedCells');
-                static::assertEquals(true, $protection->getSelectUnlockedCells(), 'Unexpected value in selectUnlockedCells');
-                static::assertEquals(true, $protection->getSheet(), 'Unexpected value in sheet');
-                static::assertEquals(true, $protection->getSort(), 'Unexpected value in sort');
+                static::assertTrue($protection->getPivotTables(), 'Unexpected value in pivotTables');
+                static::assertTrue($protection->getScenarios(), 'Unexpected value in scenarios');
+                static::assertTrue($protection->getSelectLockedCells(), 'Unexpected value in selectLockedCells');
+                static::assertTrue($protection->getSelectUnlockedCells(), 'Unexpected value in selectUnlockedCells');
+                static::assertTrue($protection->getSheet(), 'Unexpected value in sheet');
+                static::assertTrue($protection->getSort(), 'Unexpected value in sort');
 
-                static::assertEquals(true, $sheet->getPrintGridlines(), 'Unexpected value in printGridlines');
-                static::assertEquals(true, $sheet->getRightToLeft(), 'Unexpected value in rightToLeft');
+                static::assertTrue($sheet->getPrintGridlines(), 'Unexpected value in printGridlines');
+                static::assertTrue($sheet->getRightToLeft(), 'Unexpected value in rightToLeft');
                 static::assertEquals('c0c0c0', strtolower($sheet->getTabColor()->getRGB()), 'Unexpected value in tabColor');
                 static::assertEquals(75, $sheet->getSheetView()->getZoomScale(), 'Unexpected value in zoomScale');
 

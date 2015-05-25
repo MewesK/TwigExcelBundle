@@ -483,6 +483,7 @@ index | int | | A row index >=1
 
  * If 'index' is not defined it will default to 0 for the first usage per row
  * For each further usage it will increase the index by 1 automatically (0, 1, 2, ...)
+ * Formulas are supported (e.g. ``=SUM(A1:F1)`` or ``=A1+B1``)
 
 #### Attributes
 
