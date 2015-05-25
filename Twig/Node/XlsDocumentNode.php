@@ -36,7 +36,7 @@ class XlsDocumentNode extends Twig_Node
             ->subcompile($this->getNode('properties'))
             ->raw(';'.PHP_EOL)
 
-            ->write('$phpExcel = new MewesK\TwigExcelBundle\Twig\PhpExcelWrapper($context);'.PHP_EOL)
+            ->write('$phpExcel = new MewesK\TwigExcelBundle\Wrapper\PhpExcelWrapper($context);'.PHP_EOL)
             ->write('$phpExcel->startDocument($documentProperties);'.PHP_EOL)
             ->write('unset($documentProperties);'.PHP_EOL)
 
