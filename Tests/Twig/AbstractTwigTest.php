@@ -63,6 +63,7 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
             default:
                 throw new InvalidArgumentException();
         }
+
         return $reader->load(__DIR__ . static::$TEMP_PATH . $templateName . '.' . $format);
     }
 

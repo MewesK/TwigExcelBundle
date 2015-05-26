@@ -1,6 +1,7 @@
 <?php
 
 namespace MewesK\TwigExcelBundle\Wrapper;
+use PHPExcel_Writer_Abstract;
 
 /**
  * Class XlsDocumentWrapper
@@ -129,7 +130,7 @@ class XlsDocumentWrapper extends AbstractWrapper
         else {
             $app = is_array($this->context) && array_key_exists('app', $this->context) ? $this->context['app'] : null;
             $request = $app && is_callable([$app, 'getRequest']) ? $app->getRequest() : null;
-            $format = $request && is_callable([$app, 'getRequestFormat']) ? $request->getRequestFormat() : null;
+            $format = $request && is_callable([$request, 'getRequestFormat']) ? $request->getRequestFormat() : null;
         }
         // set default
         if ($format === null || !is_string($format)) {
@@ -156,7 +157,14 @@ class XlsDocumentWrapper extends AbstractWrapper
                 throw new \InvalidArgumentException();
         }
 
-        \PHPExcel_IOFactory::createWriter($this->object, $writerType)->save('php://output');
+        /**
+         * @var $writer PHPExcel_Writer_Abstract
+         */
+        $writer = \PHPExcel_IOFactory::createWriter($this->object, $writerType);
+        //TODO: make configurable
+        $writer->setPreCalculateFormulas(true);
+        //$writer->setUseDiskCaching(true);
+        $writer->save('php://output');
 
         $this->object = null;
         $this->attributes = [];

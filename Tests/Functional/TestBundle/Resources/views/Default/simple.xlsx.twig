@@ -1,0 +1,24 @@
+{% xlsdocument %}
+    {% xlssheet 'Test' %}
+        {% xlsrow %}
+            {% xlscell %}Name{% endxlscell %}
+            {% xlscell %}Salary{% endxlscell %}
+        {% endxlsrow %}
+        {% set total = 0 %}
+        {% for entity in data %}
+            {% xlsrow %}
+                {% xlscell %}{{ entity['name'] }}{% endxlscell %}
+                {% xlscell %}{{ entity['salary']|raw }}{% endxlscell %}
+            {% endxlsrow %}
+            {% set total = total + entity['salary'] %}
+        {% endfor %}
+        {% xlsrow %}
+            {% xlscell %}Total (PHP){% endxlscell %}
+            {% xlscell %}{{ total }}{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow %}
+            {% xlscell %}Total (Excel){% endxlscell %}
+            {% xlscell %}=SUM(B2:B21){% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+{% endxlsdocument %}

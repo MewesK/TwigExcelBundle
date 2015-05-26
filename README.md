@@ -68,7 +68,7 @@ class AppKernel extends Kernel
         $bundles = array(
             // ...
 
-            MewesK\TwigExcelBundle\MewesKTwigExcelBundle(),
+            new MewesK\TwigExcelBundle\MewesKTwigExcelBundle(),
         );
 
         // ...

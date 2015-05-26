@@ -6,25 +6,23 @@
     "homepage": "https://github.com/MewesK/TwigExcelBundle",
     "license": "MIT",
     "authors": [
-        {
-            "name": "Mewes Kochheim",
-            "email": "mewes@kochheim.de"
-        }
+        { "name": "Mewes Kochheim", "email": "mewes@kochheim.de" }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.4",
         "symfony/framework-bundle": "~2.0",
-        "twig/twig": ">=1.0",
+        "symfony/symfony": "~2.0",
         "phpoffice/phpexcel": "1.8.1"
     },
     "require-dev": {
+        "sensio/framework-extra-bundle": "~2.0",
         "phpunit/phpunit": "~4"
     },
     "suggest": {
-        "mpdf/mpdf": ">=v5.7.1"
+        "mpdf/mpdf": "6.0.0"
     },
     "autoload": {
-        "psr-0": { "MewesK\\TwigExcelBundle": "" }
+        "psr-4": { "MewesK\\TwigExcelBundle\\": "" }
     },
     "target-dir": "MewesK/TwigExcelBundle",
     "extra": {

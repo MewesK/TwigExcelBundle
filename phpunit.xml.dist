@@ -5,10 +5,11 @@
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
-         bootstrap="vendor/autoload.php"
+         bootstrap="./Tests/autoload.php"
         >
     <php>
         <env name="DELETE_TEMP_FILES" value="true"/>
+        <server name="KERNEL_DIR" value="./Tests/Functional/"/>
     </php>
 
     <testsuites>

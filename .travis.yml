@@ -19,6 +19,8 @@ env:
 
 before_script:
   - composer require symfony/framework-bundle:${SYMFONY_VERSION}
+  - composer require symfony/symfony:${SYMFONY_VERSION}
+  - composer require sensio/framework-extra-bundle:${SYMFONY_VERSION}
 
 before_script:
   - composer self-update
