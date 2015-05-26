@@ -126,12 +126,17 @@ class XlsDocumentWrapper extends AbstractWrapper
         // try document property
         if (array_key_exists('format', $this->attributes)) {
             $format = $this->attributes['format'];
-        } // try symfony request
-        else {
-            $app = is_array($this->context) && array_key_exists('app', $this->context) ? $this->context['app'] : null;
-            $request = $app && is_callable([$app, 'getRequest']) ? $app->getRequest() : null;
-            $format = $request && is_callable([$request, 'getRequestFormat']) ? $request->getRequestFormat() : null;
         }
+
+         // try symfony request
+        else {
+            try {
+                $format = $this->context['app']->getRequest()->getRequestFormat();
+            } catch(\Exception $e) {
+                $format = null;
+            }
+        }
+
         // set default
         if ($format === null || !is_string($format)) {
             $format = 'xlsx';
