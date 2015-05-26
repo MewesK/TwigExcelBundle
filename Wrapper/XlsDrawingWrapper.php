@@ -115,33 +115,18 @@ class XlsDrawingWrapper extends AbstractWrapper
      */
     public function start($path, array $properties = null)
     {
-        $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
-        $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'xlsdrawing' . '_' . md5($path) . ($pathExtension ? '.' . $pathExtension : '');
-
-        // make local copy of the asset
-        if (!file_exists($tempPath)) {
-            $data = file_get_contents($path);
-            if ($data === false) {
-                throw new \InvalidArgumentException($path . ' does not exist.');
-            }
-            $temp = fopen($tempPath, 'w+');
-            if ($temp === false) {
-                throw new \RuntimeException('Cannot open ' . $tempPath);
-            }
-            fwrite($temp, $data);
-            if (fclose($temp) === false) {
-                throw new \RuntimeException('Cannot close ' . $tempPath);
-            }
-            unset($data, $temp);
-        }
-
         if ($this->sheetWrapper->getObject() === null) {
             throw new \LogicException();
         }
 
+        // create local copy of the asset
+        $tempPath = $this->createTempCopy($path);
+
+        // add to header/footer
         if ($this->headerFooterWrapper->getObject()) {
             $headerFooterAttributes = $this->headerFooterWrapper->getAttributes();
             $location = '';
+
             switch (strtolower($this->headerFooterWrapper->getAlignmentAttributes()['type'])) {
                 case 'left':
                     $location .= 'L';
@@ -158,6 +143,7 @@ class XlsDrawingWrapper extends AbstractWrapper
                 default:
                     throw new \InvalidArgumentException();
             }
+
             switch (strtolower($headerFooterAttributes['type'])) {
                 case 'header':
                 case 'oddheader':
@@ -179,7 +165,10 @@ class XlsDrawingWrapper extends AbstractWrapper
             $this->object->setPath($tempPath);
             $this->headerFooterWrapper->getObject()->addImage($this->object, $location);
             $this->headerFooterWrapper->setAttributes($headerFooterAttributes);
-        } else {
+        }
+
+        // add to worksheet
+        else {
             $this->object = new \PHPExcel_Worksheet_Drawing();
             $this->object->setWorksheet($this->sheetWrapper->getObject());
             $this->object->setPath($tempPath);
@@ -194,6 +183,40 @@ class XlsDrawingWrapper extends AbstractWrapper
     {
         $this->object = null;
         $this->attributes = [];
+    }
+
+    //
+    // Helpers
+    //
+
+    /**
+     * @param $path
+     * @return string
+     */
+    private function createTempCopy($path)
+    {
+        // create temp path
+        $pathExtension = pathinfo($path, PATHINFO_EXTENSION);
+        $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'xlsdrawing' . '_' . md5($path) . ($pathExtension ? '.' . $pathExtension : '');
+
+        // create local copy
+        if (!file_exists($tempPath)) {
+            $data = file_get_contents($path);
+            if ($data === false) {
+                throw new \InvalidArgumentException($path . ' does not exist.');
+            }
+            $temp = fopen($tempPath, 'w+');
+            if ($temp === false) {
+                throw new \RuntimeException('Cannot open ' . $tempPath);
+            }
+            fwrite($temp, $data);
+            if (fclose($temp) === false) {
+                throw new \RuntimeException('Cannot close ' . $tempPath);
+            }
+            unset($data, $temp);
+        }
+
+        return $tempPath;
     }
 
     //
