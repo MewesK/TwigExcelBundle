@@ -161,9 +161,7 @@ class XlsDocumentWrapper extends AbstractWrapper
          * @var $writer PHPExcel_Writer_Abstract
          */
         $writer = \PHPExcel_IOFactory::createWriter($this->object, $writerType);
-        //TODO: make configurable
         $writer->setPreCalculateFormulas(true);
-        //$writer->setUseDiskCaching(true);
         $writer->save('php://output');
 
         $this->object = null;

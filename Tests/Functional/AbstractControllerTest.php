@@ -76,7 +76,7 @@ abstract class AbstractControllerTest extends WebTestCase
     /**
      * @return array
      */
-    public abstract function formatProvider();
+    abstract public function formatProvider();
 
     /**
      * {@inheritdoc}

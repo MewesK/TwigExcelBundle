@@ -74,7 +74,7 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public abstract function formatProvider();
+    abstract public function formatProvider();
 
     /**
      * {@inheritdoc}

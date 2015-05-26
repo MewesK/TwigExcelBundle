@@ -2,16 +2,7 @@
 
 namespace MewesK\TwigExcelBundle\Tests\Twig;
 
-use InvalidArgumentException;
-use MewesK\TwigExcelBundle\Tests\Twig\AbstractTwigTest;
-use MewesK\TwigExcelBundle\Twig\TwigExcelExtension;
-use PHPExcel_Reader_Excel2007;
-use PHPExcel_Reader_Excel5;
-use PHPExcel_Reader_OOCalc;
-use PHPUnit_Framework_TestCase;
-use Twig_Environment;
 use Twig_Error_Runtime;
-use Twig_Loader_Filesystem;
 
 /**
  * Class XlsTwigTest
