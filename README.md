@@ -78,6 +78,24 @@ class AppKernel extends Kernel
 }
 ```
 
+### Step 3: Configure the Bundle (optional)
+
+Add the following configuration to your config.yml if you don't want to pre-calculate formulas. 
+Disabling this option can improve the performance but the resulting documents won't show the result of any formulas when opened in a external spreadsheet software.
+
+```js
+mewes_k_twig_excel:
+    pre_calculate_formulas: false
+```
+
+Add the following configuration to your config.yml if you want to enable disk caching. 
+Using disk caching can improve memory consumption by writing data to disk temporarily. Works only for .XLSX and .ODS documents.
+
+```js
+mewes_k_twig_excel:
+    disk_caching_directory: "%kernel.cache.dir%/phpexcel"
+```
+
 ## Getting started
 
 ### Step 1: Create your controller
@@ -522,6 +540,7 @@ properties | array | X
 Name | Type | Description | XLS | ODS
 ---- | ---- | ----------- | --- | ---
 break | int | Possible values are defined in PHPExcel_Worksheet | X
+dataType | string | Possible values are defined in PHPExcel_Cell_DataType | X | X
 dataValidation | array
  + allowBlank | boolean
  + error | string

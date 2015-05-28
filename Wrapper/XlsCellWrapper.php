@@ -54,6 +54,9 @@ class XlsCellWrapper extends AbstractWrapper
         $this->mappings['break'] = function ($value) use ($wrapper) {
             $wrapper->sheetWrapper->getObject()->setBreak($wrapper->object->getCoordinate(), $value);
         };
+        $this->mappings['dataType'] = function ($value) use ($wrapper) {
+            $wrapper->object->setDataType($value);
+        };
         $this->mappings['dataValidation']['allowBlank'] = function ($value) use ($wrapper) {
             $wrapper->object->getDataValidation()->setAllowBlank($value);
         };

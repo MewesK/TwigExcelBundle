@@ -14,14 +14,27 @@ use Twig_Node_Expression;
 class XlsDocumentNode extends Twig_Node
 {
     /**
+     * @var bool
+     */
+    private $preCalculateFormulas;
+    /**
+     * @var null|string
+     */
+    private $diskCachingDirectory;
+
+    /**
      * @param Twig_Node_Expression $properties
      * @param Twig_Node $body
      * @param int $line
      * @param string $tag
+     * @param bool $preCalculateFormulas
+     * @param null|string $diskCachingDirectory
      */
-    public function __construct(Twig_Node_Expression $properties, Twig_Node $body, $line = 0, $tag = 'xlsdocument')
+    public function __construct(Twig_Node_Expression $properties, Twig_Node $body, $line = 0, $tag = 'xlsdocument', $preCalculateFormulas = true, $diskCachingDirectory = null)
     {
         parent::__construct(['properties' => $properties, 'body' => $body], [], $line, $tag);
+        $this->preCalculateFormulas = $preCalculateFormulas;
+        $this->diskCachingDirectory = $diskCachingDirectory;
     }
 
     /**
@@ -38,7 +51,9 @@ class XlsDocumentNode extends Twig_Node
             ->write('unset($documentProperties);' . PHP_EOL)
             ->subcompile($this->getNode('body'))
             ->addDebugInfo($this)
-            ->write('$phpExcel->endDocument();' . PHP_EOL)
+            ->write('$phpExcel->endDocument(' .
+                ($this->preCalculateFormulas ? 'true' : 'false') . ', ' .
+                ($this->diskCachingDirectory ? '\'' . $this->diskCachingDirectory . '\'' : 'null') . ');' . PHP_EOL)
             ->write('unset($phpExcel);' . PHP_EOL);
 
     }

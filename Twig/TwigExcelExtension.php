@@ -25,6 +25,25 @@ use Twig_SimpleFunction;
 class TwigExcelExtension extends Twig_Extension
 {
     /**
+     * @var bool
+     */
+    private $preCalculateFormulas;
+    /**
+     * @var null|string
+     */
+    private $diskCachingDirectory;
+
+    /**
+     * @param bool $preCalculateFormulas
+     * @param null|string $diskCachingDirectory
+     */
+    public function __construct($preCalculateFormulas = true, $diskCachingDirectory = null)
+    {
+        $this->preCalculateFormulas = $preCalculateFormulas;
+        $this->diskCachingDirectory = $diskCachingDirectory;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFunctions()
@@ -38,7 +57,7 @@ class TwigExcelExtension extends Twig_Extension
     public function getTokenParsers()
     {
         return [new XlsCellTokenParser(),
-            new XlsDocumentTokenParser(),
+            new XlsDocumentTokenParser($this->preCalculateFormulas, $this->diskCachingDirectory),
             new XlsDrawingTokenParser(),
             new XlsFooterTokenParser(),
             new XlsHeaderTokenParser(),

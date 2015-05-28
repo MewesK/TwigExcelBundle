@@ -17,6 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractControllerTest extends WebTestCase
 {
+    protected static $CONFIG_FILE = null;
     protected static $TEMP_PATH = '/../../tmp/functional/';
 
     /**
@@ -86,7 +87,7 @@ abstract class AbstractControllerTest extends WebTestCase
         $fs = new Filesystem();
         $fs->remove(__DIR__ . static::$TEMP_PATH);
 
-        static::$client = static::createClient();
+        static::$client = static::createClient(['config' => static::$CONFIG_FILE]);
         static::$router = static::$kernel->getContainer()->get('router');
     }
 
@@ -107,7 +108,7 @@ abstract class AbstractControllerTest extends WebTestCase
     protected static function createKernel(array $options = array())
     {
         return static::$kernel = new AppKernel(
-            array_key_exists('config', $options) ? $options['config'] : 'config.yml'
+            array_key_exists('config', $options) && is_string($options['config']) ? $options['config'] : 'config.yml'
         );
     }
 }

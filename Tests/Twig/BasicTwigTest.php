@@ -79,6 +79,9 @@ class BasicTwigTest extends AbstractTwigTest
 
             $style = $cell->getStyle();
             static::assertNotNull($style, 'Style does not exist');
+
+            static::assertEquals('s', $sheet->getCell('B1')->getDataType(), 'Unexpected value in dataType');
+            static::assertEquals('n', $sheet->getCell('C1')->getDataType(), 'Unexpected value in dataType');
         } catch (Twig_Error_Runtime $e) {
             static::fail($e->getMessage());
         }

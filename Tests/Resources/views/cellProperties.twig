@@ -25,6 +25,12 @@
                 },
                 'url': 'http://example.com/'
             } %}Foo{% endxlscell %}
+            {% xlscell {
+                'dataType': 's'
+            } %}42{% endxlscell %}
+            {% xlscell {
+                'dataType': 'n'
+            } %}42{% endxlscell %}
         {% endxlsrow %}
     {% endxlssheet %}
 {% endxlsdocument %}

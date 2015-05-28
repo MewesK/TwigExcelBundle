@@ -19,6 +19,25 @@ use Twig_Token;
 class XlsDocumentTokenParser extends AbstractTokenParser
 {
     /**
+     * @var bool
+     */
+    private $preCalculateFormulas;
+    /**
+     * @var null|string
+     */
+    private $diskCachingDirectory;
+
+    /**
+     * @param bool $preCalculateFormulas
+     * @param null|string $diskCachingDirectory
+     */
+    public function __construct($preCalculateFormulas = true, $diskCachingDirectory = null)
+    {
+        $this->preCalculateFormulas = $preCalculateFormulas;
+        $this->diskCachingDirectory = $diskCachingDirectory;
+    }
+
+    /**
      * @param Twig_Token $token
      *
      * @return XlsDocumentNode
@@ -35,7 +54,7 @@ class XlsDocumentTokenParser extends AbstractTokenParser
         $this->removeTextNodesRecursively($body);
 
         // return node
-        return new XlsDocumentNode($properties, $body, $token->getLine(), $this->getTag());
+        return new XlsDocumentNode($properties, $body, $token->getLine(), $this->getTag(), $this->preCalculateFormulas, $this->diskCachingDirectory);
     }
 
     /**

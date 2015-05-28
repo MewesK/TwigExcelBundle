@@ -121,9 +121,15 @@ class XlsDocumentWrapper extends AbstractWrapper
     }
 
     /**
+     * @param bool $preCalculateFormulas
+     * @param null|string $diskCachingDirectory
+     *
+     * @throws \InvalidArgumentException
+     * @throws \PHPExcel_Exception
      * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
      */
-    public function end()
+    public function end($preCalculateFormulas = true, $diskCachingDirectory = null)
     {
         // try document property
         if (array_key_exists('format', $this->attributes)) {
@@ -177,7 +183,8 @@ class XlsDocumentWrapper extends AbstractWrapper
          * @var $writer PHPExcel_Writer_Abstract
          */
         $writer = \PHPExcel_IOFactory::createWriter($this->object, $writerType);
-        $writer->setPreCalculateFormulas(true);
+        $writer->setPreCalculateFormulas($preCalculateFormulas);
+        $writer->setUseDiskCaching($diskCachingDirectory !== null, $diskCachingDirectory);
         $writer->save('php://output');
 
         $this->object = null;

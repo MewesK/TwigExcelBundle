@@ -4,18 +4,19 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="kernel.listener.twig_excel_request_listener.class">MewesK\TwigExcelBundle\EventListener\RequestListener</parameter>
-        <parameter key="twig_excel.twig_excel_extension.class">MewesK\TwigExcelBundle\Twig\TwigExcelExtension</parameter>
+        <parameter key="mewes_k_twig_excel.request_listener.class">MewesK\TwigExcelBundle\EventListener\RequestListener</parameter>
+        <parameter key="mewes_k_twig_excel.twig_excel_extension.class">MewesK\TwigExcelBundle\Twig\TwigExcelExtension</parameter>
     </parameters>
 
     <services>
-        <service id="kernel.listener.twig_excel_request_listener"
-                 class="%kernel.listener.twig_excel_request_listener.class%">
+        <service id="mewes_k_twig_excel.request_listener" class="%mewes_k_twig_excel.request_listener.class%">
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest"/>
         </service>
 
-        <service id="twig_excel.twig_excel_extension" class="%twig_excel.twig_excel_extension.class%">
+        <service id="mewes_k_twig_excel.twig_excel_extension" class="%mewes_k_twig_excel.twig_excel_extension.class%">
             <tag name="twig.extension"/>
+            <argument>%mewes_k_twig_excel.pre_calculate_formulas%</argument>
+            <argument>%mewes_k_twig_excel.disk_caching_directory%</argument>
         </service>
     </services>
 </container>
