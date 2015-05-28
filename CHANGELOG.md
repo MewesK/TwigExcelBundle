@@ -1,4 +1,4 @@
-## 1.1.x-dev (2015-05-24)
+## 1.1.x-dev (2015-05-29)
 
 **Fixes**
   * Fixed minimum PHP version to >=5.4 (short array syntax)
