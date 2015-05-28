@@ -41,13 +41,17 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
         // generate source from template
         $source = static::$environment->loadTemplate($templateName . '.twig')->render(['app' => new MockGlobalVariables($format)]);
 
+        // create paths
+        $tempDirPath = __DIR__ . static::$TEMP_PATH;
+        $tempFilePath = $tempDirPath . $templateName . '.' . $format;
+
         // create source directory if necessary
-        if (!file_exists(__DIR__ . static::$TEMP_PATH)) {
-            mkdir(__DIR__ . static::$TEMP_PATH);
+        if (!file_exists($tempDirPath)) {
+            mkdir($tempDirPath);
         }
 
         // save source
-        file_put_contents(__DIR__ . static::$TEMP_PATH . $templateName . '.' . $format, $source);
+        file_put_contents($tempFilePath, $source);
 
         // load source
         switch ($format) {
@@ -60,11 +64,14 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
             case 'xlsx':
                 $reader = new PHPExcel_Reader_Excel2007();
                 break;
+            case 'pdf':
+            case 'csv':
+                return $tempFilePath;
             default:
                 throw new InvalidArgumentException();
         }
 
-        return $reader->load(__DIR__ . static::$TEMP_PATH . $templateName . '.' . $format);
+        return $reader->load($tempFilePath);
     }
 
     //

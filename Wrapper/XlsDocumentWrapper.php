@@ -1,7 +1,9 @@
 <?php
 
 namespace MewesK\TwigExcelBundle\Wrapper;
+use PHPExcel_Settings;
 use PHPExcel_Writer_Abstract;
+use ReflectionClass;
 
 /**
  * Class XlsDocumentWrapper
@@ -151,6 +153,15 @@ class XlsDocumentWrapper extends AbstractWrapper
                 break;
             case 'pdf':
                 $writerType = 'PDF';
+                try {
+                    $reflectionClass = new ReflectionClass('mPDF');
+                    $path = dirname($reflectionClass->getFileName());
+                    if (!PHPExcel_Settings::setPdfRenderer(PHPExcel_Settings::PDF_RENDERER_MPDF, $path)) {
+                        throw new \PHPExcel_Exception();
+                    }
+                } catch (\Exception $e) {
+                    throw new \PHPExcel_Exception('Error loading mPDF. Is the mPDF correctly installed?', $e->getCode(), $e);
+                }
                 break;
             case 'xls':
                 $writerType = 'Excel5';
