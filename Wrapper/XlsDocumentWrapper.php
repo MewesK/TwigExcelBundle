@@ -160,7 +160,7 @@ class XlsDocumentWrapper extends AbstractWrapper
                         throw new \PHPExcel_Exception();
                     }
                 } catch (\Exception $e) {
-                    throw new \PHPExcel_Exception('Error loading mPDF. Is the mPDF correctly installed?', $e->getCode(), $e);
+                    throw new \PHPExcel_Exception('Error loading mPDF. Is mPDF correctly installed?', $e->getCode(), $e);
                 }
                 break;
             case 'xls':

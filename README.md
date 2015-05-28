@@ -12,7 +12,7 @@ The supported output formats are directly based on the capabilities of PhpExcel.
 
  * .CSV (only basic data output)
  * .ODS (only basic data output)
- * .PDF (based on the .XLSX output)
+ * .PDF (requires mPDF)
  * .XLS (limited functionality)
  * .XLSX 
 
