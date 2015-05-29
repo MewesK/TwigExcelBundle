@@ -105,7 +105,7 @@ abstract class AbstractControllerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    protected static function createKernel(array $options = array())
+    protected static function createKernel(array $options = [])
     {
         return static::$kernel = new AppKernel(
             array_key_exists('config', $options) && is_string($options['config']) ? $options['config'] : 'config.yml'

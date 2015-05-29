@@ -1,7 +1,6 @@
 .idea/
 tmp/
 vendor/
-Tests/Temporary/
 composer.lock
 composer.phar
 phpunit.phar

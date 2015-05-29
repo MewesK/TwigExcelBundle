@@ -12,8 +12,14 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class AppKernel extends Kernel
 {
+    /**
+     * @var string
+     */
     private $config;
 
+    /**
+     * @param string $config
+     */
     public function __construct($config)
     {
         parent::__construct('test', true);
@@ -44,16 +50,25 @@ class AppKernel extends Kernel
         ];
     }
 
+    /**
+     * @param LoaderInterface $loader
+     */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->config);
     }
 
+    /**
+     * @return string
+     */
     public function getCacheDir()
     {
         return __DIR__ . '/../../tmp/functional';
     }
 
+    /**
+     * @return string
+     */
     public function getLogDir()
     {
         return __DIR__ . '/../../tmp/functional/logs';
