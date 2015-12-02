@@ -1,4 +1,4 @@
-## 1.1.x-dev (2015-05-29)
+## 1.1 (2015-12-02)
 
 **Fixes**
   * Fixed minimum PHP version to >=5.4 (short array syntax)
@@ -18,6 +18,6 @@
  * Added latest PHP/HHVM and Symfony versions to the automated tests
  * Added more unit tests and functional tests
 
-## 1.0.0 (2014-03-04)
+## 1.0 (2014-03-04)
 
  * Initial release
