@@ -4,7 +4,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MewesK/TwigExcelBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MewesK/TwigExcelBundle/?branch=master)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/283cfe57-6ee4-4102-8fff-da3f6e668e8f/mini.png)](https://insight.sensiolabs.com/projects/283cfe57-6ee4-4102-8fff-da3f6e668e8f)
 
-This Symfony2 bundle provides a PhpExcel integration for Twig.
+This Symfony bundle provides a PhpExcel integration for Twig.
 
 ## Supported output formats
 
@@ -24,6 +24,7 @@ The following software is required to use PHPExcel/TwigExcelBundle:
  * PHP extension php_zip enabled
  * PHP extension php_xml enabled
  * PHP extension php_gd2 enabled (if not compiled in)
+ * Symfony version 2.0 or newer
 
 ## Installation
 

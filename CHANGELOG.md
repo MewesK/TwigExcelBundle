@@ -1,3 +1,12 @@
+## 1.x (2015-12-02)
+
+**Fixes**
+  * Added Symfony 2.7 and 2.8 to the automated tests
+
+**Improvements**
+  * Added Symfony 3 support
+  * Added PHP 7 automated tests
+
 ## 1.1 (2015-12-02)
 
 **Fixes**
