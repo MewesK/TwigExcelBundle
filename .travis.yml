@@ -28,6 +28,6 @@ before_script:
 
 before_script:
   - composer self-update
-  - composer install --dev --prefer-source
+  - composer install --prefer-source
 
 sudo: false

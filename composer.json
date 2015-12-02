@@ -17,7 +17,7 @@
     "require-dev": {
         "sensio/framework-extra-bundle": "~2.0|~3.0",
         "mpdf/mpdf": "~6.0",
-        "phpunit/phpunit": "~5.0"
+        "phpunit/phpunit": "~4.8"
     },
     "suggest": {
         "mpdf/mpdf": "~6.0"
