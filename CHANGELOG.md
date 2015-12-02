@@ -1,4 +1,4 @@
-## 1.x (2015-12-02)
+## 1.2.x (2015-12-02)
 
 **Fixes**
   * Added Symfony 2.7 and 2.8 to the automated tests
