@@ -176,7 +176,7 @@ class XlsDocumentWrapper extends AbstractWrapper
                 $writerType = 'Excel2007';
                 break;
             default:
-                throw new \InvalidArgumentException();
+                throw new \InvalidArgumentException(sprintf('Unknown format "%s"', $format));
         }
 
         /**

@@ -79,7 +79,7 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
                 ['header', 'oddheader', 'evenheader', 'firstheader', 'footer', 'oddfooter', 'evenfooter', 'firstfooter'],
                 true) === false
         ) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException(sprintf('Unknown type "%s"', $type));
         }
 
         $this->object = $this->sheetWrapper->getObject()->getHeaderFooter();
@@ -132,7 +132,7 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
                 $this->object->setFirstFooter($value);
                 break;
             default:
-                throw new \InvalidArgumentException();
+                throw new \InvalidArgumentException(sprintf('Unknown type "%s"', $this->attributes['type']));
         }
 
         $this->object = null;
@@ -159,7 +159,7 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
                 $this->attributes['value']['right'] = '&R';
                 break;
             default:
-                throw new \InvalidArgumentException();
+                throw new \InvalidArgumentException(sprintf('Unknown alignment type "%s"', $this->alignmentAttributes['type']));
         }
     }
 
@@ -185,7 +185,7 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
                 }
                 break;
             default:
-                throw new \InvalidArgumentException();
+                throw new \InvalidArgumentException(sprintf('Unknown alignment type "%s"', $this->alignmentAttributes['type']));
         }
 
         $this->alignmentAttributes = [];

@@ -141,7 +141,7 @@ class XlsDrawingWrapper extends AbstractWrapper
                     $headerFooterAttributes['value']['right'] .= '&G';
                     break;
                 default:
-                    throw new \InvalidArgumentException();
+                    throw new \InvalidArgumentException(sprintf('Unknown alignment type "%s"', $this->headerFooterWrapper->getAlignmentAttributes()['type']));
             }
 
             switch (strtolower($headerFooterAttributes['type'])) {
@@ -158,7 +158,7 @@ class XlsDrawingWrapper extends AbstractWrapper
                     $location .= 'F';
                     break;
                 default:
-                    throw new \InvalidArgumentException();
+                    throw new \InvalidArgumentException(sprintf('Unknown type "%s"', $headerFooterAttributes['type']));
             }
 
             $this->object = new \PHPExcel_Worksheet_HeaderFooterDrawing();
