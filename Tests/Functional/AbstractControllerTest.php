@@ -84,8 +84,14 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     protected function setUp()
     {
-        $fs = new Filesystem();
-        $fs->remove(__DIR__ . static::$TEMP_PATH);
+        try {
+            $fs = new Filesystem();
+            $fs->remove(__DIR__ . static::$TEMP_PATH);
+        } catch(\Exception $e) {
+            if (!in_array(getenv('IGNORE_DELETE_EXCEPTIONS'), ['true', '1', 1, true], true)) {
+                throw $e;
+            }
+        }
 
         static::$client = static::createClient(['config' => static::$CONFIG_FILE]);
         static::$router = static::$kernel->getContainer()->get('router');
@@ -97,8 +103,14 @@ abstract class AbstractControllerTest extends WebTestCase
     protected function tearDown()
     {
         if (in_array(getenv('DELETE_TEMP_FILES'), ['true', '1', 1, true], true)) {
-            $fs = new Filesystem();
-            $fs->remove(__DIR__ . static::$TEMP_PATH);
+            try {
+                $fs = new Filesystem();
+                $fs->remove(__DIR__ . static::$TEMP_PATH);
+            } catch(\Exception $e) {
+                if (!in_array(getenv('IGNORE_DELETE_EXCEPTIONS'), ['true', '1', 1, true], true)) {
+                    throw $e;
+                }
+            }
         }
     }
 
