@@ -245,7 +245,7 @@ class XlsSheetWrapper extends AbstractWrapper
     public function start($index, array $properties = null)
     {
         if ($index === null || !is_string($index)) {
-            throw new \InvalidArgumentException(sprintf('Invalid index'));
+            throw new \InvalidArgumentException('Invalid index');
         }
         if (!$this->documentWrapper->getObject()->sheetNameExists($index)) {
             $this->documentWrapper->getObject()->createSheet()->setTitle($index);

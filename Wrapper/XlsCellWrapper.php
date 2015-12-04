@@ -117,7 +117,7 @@ class XlsCellWrapper extends AbstractWrapper
             throw new \LogicException();
         }
         if ($index !== null && !is_int($index)) {
-            throw new \InvalidArgumentException(sprintf('Invalid index'));
+            throw new \InvalidArgumentException('Invalid index');
         }
 
         if ($index === null) {
