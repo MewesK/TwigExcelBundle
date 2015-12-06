@@ -2,6 +2,7 @@
 
 namespace MewesK\TwigExcelBundle\Tests\Functional;
 
+use Symfony\Component\HttpFoundation\Response;
 use Twig_Error_Runtime;
 
 /**
@@ -47,6 +48,35 @@ class DefaultControllerTest extends AbstractControllerTest
             static::assertEquals('=SUM(B2:B21)', $sheet->getCell('B23')->getValue(), 'Unexpected value in B23');
             static::assertTrue($sheet->getCell('B23')->isFormula(), 'Unexpected value in isFormula');
             static::assertEquals(100270, $sheet->getCell('B23')->getCalculatedValue(), 'Unexpected calculated value in B23');
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $format
+     *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testCustomResponse($format)
+    {
+        try {
+            // Generate URI
+            $uri = static::$router->generate('test_custom_response', ['templateName' => 'simple', '_format' => $format]);
+
+            // Generate source
+            static::$client->request('GET', $uri);
+
+            /**
+             * @var $response Response
+             */
+            $response = static::$client->getResponse();
+
+            static::assertNotNull($response, 'Response does not exist');
+            static::assertEquals('attachment; filename="foobar.bin"', $response->headers->get('content-disposition'), 'Unexpected or missing header "Content-Disposition"');
+            static::assertEquals('max-age=600, private', $response->headers->get('cache-control'), 'Unexpected or missing header "Cache-Control"');
         } catch (Twig_Error_Runtime $e) {
             static::fail($e->getMessage());
         }
