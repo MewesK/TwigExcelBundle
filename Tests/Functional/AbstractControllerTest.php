@@ -17,7 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class AbstractControllerTest extends WebTestCase
 {
-    protected static $CONFIG_FILE = null;
+    protected static $CONFIG_FILE;
     protected static $TEMP_PATH = '/../../tmp/functional/';
 
     /**

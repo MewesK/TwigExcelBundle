@@ -1,9 +1,11 @@
 <?php
 
 namespace MewesK\TwigExcelBundle\Wrapper;
+
 use PHPExcel_Settings;
 use PHPExcel_Writer_Abstract;
 use ReflectionClass;
+use Symfony\Bridge\Twig\AppVariable;
 
 /**
  * Class XlsDocumentWrapper
@@ -131,17 +133,21 @@ class XlsDocumentWrapper extends AbstractWrapper
      */
     public function end($preCalculateFormulas = true, $diskCachingDirectory = null)
     {
+        $format = null;
+
         // try document property
         if (array_key_exists('format', $this->attributes)) {
             $format = $this->attributes['format'];
         }
 
-         // try symfony request
-        else {
-            try {
-                $format = $this->context['app']->getRequest()->getRequestFormat();
-            } catch(\Exception $e) {
-                $format = null;
+         // try Symfony request
+        else if (array_key_exists('app', $this->context)) {
+            /**
+             * @var $appVariable AppVariable
+             */
+            $appVariable = $this->context['app'];
+            if ($appVariable instanceof AppVariable && $appVariable->getRequest() !== null) {
+                $format = $appVariable->getRequest()->getRequestFormat();
             }
         }
 

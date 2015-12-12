@@ -12,18 +12,17 @@ use MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsRightNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsRowNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode;
+use Twig_BaseNodeVisitor;
 use Twig_Environment;
 use Twig_Error_Syntax;
 use Twig_Node;
-use Twig_NodeInterface;
-use Twig_NodeVisitorInterface;
 
 /**
  * Class SyntaxCheckNodeVisitor
  *
  * @package MewesK\TwigExcelBundle\Twig\NodeVisitor
  */
-class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface
+class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
 {
     /**
      * @var array
@@ -32,8 +31,10 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Twig_Error_Syntax
      */
-    public function enterNode(Twig_NodeInterface $node, Twig_Environment $env)
+    protected function doEnterNode(Twig_Node $node, Twig_Environment $env)
     {
         if ($node instanceof XlsDocumentNode) {
             $this->checkAllowedParents($node, []);
@@ -66,7 +67,7 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function leaveNode(Twig_NodeInterface $node, Twig_Environment $env)
+    protected function doLeaveNode(Twig_Node $node, Twig_Environment $env)
     {
         array_pop($this->path);
 
@@ -91,7 +92,7 @@ class SyntaxCheckNodeVisitor implements Twig_NodeVisitorInterface
      *
      * @throws Twig_Error_Syntax
      */
-    private function checkAllowedParents(Twig_Node $node, array $allowedParents)
+    protected function checkAllowedParents(Twig_Node $node, array $allowedParents)
     {
         $parentName = null;
 

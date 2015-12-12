@@ -1,3 +1,13 @@
+## 1.2.x
+
+**Improvements**
+
+ * Converted help to RST-format and moved it to Resources/doc
+ * Rendered version of the documentation is now hosted on readthedocs.org
+ * Removed more deprecated function calls (for compatibility with Twig 2.0)
+ * Removed unnecessary mock objects
+ * Added messages to InvalidArgumentExceptions (darookee)
+
 ## 1.2 (2015-12-02)
 
 **Fixes**
@@ -8,7 +18,6 @@
 
  * Added Symfony 3 support
  * Added PHP 7 automated tests
- * Add messages to InvalidArgumentExceptions
 
 ## 1.1 (2015-12-02)
 
@@ -26,7 +35,7 @@
 
 **Improvements**
 
- * Updated to latest stable PhpExcel
+ * Updated to latest stable PHPExcel
  * Updated to latest stable mPDF
  * Improved inline documentation
  * Improved code quality

@@ -3,12 +3,14 @@
 namespace MewesK\TwigExcelBundle\Tests\Twig;
 
 use InvalidArgumentException;
-use MewesK\TwigExcelBundle\Tests\Twig\Mock\MockGlobalVariables;
 use MewesK\TwigExcelBundle\Twig\TwigExcelExtension;
 use PHPExcel_Reader_Excel2007;
 use PHPExcel_Reader_Excel5;
 use PHPExcel_Reader_OOCalc;
 use PHPUnit_Framework_TestCase;
+use Symfony\Bridge\Twig\AppVariable;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
@@ -38,8 +40,18 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
      */
     protected function getDocument($templateName, $format)
     {
+        // prepare global variables
+        $request = new Request();
+        $request->setRequestFormat($format);
+
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        $appVariable = new AppVariable($format);
+        $appVariable->setRequestStack($requestStack);
+
         // generate source from template
-        $source = static::$environment->loadTemplate($templateName . '.twig')->render(['app' => new MockGlobalVariables($format)]);
+        $source = static::$environment->loadTemplate($templateName . '.twig')->render(['app' => $appVariable]);
 
         // create paths
         $tempDirPath = __DIR__ . static::$TEMP_PATH;

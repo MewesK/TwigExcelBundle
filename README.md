@@ -37,6 +37,10 @@ The source of the documentation is stored in the Resources/doc/ folder in this b
     
 [Resources/doc/index.rst](https://github.com/MewesK/TwigExcelBundle/blob/master/Resources/doc/index.rst)
 
+You can find a prettier version on [readthedocs.org](httsp://readthedocs.org):
+
+[https://twigexcelbundle.readthedocs.org](https://twigexcelbundle.readthedocs.org/)
+
 ## Installation
 
 All the installation instructions are located in the documentation.

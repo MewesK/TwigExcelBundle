@@ -9,7 +9,7 @@
         >
     <php>
         <env name="DELETE_TEMP_FILES" value="true"/>
-        <env name="IGNORE_DELETE_EXCEPTIONS" value="false"/>
+        <env name="IGNORE_DELETE_EXCEPTIONS" value="true"/>
         <server name="KERNEL_DIR" value="./Tests/Functional/"/>
     </php>
 

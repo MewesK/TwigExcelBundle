@@ -2,6 +2,4 @@
 tmp/
 vendor/
 composer.lock
-composer.phar
-phpunit.phar
 phpunit.xml
