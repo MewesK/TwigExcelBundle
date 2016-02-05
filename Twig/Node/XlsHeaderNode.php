@@ -38,10 +38,10 @@ class XlsHeaderNode extends Twig_Node
             ->write('$headerProperties = ')
             ->subcompile($this->getNode('properties'))
             ->raw(';' . PHP_EOL)
-            ->write('$phpExcel->startHeaderFooter($headerType, $headerProperties);' . PHP_EOL)
+            ->write('$context[\'phpExcel\']->startHeaderFooter($headerType, $headerProperties);' . PHP_EOL)
             ->write('unset($headerType, $headerProperties);' . PHP_EOL)
             ->subcompile($this->getNode('body'))
             ->addDebugInfo($this)
-            ->write('$phpExcel->endHeaderFooter();' . PHP_EOL);
+            ->write('$context[\'phpExcel\']->endHeaderFooter();' . PHP_EOL);
     }
 }

@@ -40,8 +40,8 @@ class XlsCellNode extends Twig_Node
             ->write('$cellProperties = ')
             ->subcompile($this->getNode('properties'))
             ->raw(';' . PHP_EOL)
-            ->write('$phpExcel->startCell($cellIndex, $cellValue, $cellProperties);' . PHP_EOL)
+            ->write('$context[\'phpExcel\']->startCell($cellIndex, $cellValue, $cellProperties);' . PHP_EOL)
             ->write('unset($cellIndex, $cellValue, $cellProperties);' . PHP_EOL)
-            ->write('$phpExcel->endCell();' . PHP_EOL);
+            ->write('$context[\'phpExcel\']->endCell();' . PHP_EOL);
     }
 }

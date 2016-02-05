@@ -46,15 +46,15 @@ class XlsDocumentNode extends Twig_Node
             ->write('$documentProperties = ')
             ->subcompile($this->getNode('properties'))
             ->raw(';' . PHP_EOL)
-            ->write('$phpExcel = new MewesK\TwigExcelBundle\Wrapper\PhpExcelWrapper($context);' . PHP_EOL)
-            ->write('$phpExcel->startDocument($documentProperties);' . PHP_EOL)
+            ->write('$context[\'phpExcel\'] = new MewesK\TwigExcelBundle\Wrapper\PhpExcelWrapper($context);' . PHP_EOL)
+            ->write('$context[\'phpExcel\']->startDocument($documentProperties);' . PHP_EOL)
             ->write('unset($documentProperties);' . PHP_EOL)
             ->subcompile($this->getNode('body'))
             ->addDebugInfo($this)
-            ->write('$phpExcel->endDocument(' .
+            ->write('$context[\'phpExcel\']->endDocument(' .
                 ($this->preCalculateFormulas ? 'true' : 'false') . ', ' .
                 ($this->diskCachingDirectory ? '\'' . $this->diskCachingDirectory . '\'' : 'null') . ');' . PHP_EOL)
-            ->write('unset($phpExcel);' . PHP_EOL);
+            ->write('unset($context[\'phpExcel\']);' . PHP_EOL);
 
     }
 }

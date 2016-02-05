@@ -35,6 +35,31 @@ class BasicTwigTest extends AbstractTwigTest
      *
      * @dataProvider formatProvider
      */
+    public function testBlock($format)
+    {
+        try {
+            $document = $this->getDocument('block', $format);
+            static::assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheetByName('Test');
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('Hello', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            static::assertEquals('World', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            static::assertEquals('Foo', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            static::assertEquals('Bar', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $format
+     *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
     public function testCellIndex($format)
     {
         try {

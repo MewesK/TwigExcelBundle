@@ -28,11 +28,11 @@ class XlsCenterNode extends Twig_Node
     public function compile(Twig_Compiler $compiler)
     {
         $compiler->addDebugInfo($this)
-            ->write('$phpExcel->startAlignment(\'center\');' . PHP_EOL)
+            ->write('$context[\'phpExcel\']->startAlignment(\'center\');' . PHP_EOL)
             ->write("ob_start();\n")
             ->subcompile($this->getNode('body'))
             ->write('$centerValue = trim(ob_get_clean());' . PHP_EOL)
-            ->write('$phpExcel->endAlignment($centerValue);' . PHP_EOL)
+            ->write('$context[\'phpExcel\']->endAlignment($centerValue);' . PHP_EOL)
             ->write('unset($centerValue);' . PHP_EOL);
     }
 }

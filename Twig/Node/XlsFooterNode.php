@@ -38,10 +38,10 @@ class XlsFooterNode extends Twig_Node
             ->write('$footerProperties = ')
             ->subcompile($this->getNode('properties'))
             ->raw(';' . PHP_EOL)
-            ->write('$phpExcel->startHeaderFooter($footerType, $footerProperties);' . PHP_EOL)
+            ->write('$context[\'phpExcel\']->startHeaderFooter($footerType, $footerProperties);' . PHP_EOL)
             ->write('unset($footerType, $footerProperties);' . PHP_EOL)
             ->subcompile($this->getNode('body'))
             ->addDebugInfo($this)
-            ->write('$phpExcel->endHeaderFooter();' . PHP_EOL);
+            ->write('$context[\'phpExcel\']->endHeaderFooter();' . PHP_EOL);
     }
 }

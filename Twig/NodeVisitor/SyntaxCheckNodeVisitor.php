@@ -103,7 +103,7 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
             }
         }
 
-        if ($parentName === null && count($allowedParents) === 0) {
+        if ($parentName === null) {
             return;
         }
 

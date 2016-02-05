@@ -33,10 +33,10 @@ class XlsRowNode extends Twig_Node
             ->write('$rowIndex = ')
             ->subcompile($this->getNode('index'))
             ->raw(';' . PHP_EOL)
-            ->write('$phpExcel->startRow($rowIndex);' . PHP_EOL)
+            ->write('$context[\'phpExcel\']->startRow($rowIndex);' . PHP_EOL)
             ->write('unset($rowIndex);' . PHP_EOL)
             ->subcompile($this->getNode('body'))
             ->addDebugInfo($this)
-            ->write('$phpExcel->endRow();' . PHP_EOL);
+            ->write('$context[\'phpExcel\']->endRow();' . PHP_EOL);
     }
 }
