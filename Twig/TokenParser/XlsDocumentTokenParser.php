@@ -8,6 +8,7 @@ use MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsRightNode;
 use Twig_Node;
+use Twig_Node_BlockReference;
 use Twig_Node_Text;
 use Twig_Token;
 
@@ -73,6 +74,8 @@ class XlsDocumentTokenParser extends AbstractTokenParser
         foreach ($node->getIterator() as $key => $subNode) {
             if ($subNode instanceof Twig_Node_Text) {
                 $node->removeNode($key);
+            } elseif ($subNode instanceof Twig_Node_BlockReference) {
+                $this->removeTextNodesRecursively($this->parser->getBlock($subNode->getAttribute('name')));
             } elseif ($subNode instanceof Twig_Node && !($subNode instanceof XlsCellNode || $subNode instanceof XlsLeftNode || $subNode instanceof XlsCenterNode || $subNode instanceof XlsRightNode) && $subNode->count() > 0) {
                 $this->removeTextNodesRecursively($subNode);
             }
