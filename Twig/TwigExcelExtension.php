@@ -11,6 +11,7 @@ use MewesK\TwigExcelBundle\Twig\TokenParser\XlsDrawingTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsFooterTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsHeaderTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsLeftTokenParser;
+use MewesK\TwigExcelBundle\Twig\TokenParser\XlsMacroTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsRightTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsRowTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsSheetTokenParser;
@@ -59,6 +60,7 @@ class TwigExcelExtension extends Twig_Extension
     {
         return [
             new XlsBlockTokenParser(),
+            new XlsMacroTokenParser(),
             new XlsCellTokenParser(),
             new XlsDocumentTokenParser($this->preCalculateFormulas, $this->diskCachingDirectory),
             new XlsDrawingTokenParser(),

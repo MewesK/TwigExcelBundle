@@ -30,11 +30,11 @@ class XlsRowNode extends Twig_Node implements XlsNode
     public function compile(Twig_Compiler $compiler)
     {
         $compiler->addDebugInfo($this)
-            ->write('$rowIndex = ')
+            ->write('$context[\'phpExcel\']->setRowIndex(')
             ->subcompile($this->getNode('index'))
-            ->raw(';' . PHP_EOL)
-            ->write('$context[\'phpExcel\']->startRow($rowIndex);' . PHP_EOL)
-            ->write('unset($rowIndex);' . PHP_EOL)
+            ->raw(');' . PHP_EOL)
+            ->write('$context[\'phpExcel\']->startRow($context[\'phpExcel\']->getRowIndex());' . PHP_EOL)
+            ->write('$context[\'phpExcel\']->setRowIndex(0);' . PHP_EOL)
             ->subcompile($this->getNode('body'))
             ->addDebugInfo($this)
             ->write('$context[\'phpExcel\']->endRow();' . PHP_EOL);

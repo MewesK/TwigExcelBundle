@@ -3,6 +3,7 @@
 namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
 use MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode;
+use Twig_Node;
 use Twig_Token;
 
 /**
@@ -12,6 +13,7 @@ use Twig_Token;
  */
 class XlsDocumentTokenParser extends AbstractTokenParser
 {
+    use FixMacroCallsTrait;
     use RemoveTextNodeTrait;
 
     /**
@@ -48,6 +50,7 @@ class XlsDocumentTokenParser extends AbstractTokenParser
         // parse body
         $body = $this->parseBody();
         $this->removeTextNodesRecursively($body);
+        $this->fixMacroCallsRecursively($body);
 
         // return node
         return new XlsDocumentNode($properties, $body, $token->getLine(), $this->getTag(), $this->preCalculateFormulas, $this->diskCachingDirectory);

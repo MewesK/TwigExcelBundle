@@ -14,6 +14,7 @@ use Twig_TokenParser_Block;
  */
 class XlsBlockTokenParser extends Twig_TokenParser_Block
 {
+    use FixMacroCallsTrait;
     use RemoveTextNodeTrait;
 
     /**
@@ -29,6 +30,7 @@ class XlsBlockTokenParser extends Twig_TokenParser_Block
         $blockReference = parent::parse($token);
 
         $this->removeTextNodesRecursively($this->parser->getBlock($blockReference->getAttribute('name')));
+        $this->fixMacroCallsRecursively($this->parser->getBlock($blockReference->getAttribute('name')));
 
         return $blockReference;
     }

@@ -1,0 +1,23 @@
+{% xlsmacro cell(a) %}
+    {% xlscell %}{{ a }}{% endxlscell %}
+{% endxlsmacro %}
+
+{% xlsmacro content(a) %}
+    {{ a }}
+{% endxlsmacro %}
+
+{% xlsmacro row(a, b) %}
+    {% xlsrow %}
+        {% xlscell %}{{ a }}{% endxlscell %}
+        {% xlscell %}{{ b }}{% endxlscell %}
+    {% endxlsrow %}
+{% endxlsmacro %}
+
+{% xlsmacro sheet(a, b, c) %}
+    {% xlssheet a %}
+        {% xlsrow %}
+            {% xlscell %}{{ b }}{% endxlscell %}
+            {% xlscell %}{{ c }}{% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+{% endxlsmacro %}

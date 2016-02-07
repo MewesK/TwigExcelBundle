@@ -1,0 +1,11 @@
+{% import 'macroInclude.twig' as macros %}
+{% xlsdocument %}
+    {% xlssheet 'Test' %}
+        {% xlsrow %}
+            {% xlscell %}{{ macros.content('Hello1') }}{% endxlscell %}
+            {{ macros.cell('World1') }}
+        {% endxlsrow %}
+        {{ macros.row('Hello2', 'World2') }}
+    {% endxlssheet %}
+    {{ macros.sheet('Test2', 'Hello3', 'World3') }}
+{% endxlsdocument %}

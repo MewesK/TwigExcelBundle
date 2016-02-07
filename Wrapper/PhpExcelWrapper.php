@@ -35,6 +35,15 @@ class PhpExcelWrapper
     private $drawingWrapper;
 
     /**
+     * @var int
+     */
+    private $cellIndex;
+    /**
+     * @var int
+     */
+    private $rowIndex;
+
+    /**
      * @param array $context
      */
     public function __construct(array $context = [])
@@ -85,12 +94,9 @@ class PhpExcelWrapper
         $this->sheetWrapper->end();
     }
 
-    /**
-     * @param null|int $index
-     */
-    public function startRow($index = null)
+    public function startRow()
     {
-        $this->rowWrapper->start($index);
+        $this->rowWrapper->start($this->rowIndex);
     }
 
     public function endRow()
@@ -99,15 +105,14 @@ class PhpExcelWrapper
     }
 
     /**
-     * @param null|int $index
      * @param null|mixed $value
      * @param null|array $properties
      *
      * @throws \PHPExcel_Exception
      */
-    public function startCell($index = null, $value = null, array $properties = null)
+    public function startCell($value = null, array $properties = null)
     {
-        $this->cellWrapper->start($index, $value, $properties);
+        $this->cellWrapper->start($this->cellIndex, $value, $properties);
     }
 
     public function endCell()
@@ -160,5 +165,39 @@ class PhpExcelWrapper
     public function endDrawing()
     {
         $this->drawingWrapper->end();
+    }
+
+    // Getter / Setter
+
+    /**
+     * @return int
+     */
+    public function getCellIndex()
+    {
+        return $this->cellIndex;
+    }
+
+    /**
+     * @param int $cellIndex
+     */
+    public function setCellIndex($cellIndex)
+    {
+        $this->cellIndex = $cellIndex;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRowIndex()
+    {
+        return $this->rowIndex;
+    }
+
+    /**
+     * @param int $rowIndex
+     */
+    public function setRowIndex($rowIndex)
+    {
+        $this->rowIndex = $rowIndex;
     }
 }
