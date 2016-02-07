@@ -60,6 +60,106 @@ class BasicTwigTest extends AbstractTwigTest
      *
      * @dataProvider formatProvider
      */
+    public function testBlockOverrideCell($format)
+    {
+        try {
+            $document = $this->getDocument('blockOverrideCell', $format);
+            static::assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheetByName('Test');
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('Hello', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            static::assertEquals('World', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            static::assertEquals('Foo', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            static::assertEquals('Bar2', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $format
+     *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testBlockOverrideContent($format)
+    {
+        try {
+            $document = $this->getDocument('blockOverrideContent', $format);
+            static::assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheetByName('Test');
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('Hello', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            static::assertEquals('World', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            static::assertEquals('Foo2', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            static::assertEquals('Bar', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $format
+     *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testBlockOverrideRow($format)
+    {
+        try {
+            $document = $this->getDocument('blockOverrideRow', $format);
+            static::assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheetByName('Test');
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('Hello2', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            static::assertEquals('World2', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            static::assertEquals('Foo', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            static::assertEquals('Bar', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $format
+     *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testBlockOverrideSheet($format)
+    {
+        try {
+            $document = $this->getDocument('blockOverrideSheet', $format);
+            static::assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheetByName('Test2');
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('Hello3', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            static::assertEquals('World3', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            static::assertNotEquals('Foo', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            static::assertNotEquals('Bar', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $format
+     *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
     public function testCellIndex($format)
     {
         try {

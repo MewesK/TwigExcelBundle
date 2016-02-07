@@ -11,7 +11,7 @@ use Twig_Node_Expression;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsDrawingNode extends Twig_Node
+class XlsDrawingNode extends Twig_Node implements XlsNode
 {
     /**
      * @param Twig_Node_Expression $path
@@ -39,5 +39,18 @@ class XlsDrawingNode extends Twig_Node
             ->write('$context[\'phpExcel\']->startDrawing($drawingPath, $drawingProperties);' . PHP_EOL)
             ->write('unset($drawingPath, $drawingProperties);' . PHP_EOL)
             ->write('$context[\'phpExcel\']->endDrawing();' . PHP_EOL);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllowedParents()
+    {
+        return [
+            'MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode',
+            'MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode',
+            'MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode',
+            'MewesK\TwigExcelBundle\Twig\Node\XlsRightNode'
+        ];
     }
 }

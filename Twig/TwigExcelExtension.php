@@ -3,6 +3,7 @@
 namespace MewesK\TwigExcelBundle\Twig;
 
 use MewesK\TwigExcelBundle\Twig\NodeVisitor\SyntaxCheckNodeVisitor;
+use MewesK\TwigExcelBundle\Twig\TokenParser\XlsBlockTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsCellTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsCenterTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsDocumentTokenParser;
@@ -56,7 +57,9 @@ class TwigExcelExtension extends Twig_Extension
      */
     public function getTokenParsers()
     {
-        return [new XlsCellTokenParser(),
+        return [
+            new XlsBlockTokenParser(),
+            new XlsCellTokenParser(),
             new XlsDocumentTokenParser($this->preCalculateFormulas, $this->diskCachingDirectory),
             new XlsDrawingTokenParser(),
             new XlsFooterTokenParser(),
@@ -65,7 +68,8 @@ class TwigExcelExtension extends Twig_Extension
             new XlsCenterTokenParser(),
             new XlsRightTokenParser(),
             new XlsRowTokenParser(),
-            new XlsSheetTokenParser()];
+            new XlsSheetTokenParser()
+        ];
     }
 
     /**
@@ -73,7 +77,9 @@ class TwigExcelExtension extends Twig_Extension
      */
     public function getNodeVisitors()
     {
-        return [new SyntaxCheckNodeVisitor()];
+        return [
+            new SyntaxCheckNodeVisitor()
+        ];
     }
 
     /**

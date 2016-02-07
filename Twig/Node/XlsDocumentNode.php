@@ -11,7 +11,7 @@ use Twig_Node_Expression;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsDocumentNode extends Twig_Node
+class XlsDocumentNode extends Twig_Node implements XlsNode
 {
     /**
      * @var bool
@@ -55,6 +55,13 @@ class XlsDocumentNode extends Twig_Node
                 ($this->preCalculateFormulas ? 'true' : 'false') . ', ' .
                 ($this->diskCachingDirectory ? '\'' . $this->diskCachingDirectory . '\'' : 'null') . ');' . PHP_EOL)
             ->write('unset($context[\'phpExcel\']);' . PHP_EOL);
+    }
 
+    /**
+     * @return string[]
+     */
+    public function getAllowedParents()
+    {
+        return [];
     }
 }

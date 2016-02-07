@@ -2,16 +2,7 @@
 
 namespace MewesK\TwigExcelBundle\Twig\NodeVisitor;
 
-use MewesK\TwigExcelBundle\Twig\Node\XlsCellNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsDrawingNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsFooterNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsHeaderNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsRightNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsRowNode;
-use MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode;
+use MewesK\TwigExcelBundle\Twig\Node\XlsNode;
 use Twig_BaseNodeVisitor;
 use Twig_Environment;
 use Twig_Error_Syntax;
@@ -36,27 +27,14 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
      */
     protected function doEnterNode(Twig_Node $node, Twig_Environment $env)
     {
-        if ($node instanceof XlsDocumentNode) {
-            $this->checkAllowedParents($node, []);
-        } elseif ($node instanceof XlsSheetNode) {
-            $this->checkAllowedParents($node,
-                ['MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode']);
-        } elseif ($node instanceof XlsRowNode || $node instanceof XlsFooterNode || $node instanceof XlsHeaderNode) {
-            $this->checkAllowedParents($node,
-                ['MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode']);
-        } elseif ($node instanceof XlsLeftNode || $node instanceof XlsCenterNode || $node instanceof XlsRightNode) {
-            $this->checkAllowedParents($node,
-                ['MewesK\TwigExcelBundle\Twig\Node\XlsFooterNode',
-                    'MewesK\TwigExcelBundle\Twig\Node\XlsHeaderNode']);
-        } elseif ($node instanceof XlsCellNode) {
-            $this->checkAllowedParents($node,
-                ['MewesK\TwigExcelBundle\Twig\Node\XlsRowNode']);
-        } elseif ($node instanceof XlsDrawingNode) {
-            $this->checkAllowedParents($node,
-                ['MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode',
-                    'MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode',
-                    'MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode',
-                    'MewesK\TwigExcelBundle\Twig\Node\XlsRightNode']);
+        // TODO warn if using normal blocks
+
+        if ($node instanceof XlsNode) {
+            // check allowed parents
+            /**
+             * @var XlsNode $node
+             */
+            $this->checkAllowedParents($node, $node->getAllowedParents());
         }
 
         $this->path[] = get_class($node);

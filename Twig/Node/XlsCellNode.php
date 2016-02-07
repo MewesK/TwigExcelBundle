@@ -11,7 +11,7 @@ use Twig_Node_Expression;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsCellNode extends Twig_Node
+class XlsCellNode extends Twig_Node implements XlsNode
 {
     /**
      * @param Twig_Node_Expression $index
@@ -43,5 +43,15 @@ class XlsCellNode extends Twig_Node
             ->write('$context[\'phpExcel\']->startCell($cellIndex, $cellValue, $cellProperties);' . PHP_EOL)
             ->write('unset($cellIndex, $cellValue, $cellProperties);' . PHP_EOL)
             ->write('$context[\'phpExcel\']->endCell();' . PHP_EOL);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllowedParents()
+    {
+        return [
+            'MewesK\TwigExcelBundle\Twig\Node\XlsRowNode'
+        ];
     }
 }

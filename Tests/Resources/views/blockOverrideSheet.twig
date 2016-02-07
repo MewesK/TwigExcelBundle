@@ -1,9 +1,9 @@
 {% extends 'block.twig' %}
-{% block sheet %}
+{% xlsblock sheet %}
     {% xlssheet 'Test2' %}
         {% xlsrow %}
             {% xlscell %}Hello3{% endxlscell %}
             {% xlscell %}World3{% endxlscell %}
         {% endxlsrow %}
     {% endxlssheet %}
-{% endblock %}
+{% endxlsblock %}

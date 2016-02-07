@@ -10,7 +10,7 @@ use Twig_Node;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsRightNode extends Twig_Node
+class XlsRightNode extends Twig_Node implements XlsNode
 {
     /**
      * @param Twig_Node $body
@@ -34,5 +34,16 @@ class XlsRightNode extends Twig_Node
             ->write('$rightValue = trim(ob_get_clean());' . PHP_EOL)
             ->write('$context[\'phpExcel\']->endAlignment($rightValue);' . PHP_EOL)
             ->write('unset($rightValue);' . PHP_EOL);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllowedParents()
+    {
+        return [
+            'MewesK\TwigExcelBundle\Twig\Node\XlsFooterNode',
+            'MewesK\TwigExcelBundle\Twig\Node\XlsHeaderNode'
+        ];
     }
 }
