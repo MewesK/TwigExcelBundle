@@ -27,7 +27,7 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
      */
     protected function doEnterNode(Twig_Node $node, Twig_Environment $env)
     {
-        // TODO warn if using normal blocks
+        // TODO warn if using normal blocks/macros
 
         if ($node instanceof XlsNode) {
             // check allowed parents

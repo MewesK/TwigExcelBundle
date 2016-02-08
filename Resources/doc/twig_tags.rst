@@ -560,3 +560,71 @@ Example
         },
         width: 0
     } %}
+
+xlsblock
+--------
+
+.. code-block:: twig
+
+    {% xlsblock ... %}
+        {# ... #}
+    {% endxlsblock %}
+
+- Works the same way as the standard block tag does
+- Attention: the standard block tag does not with tags provided by this bundle
+
+Example
+```````
+
+.. code-block:: twig
+
+    {# parent.xls.twig #}
+
+    {% xlsblock test %}
+        {# ... #}
+    {% endxlsblock %}
+
+
+.. code-block:: twig
+
+    {# child.xls.twig #}
+
+    {% extends 'parent.xls.twig' %}
+
+    {% xlsblock test %}
+        {# ... #}
+    {% endxlsblock %}
+
+xlsmacro
+--------
+
+.. code-block:: twig
+
+    {% xlsmacro ... %}
+        {# ... #}
+    {% endxlsmacro %}
+
+- Works the same way as the standard macro tag does
+- Attention: the standard macro tag does not with tags provided by this bundle
+
+Example
+```````
+
+.. code-block:: twig
+
+    {# macros.xls.twig #}
+
+    {% xlsmacro test() %}
+        {# ... #}
+    {% endxlsmacro %}
+
+
+.. code-block:: twig
+
+    {# test.xls.twig #}
+
+    {% import 'macros.xls.twig' as macros %}
+
+    {# ... #}
+    {{ macros.test() }}
+    {# ... #}

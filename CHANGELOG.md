@@ -7,6 +7,11 @@
  * Removed more deprecated function calls (for compatibility with Twig 2.0)
  * Removed unnecessary mock objects
  * Added messages to InvalidArgumentExceptions (darookee)
+  
+**Features**
+
+ * Added support for blocks in form of the new xlsblock tag. The standard blocks do sadly not work since they won't allow to alter the internal node structure.
+ * Added support for macros in form of the new xlsmacro tag. The standard macros do sadly not work since they won't allow to alter the internal node structure nor sharing the context with the xlsdocument.
 
 ## 1.2 (2015-12-02)
 
