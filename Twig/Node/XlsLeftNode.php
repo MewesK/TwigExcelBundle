@@ -10,7 +10,7 @@ use Twig_Node;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsLeftNode extends Twig_Node implements XlsNode
+class XlsLeftNode extends XlsNode
 {
     /**
      * @param Twig_Node $body
@@ -45,5 +45,13 @@ class XlsLeftNode extends Twig_Node implements XlsNode
             'MewesK\TwigExcelBundle\Twig\Node\XlsFooterNode',
             'MewesK\TwigExcelBundle\Twig\Node\XlsHeaderNode'
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function canContainText()
+    {
+        return true;
     }
 }

@@ -3,7 +3,8 @@
 namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
 use MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode;
-use Twig_Node;
+use MewesK\TwigExcelBundle\Twig\TokenParser\Traits\FixMacroCallsTrait;
+use MewesK\TwigExcelBundle\Twig\TokenParser\Traits\RemoveTextNodeTrait;
 use Twig_Token;
 
 /**

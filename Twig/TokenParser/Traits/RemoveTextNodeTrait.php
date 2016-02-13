@@ -1,10 +1,11 @@
 <?php
 
-namespace MewesK\TwigExcelBundle\Twig\TokenParser;
+namespace MewesK\TwigExcelBundle\Twig\TokenParser\Traits;
 
 use MewesK\TwigExcelBundle\Twig\Node\XlsCellNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsLeftNode;
+use MewesK\TwigExcelBundle\Twig\Node\XlsNode;
 use MewesK\TwigExcelBundle\Twig\Node\XlsRightNode;
 use Twig_Node;
 use Twig_Node_Block;
@@ -33,7 +34,10 @@ trait RemoveTextNodeTrait
                 $node->removeNode($key);
             } elseif ($subNode instanceof Twig_Node_BlockReference) {
                 $this->removeTextNodesRecursively($this->parser->getBlock($subNode->getAttribute('name')));
-            } elseif ($subNode instanceof Twig_Node && !($subNode instanceof XlsCellNode || $subNode instanceof XlsLeftNode || $subNode instanceof XlsCenterNode || $subNode instanceof XlsRightNode) && $subNode->count() > 0) {
+            } elseif ($subNode instanceof Twig_Node && $subNode->count() > 0) {
+                if ($subNode instanceof XlsNode && $subNode->canContainText()) {
+                    continue;
+                }
                 $this->removeTextNodesRecursively($subNode);
             }
         }

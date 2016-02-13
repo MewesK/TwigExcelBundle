@@ -7,6 +7,8 @@ use Twig_BaseNodeVisitor;
 use Twig_Environment;
 use Twig_Error_Syntax;
 use Twig_Node;
+use Twig_Node_Block;
+use Twig_Node_Macro;
 
 /**
  * Class SyntaxCheckNodeVisitor
@@ -27,10 +29,17 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
      */
     protected function doEnterNode(Twig_Node $node, Twig_Environment $env)
     {
-        // TODO warn if using normal blocks/macros
-
-        if ($node instanceof XlsNode) {
-            // check allowed parents
+        if ($node instanceof Twig_Node_Block) {
+            if ($this->checkContainsXlsNode($node) && $node->hasAttribute('twigExcelBundle')) {
+                throw new Twig_Error_Syntax('Block tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsblock\' instead.');
+            }
+        }
+        elseif ($node instanceof Twig_Node_Macro && $node->hasAttribute('twigExcelBundle')) {
+            if ($this->checkContainsXlsNode($node)) {
+                throw new Twig_Error_Syntax('Macro tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsmacro\' instead.');
+            }
+        }
+        elseif ($node instanceof XlsNode) {
             /**
              * @var XlsNode $node
              */
@@ -91,6 +100,25 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
             }
         }
 
+        $this->path = [];
         throw new Twig_Error_Syntax(sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), $parentName));
+    }
+
+    /**
+     * @param Twig_Node $node
+     * @return bool
+     */
+    private function checkContainsXlsNode(Twig_Node $node)
+    {
+        foreach ($node->getIterator() as $key => $subNode) {
+            if ($node instanceof XlsNode) {
+                return true;
+            } elseif ($subNode instanceof Twig_Node && $subNode->count() > 0) {
+                if ($this->checkContainsXlsNode($subNode)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

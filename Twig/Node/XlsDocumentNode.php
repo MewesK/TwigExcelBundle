@@ -11,7 +11,7 @@ use Twig_Node_Expression;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsDocumentNode extends Twig_Node implements XlsNode
+class XlsDocumentNode extends XlsNode
 {
     /**
      * @var bool
@@ -63,5 +63,13 @@ class XlsDocumentNode extends Twig_Node implements XlsNode
     public function getAllowedParents()
     {
         return [];
+    }
+
+    /**
+     * @return bool
+     */
+    public function canContainText()
+    {
+        return false;
     }
 }

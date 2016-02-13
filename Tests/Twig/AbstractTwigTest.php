@@ -58,8 +58,8 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
         $tempFilePath = $tempDirPath . $templateName . '.' . $format;
 
         // create source directory if necessary
-        if (!file_exists($tempDirPath)) {
-            mkdir($tempDirPath);
+        if (!file_exists($tempDirPath) && !@mkdir($tempDirPath) && !@is_dir($tempDirPath)) {
+            throw new \RuntimeException('Cannot create temp folder');
         }
 
         // save source

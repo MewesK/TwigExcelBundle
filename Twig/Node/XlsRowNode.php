@@ -11,7 +11,7 @@ use Twig_Node_Expression;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsRowNode extends Twig_Node implements XlsNode
+class XlsRowNode extends XlsNode
 {
     /**
      * @param Twig_Node_Expression $index
@@ -48,5 +48,13 @@ class XlsRowNode extends Twig_Node implements XlsNode
         return [
             'MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode'
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function canContainText()
+    {
+        return false;
     }
 }

@@ -60,14 +60,14 @@ class TwigExcelExtension extends Twig_Extension
     {
         return [
             new XlsBlockTokenParser(),
-            new XlsMacroTokenParser(),
             new XlsCellTokenParser(),
+            new XlsCenterTokenParser(),
             new XlsDocumentTokenParser($this->preCalculateFormulas, $this->diskCachingDirectory),
             new XlsDrawingTokenParser(),
             new XlsFooterTokenParser(),
             new XlsHeaderTokenParser(),
             new XlsLeftTokenParser(),
-            new XlsCenterTokenParser(),
+            new XlsMacroTokenParser(),
             new XlsRightTokenParser(),
             new XlsRowTokenParser(),
             new XlsSheetTokenParser()

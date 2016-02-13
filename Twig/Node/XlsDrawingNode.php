@@ -11,7 +11,7 @@ use Twig_Node_Expression;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsDrawingNode extends Twig_Node implements XlsNode
+class XlsDrawingNode extends XlsNode
 {
     /**
      * @param Twig_Node_Expression $path
@@ -52,5 +52,13 @@ class XlsDrawingNode extends Twig_Node implements XlsNode
             'MewesK\TwigExcelBundle\Twig\Node\XlsCenterNode',
             'MewesK\TwigExcelBundle\Twig\Node\XlsRightNode'
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function canContainText()
+    {
+        return false;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\TwigExcelBundle\Twig\TokenParser;
+namespace MewesK\TwigExcelBundle\Twig\TokenParser\Traits;
 
 use Twig_Node;
 use Twig_Node_Expression_MethodCall;
