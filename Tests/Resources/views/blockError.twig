@@ -1,12 +1,12 @@
 {% xlsdocument %}
     {% xlssheet 'Test' %}
-        {% xlsblock row %}
+        {% xlsblock row1 %}
             {% xlsrow %}
                 {% xlscell %}Hello{% endxlscell %}
                 {% xlscell %}World{% endxlscell %}
             {% endxlsrow %}
         {% endxlsblock %}
-        {% block row %}
+        {% block row2 %}
             {% xlsrow %}
                 {% xlscell %}Foo{% endxlscell %}
                 {% xlscell %}Bar{% endxlscell %}

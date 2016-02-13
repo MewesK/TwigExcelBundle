@@ -37,7 +37,10 @@ class ErrorTwigTest extends AbstractTwigTest
      */
     public function testBlockError($format)
     {
-        $this->setExpectedExceptionRegExp('\Twig_Error_Syntax', '/Block tags do not work together with Twig tags provided by TwigExcelBundle/');
+        $this->setExpectedException(
+            '\Twig_Error_Syntax',
+            'Block tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsblock\' instead in "blockError.twig".'
+        );
 
         try {
             $this->getDocument('blockError', $format);
@@ -76,7 +79,10 @@ class ErrorTwigTest extends AbstractTwigTest
      */
     public function testMacroError($format)
     {
-        $this->setExpectedExceptionRegExp('\Twig_Error_Syntax', '/Macro tags do not work together with Twig tags provided by TwigExcelBundle/');
+        $this->setExpectedException(
+            '\Twig_Error_Syntax',
+            'Macro tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsmacro\' instead in "macroError.twig".'
+        );
 
         try {
             $this->getDocument('macroError', $format);

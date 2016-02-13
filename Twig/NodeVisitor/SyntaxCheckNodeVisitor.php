@@ -29,13 +29,11 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
      */
     protected function doEnterNode(Twig_Node $node, Twig_Environment $env)
     {
-        if ($node instanceof Twig_Node_Block) {
-            if ($this->checkContainsXlsNode($node) && $node->hasAttribute('twigExcelBundle')) {
+        if (($node instanceof Twig_Node_Block || $node instanceof Twig_Node_Macro) && !$node->hasAttribute('twigExcelBundle') && $this->checkContainsXlsNode($node)) {
+            if ($node instanceof Twig_Node_Block) {
                 throw new Twig_Error_Syntax('Block tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsblock\' instead.');
             }
-        }
-        elseif ($node instanceof Twig_Node_Macro && $node->hasAttribute('twigExcelBundle')) {
-            if ($this->checkContainsXlsNode($node)) {
+            elseif ($node instanceof Twig_Node_Macro) {
                 throw new Twig_Error_Syntax('Macro tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsmacro\' instead.');
             }
         }
@@ -100,6 +98,7 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
             }
         }
 
+        // reset path since throwing an error prevents doLeaveNode to be called
         $this->path = [];
         throw new Twig_Error_Syntax(sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), $parentName));
     }

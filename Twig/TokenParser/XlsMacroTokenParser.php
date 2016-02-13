@@ -53,7 +53,10 @@ class XlsMacroTokenParser extends Twig_TokenParser_Macro
         $this->removeTextNodesRecursively($body);
 
         $macro = new Twig_Node_Macro($name, new Twig_Node_Body(array($body)), $arguments, $lineno, $this->getTag());
+
+        // mark for syntax checks
         $macro->setAttribute('twigExcelBundle', true);
+
         $this->parser->setMacro($name, $macro);
     }
 
