@@ -2,8 +2,7 @@
 
 namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
-use MewesK\TwigExcelBundle\Twig\TokenParser\Traits\FixMacroCallsTrait;
-use MewesK\TwigExcelBundle\Twig\TokenParser\Traits\RemoveTextNodeTrait;
+use MewesK\TwigExcelBundle\Twig\NodeHelper;
 use Twig_Error_Syntax;
 use Twig_Node_Block;
 use Twig_Node_BlockReference;
@@ -17,9 +16,6 @@ use Twig_TokenParser_Block;
  */
 class XlsBlockTokenParser extends Twig_TokenParser_Block
 {
-    use FixMacroCallsTrait;
-    use RemoveTextNodeTrait;
-
     /**
      * @param Twig_Token $token
      * @return Twig_Node_BlockReference
@@ -31,11 +27,14 @@ class XlsBlockTokenParser extends Twig_TokenParser_Block
          * @var Twig_Node_BlockReference $blockReference
          */
         $blockReference = parent::parse($token);
+        /**
+         * @var Twig_Node_Block $block
+         */
         $block = $this->parser->getBlock($blockReference->getAttribute('name'));
 
         // prepare block
-        $this->removeTextNodesRecursively($block);
-        $this->fixMacroCallsRecursively($block);
+        NodeHelper::removeTextNodesRecursively($block, $this->parser);
+        NodeHelper::fixMacroCallsRecursively($block);
 
         // mark for syntax checks
         foreach ($block->getIterator() as $node) {

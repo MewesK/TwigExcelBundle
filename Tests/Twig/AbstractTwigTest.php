@@ -47,7 +47,7 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $appVariable = new AppVariable($format);
+        $appVariable = new AppVariable();
         $appVariable->setRequestStack($requestStack);
 
         // generate source from template

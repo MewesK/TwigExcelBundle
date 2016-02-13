@@ -3,6 +3,7 @@
 namespace MewesK\TwigExcelBundle\Twig\NodeVisitor;
 
 use MewesK\TwigExcelBundle\Twig\Node\XlsNode;
+use MewesK\TwigExcelBundle\Twig\NodeHelper;
 use Twig_BaseNodeVisitor;
 use Twig_Environment;
 use Twig_Error_Syntax;
@@ -29,7 +30,7 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
      */
     protected function doEnterNode(Twig_Node $node, Twig_Environment $env)
     {
-        if (($node instanceof Twig_Node_Block || $node instanceof Twig_Node_Macro) && !$node->hasAttribute('twigExcelBundle') && $this->checkContainsXlsNode($node)) {
+        if (($node instanceof Twig_Node_Block || $node instanceof Twig_Node_Macro) && !$node->hasAttribute('twigExcelBundle') && NodeHelper::checkContainsXlsNode($node)) {
             if ($node instanceof Twig_Node_Block) {
                 throw new Twig_Error_Syntax('Block tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsblock\' instead.');
             }
@@ -41,7 +42,13 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
             /**
              * @var XlsNode $node
              */
-            $this->checkAllowedParents($node, $node->getAllowedParents());
+            try {
+                NodeHelper::checkAllowedParents($node, $this->path);
+            } catch(Twig_Error_Syntax $e) {
+                // reset path since throwing an error prevents doLeaveNode to be called
+                $this->path = [];
+                throw $e;
+            }
         }
 
         $this->path[] = get_class($node);
@@ -65,59 +72,5 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
     public function getPriority()
     {
         return 0;
-    }
-
-    //
-    // Helper
-    //
-
-    /**
-     * @param Twig_Node $node
-     * @param array $allowedParents
-     *
-     * @throws Twig_Error_Syntax
-     */
-    protected function checkAllowedParents(Twig_Node $node, array $allowedParents)
-    {
-        $parentName = null;
-
-        foreach (array_reverse($this->path) as $className) {
-            if (strpos($className, 'MewesK\TwigExcelBundle\Twig\Node\Xls') === 0) {
-                $parentName = $className;
-                break;
-            }
-        }
-
-        if ($parentName === null) {
-            return;
-        }
-
-        foreach ($allowedParents as $className) {
-            if ($className === $parentName) {
-                return;
-            }
-        }
-
-        // reset path since throwing an error prevents doLeaveNode to be called
-        $this->path = [];
-        throw new Twig_Error_Syntax(sprintf('Node "%s" is not allowed inside of Node "%s".', get_class($node), $parentName));
-    }
-
-    /**
-     * @param Twig_Node $node
-     * @return bool
-     */
-    private function checkContainsXlsNode(Twig_Node $node)
-    {
-        foreach ($node->getIterator() as $key => $subNode) {
-            if ($node instanceof XlsNode) {
-                return true;
-            } elseif ($subNode instanceof Twig_Node && $subNode->count() > 0) {
-                if ($this->checkContainsXlsNode($subNode)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

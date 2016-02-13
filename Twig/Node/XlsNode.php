@@ -12,10 +12,10 @@ abstract class XlsNode extends \Twig_Node
     /**
      * @return string[]
      */
-    public abstract function getAllowedParents();
+    abstract public function getAllowedParents();
 
     /**
      * @return bool
      */
-    public abstract function canContainText();
+    abstract public function canContainText();
 }

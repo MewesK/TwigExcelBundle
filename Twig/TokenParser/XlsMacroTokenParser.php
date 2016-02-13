@@ -2,7 +2,7 @@
 
 namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
-use MewesK\TwigExcelBundle\Twig\TokenParser\Traits\RemoveTextNodeTrait;
+use MewesK\TwigExcelBundle\Twig\NodeHelper;
 use Twig_Error_Syntax;
 use Twig_Node_Body;
 use Twig_Node_Expression_Constant;
@@ -17,12 +17,11 @@ use Twig_TokenParser_Macro;
  */
 class XlsMacroTokenParser extends Twig_TokenParser_Macro
 {
-    use RemoveTextNodeTrait;
-
     /**
-     * TODO: Is there a way access Twig_Node_Macro without copying the whole method body?
+     * Copy of the parent method to allow manipulating the Twig_Node_Macro instance.
      *
      * @param Twig_Token $token
+     * @return \Twig_NodeInterface|void
      * @throws Twig_Error_Syntax
      */
     public function parse(Twig_Token $token)
@@ -50,7 +49,7 @@ class XlsMacroTokenParser extends Twig_TokenParser_Macro
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
         // remove all unwanted text nodes
-        $this->removeTextNodesRecursively($body);
+        NodeHelper::removeTextNodesRecursively($body, $this->parser);
 
         $macro = new Twig_Node_Macro($name, new Twig_Node_Body(array($body)), $arguments, $lineno, $this->getTag());
 
