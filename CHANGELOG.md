@@ -1,4 +1,4 @@
-## 1.2.x
+## 1.3.x
 
 **Improvements**
 
@@ -10,8 +10,7 @@
   
 **Features**
 
- * Added support for blocks in form of the new xlsblock tag. The standard blocks do sadly not work since they won't allow to alter the internal node structure.
- * Added support for macros in form of the new xlsmacro tag. The standard macros do sadly not work since they won't allow to alter the internal node structure nor sharing the context with the xlsdocument.
+ * Added support for blocks and macros in form of the new xlsblock/xlsmacro tags. The standard tags do sadly not work since they won't allow to alter the internal node structure.
 
 ## 1.2 (2015-12-02)
 

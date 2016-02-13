@@ -17,7 +17,7 @@ Or add the following code to your composer.json file and run composer update aft
 
     {
         "require": {
-            "mewesk/twig-excel-bundle": "1.0.*@dev"
+            "mewesk/twig-excel-bundle": "1.3.*@dev"
         }
     }
 

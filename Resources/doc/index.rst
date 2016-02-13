@@ -13,6 +13,7 @@ User Documentation
 
     installation
     getting_started
+    examples
     twig_functions
     twig_tags
 
