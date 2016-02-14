@@ -26,12 +26,12 @@ env:
   - SYMFONY_VERSION=dev-master
 
 before_script:
-  - phpenv config-rm xdebug.ini
-  - composer self-update
   - composer require symfony/framework-bundle:${SYMFONY_VERSION}
   - composer require symfony/symfony:${SYMFONY_VERSION}
   - composer require sensio/framework-extra-bundle:${SYMFONY_VERSION}
+
+before_script:
+  - composer self-update
   - composer install --prefer-source
-  - phpenv config-add xdebug.ini
 
 sudo: false
