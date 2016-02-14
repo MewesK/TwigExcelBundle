@@ -25,13 +25,13 @@ env:
   - SYMFONY_VERSION=3.0.*
   - SYMFONY_VERSION=dev-master
 
-before_script:
+before_install:
+  - composer self-update
+
+install:
   - composer require symfony/framework-bundle:${SYMFONY_VERSION}
   - composer require symfony/symfony:${SYMFONY_VERSION}
   - composer require sensio/framework-extra-bundle:${SYMFONY_VERSION}
-
-before_script:
-  - composer self-update
-  - composer install --prefer-source
+  - composer update --prefer-dist --no-interaction
 
 sudo: false
