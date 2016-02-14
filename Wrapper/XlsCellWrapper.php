@@ -49,58 +49,56 @@ class XlsCellWrapper extends AbstractWrapper
 
     protected function initializeMappings()
     {
-        $wrapper = $this; // PHP 5.3 fix
-
-        $this->mappings['break'] = function ($value) use ($wrapper) {
-            $wrapper->sheetWrapper->getObject()->setBreak($wrapper->object->getCoordinate(), $value);
+        $this->mappings['break'] = function ($value) {
+            $this->sheetWrapper->getObject()->setBreak($this->object->getCoordinate(), $value);
         };
-        $this->mappings['dataType'] = function ($value) use ($wrapper) {
-            $wrapper->object->setDataType($value);
+        $this->mappings['dataType'] = function ($value) {
+            $this->object->setDataType($value);
         };
-        $this->mappings['dataValidation']['allowBlank'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setAllowBlank($value);
+        $this->mappings['dataValidation']['allowBlank'] = function ($value) {
+            $this->object->getDataValidation()->setAllowBlank($value);
         };
-        $this->mappings['dataValidation']['error'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setError($value);
+        $this->mappings['dataValidation']['error'] = function ($value) {
+            $this->object->getDataValidation()->setError($value);
         };
-        $this->mappings['dataValidation']['errorStyle'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setErrorStyle($value);
+        $this->mappings['dataValidation']['errorStyle'] = function ($value) {
+            $this->object->getDataValidation()->setErrorStyle($value);
         };
-        $this->mappings['dataValidation']['errorTitle'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setErrorTitle($value);
+        $this->mappings['dataValidation']['errorTitle'] = function ($value) {
+            $this->object->getDataValidation()->setErrorTitle($value);
         };
-        $this->mappings['dataValidation']['formula1'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setFormula1($value);
+        $this->mappings['dataValidation']['formula1'] = function ($value) {
+            $this->object->getDataValidation()->setFormula1($value);
         };
-        $this->mappings['dataValidation']['formula2'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setFormula2($value);
+        $this->mappings['dataValidation']['formula2'] = function ($value) {
+            $this->object->getDataValidation()->setFormula2($value);
         };
-        $this->mappings['dataValidation']['operator'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setOperator($value);
+        $this->mappings['dataValidation']['operator'] = function ($value) {
+            $this->object->getDataValidation()->setOperator($value);
         };
-        $this->mappings['dataValidation']['prompt'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setPrompt($value);
+        $this->mappings['dataValidation']['prompt'] = function ($value) {
+            $this->object->getDataValidation()->setPrompt($value);
         };
-        $this->mappings['dataValidation']['promptTitle'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setPromptTitle($value);
+        $this->mappings['dataValidation']['promptTitle'] = function ($value) {
+            $this->object->getDataValidation()->setPromptTitle($value);
         };
-        $this->mappings['dataValidation']['showDropDown'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setShowDropDown($value);
+        $this->mappings['dataValidation']['showDropDown'] = function ($value) {
+            $this->object->getDataValidation()->setShowDropDown($value);
         };
-        $this->mappings['dataValidation']['showErrorMessage'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setShowErrorMessage($value);
+        $this->mappings['dataValidation']['showErrorMessage'] = function ($value) {
+            $this->object->getDataValidation()->setShowErrorMessage($value);
         };
-        $this->mappings['dataValidation']['showInputMessage'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setShowInputMessage($value);
+        $this->mappings['dataValidation']['showInputMessage'] = function ($value) {
+            $this->object->getDataValidation()->setShowInputMessage($value);
         };
-        $this->mappings['dataValidation']['type'] = function ($value) use ($wrapper) {
-            $wrapper->object->getDataValidation()->setType($value);
+        $this->mappings['dataValidation']['type'] = function ($value) {
+            $this->object->getDataValidation()->setType($value);
         };
-        $this->mappings['style'] = function ($value) use ($wrapper) {
-            $wrapper->sheetWrapper->getObject()->getStyle($wrapper->object->getCoordinate())->applyFromArray($value);
+        $this->mappings['style'] = function ($value) {
+            $this->sheetWrapper->getObject()->getStyle($this->object->getCoordinate())->applyFromArray($value);
         };
-        $this->mappings['url'] = function ($value) use ($wrapper) {
-            $wrapper->object->getHyperlink()->setUrl($value);
+        $this->mappings['url'] = function ($value) {
+            $this->object->getHyperlink()->setUrl($value);
         };
     }
 

@@ -56,13 +56,11 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
 
     protected function initializeMappings()
     {
-        $wrapper = $this; // PHP 5.3 fix
-
-        $this->mappings['scaleWithDocument'] = function ($value) use ($wrapper) {
-            $wrapper->object->setScaleWithDocument($value);
+        $this->mappings['scaleWithDocument'] = function ($value) {
+            $this->object->setScaleWithDocument($value);
         };
-        $this->mappings['alignWithMargins'] = function ($value) use ($wrapper) {
-            $wrapper->object->setAlignWithMargins($value);
+        $this->mappings['alignWithMargins'] = function ($value) {
+            $this->object->setAlignWithMargins($value);
         };
     }
 
