@@ -118,7 +118,4 @@ install:
   - composer require sensio/framework-extra-bundle:${SYMFONY_VERSION} --no-update
   - composer update --prefer-source --no-interaction
 
-before_script:
-  - phpenv config-add xdebug.ini
-
 sudo: false
