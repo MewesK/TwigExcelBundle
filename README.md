@@ -22,8 +22,8 @@ The following software is required to use PHPExcel/TwigExcelBundle.
 
 **Required by this bundle:**
 
- * PHP version 5.4.0 or newer
- * Symfony version 2.0 or newer
+ * PHP 5.5 or newer
+ * Symfony 2.7 or newer
 
 **Required by PhpExcel:**
 
