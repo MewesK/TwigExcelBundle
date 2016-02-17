@@ -9,7 +9,7 @@
         { "name": "Mewes Kochheim", "email": "mewes@kochheim.de" }
     ],
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.5",
         "symfony/framework-bundle": "~2.7|~3.0",
         "phpoffice/phpexcel": "~1.8.1"
     },
