@@ -1,6 +1,7 @@
 <?php
 
 namespace MewesK\TwigExcelBundle\Wrapper;
+use Twig_Environment;
 
 /**
  * Class XlsSheetWrapper
@@ -22,6 +23,10 @@ class XlsSheetWrapper extends AbstractWrapper
      * @var array
      */
     protected $context;
+    /**
+     * @var Twig_Environment
+     */
+    protected $environment;
     /**
      * @var XlsDocumentWrapper
      */
@@ -50,12 +55,15 @@ class XlsSheetWrapper extends AbstractWrapper
     protected $mappings;
 
     /**
+     * XlsSheetWrapper constructor.
      * @param array $context
+     * @param Twig_Environment $environment
      * @param XlsDocumentWrapper $documentWrapper
      */
-    public function __construct(array $context, XlsDocumentWrapper $documentWrapper)
+    public function __construct(array $context, Twig_Environment $environment, XlsDocumentWrapper $documentWrapper)
     {
         $this->context = $context;
+        $this->environment = $environment;
         $this->documentWrapper = $documentWrapper;
 
         $this->row = null;
@@ -243,14 +251,20 @@ class XlsSheetWrapper extends AbstractWrapper
      */
     public function start($index, array $properties = null)
     {
-        if ($index === null || !is_string($index)) {
-            throw new \InvalidArgumentException('Invalid index');
-        }
-        if (!$this->documentWrapper->getObject()->sheetNameExists($index)) {
-            $this->documentWrapper->getObject()->createSheet()->setTitle($index);
+        if (is_int($index) && $index <$this->documentWrapper->getObject()->getSheetCount()) {
+            $this->object = $this->documentWrapper->getObject()->setActiveSheetIndex($index);
+        } elseif (is_string($index)) {
+            if (!$this->documentWrapper->getObject()->sheetNameExists($index)) {
+                // create new sheet with a name
+                $this->documentWrapper->getObject()->createSheet()->setTitle($index);
+            }
+            $this->object = $this->documentWrapper->getObject()->setActiveSheetIndexByName($index);
+        }  else {
+            // create new sheet without a name
+            $this->documentWrapper->getObject()->createSheet();
+            $this->object = $this->documentWrapper->getObject()->setActiveSheetIndex(0);
         }
 
-        $this->object = $this->documentWrapper->getObject()->setActiveSheetIndexByName($index);
         $this->attributes['index'] = $index;
         $this->attributes['properties'] = $properties ?: [];
 

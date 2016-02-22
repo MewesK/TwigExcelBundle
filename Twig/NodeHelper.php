@@ -20,6 +20,8 @@ use Twig_Parser;
 class NodeHelper
 {
     /**
+     * Adds the PhpExcel instance as the last parameter to all macro function calls.
+     *
      * @param Twig_Node $node
      */
     public static function fixMacroCallsRecursively(Twig_Node $node)
@@ -38,6 +40,8 @@ class NodeHelper
     }
 
     /**
+     * Removes all TextNodes that are in illegal places to avoid echos in unwanted places.
+     *
      * @param Twig_Node $node
      * @param Twig_Parser $parser
      */

@@ -1,6 +1,7 @@
 <?php
 
 namespace MewesK\TwigExcelBundle\Wrapper;
+use Twig_Environment;
 
 /**
  * Class PhpExcelWrapper
@@ -44,16 +45,18 @@ class PhpExcelWrapper
     private $rowIndex;
 
     /**
+     * PhpExcelWrapper constructor.
      * @param array $context
+     * @param Twig_Environment $environment
      */
-    public function __construct(array $context = [])
+    public function __construct(array $context = [], Twig_Environment $environment)
     {
-        $this->documentWrapper = new XlsDocumentWrapper($context);
-        $this->sheetWrapper = new XlsSheetWrapper($context, $this->documentWrapper);
-        $this->rowWrapper = new XlsRowWrapper($context, $this->sheetWrapper);
-        $this->cellWrapper = new XlsCellWrapper($context, $this->sheetWrapper);
-        $this->headerFooterWrapper = new XlsHeaderFooterWrapper($context, $this->sheetWrapper);
-        $this->drawingWrapper = new XlsDrawingWrapper($context, $this->sheetWrapper, $this->headerFooterWrapper);
+        $this->documentWrapper = new XlsDocumentWrapper($context, $environment);
+        $this->sheetWrapper = new XlsSheetWrapper($context, $environment, $this->documentWrapper);
+        $this->rowWrapper = new XlsRowWrapper($context, $environment, $this->sheetWrapper);
+        $this->cellWrapper = new XlsCellWrapper($context, $environment, $this->sheetWrapper);
+        $this->headerFooterWrapper = new XlsHeaderFooterWrapper($context, $environment, $this->sheetWrapper);
+        $this->drawingWrapper = new XlsDrawingWrapper($context, $environment, $this->sheetWrapper, $this->headerFooterWrapper);
     }
 
     //

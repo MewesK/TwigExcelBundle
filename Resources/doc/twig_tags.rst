@@ -45,6 +45,7 @@ security                 array               Cannot be tested - not supported by
 \+ revisionsPassword     string              Cannot be tested - not supported by the reader
 \+ workbookPassword      string              Cannot be tested - not supported by the reader
 subject                  string    X    X
+template                 string    X    X    The path can be an absolute system path or a Twig namespace prefixed path like '@AppBundle/...' or a custom one like '@Templates/...'. Works for CSV too.
 title                    string    X    X
 =======================  ========  ===  ===  ===========
 
@@ -100,7 +101,7 @@ Attributes
 ==========  ======  ========  ===========
 Name        Type    Optional  Description
 ==========  ======  ========  ===========
-title       string
+title       string  X         If no title is given the first existing sheet will be used. If no sheet exists a new one will be created.
 properties  array   X
 ==========  ======  ========  ===========
 

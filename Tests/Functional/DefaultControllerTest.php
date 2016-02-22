@@ -81,4 +81,54 @@ class DefaultControllerTest extends AbstractControllerTest
             static::fail($e->getMessage());
         }
     }
+
+    /**
+     * @param string $format
+     *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testDocumentTemplatePath1($format)
+    {
+        try {
+            $document = $this->getDocument(static::$router->generate('test_default', ['templateName' => 'documentTemplatePath1', '_format' => $format]), $format);
+            static::assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheet(0);
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('Hello', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            static::assertEquals('World', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            static::assertEquals('Foo', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            static::assertEquals('Bar', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $format
+     *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testDocumentTemplatePath2($format)
+    {
+        try {
+            $document = $this->getDocument(static::$router->generate('test_default', ['templateName' => 'documentTemplatePath2', '_format' => $format]), $format);
+            static::assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheet(0);
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('Hello', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            static::assertEquals('World', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            static::assertEquals('Foo', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            static::assertEquals('Bar', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
 }

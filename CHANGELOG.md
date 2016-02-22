@@ -11,6 +11,7 @@
 **Features**
 
  * Added support for blocks and macros in form of the new xlsblock/xlsmacro tags. The standard tags do sadly not work since they won't allow to alter the internal node structure.
+ * Added support for document templates. Use existing spreadsheet files as templates.
 
 ## 1.2 (2015-12-02)
 

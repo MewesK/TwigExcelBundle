@@ -22,6 +22,7 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
 {
     protected static $TEMP_PATH = '/../../tmp/';
     protected static $RESOURCE_PATH = '/../Resources/views/';
+    protected static $TEMPLATE_PATH = '/../Resources/templates/';
 
     /**
      * @var Twig_Environment
@@ -100,7 +101,9 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        static::$environment = new Twig_Environment(new Twig_Loader_Filesystem(__DIR__ . static::$RESOURCE_PATH), ['strict_variables' => true]);
+        $fileSystem = new Twig_Loader_Filesystem([__DIR__ . static::$RESOURCE_PATH]);
+        $fileSystem->addPath( __DIR__ . static::$TEMPLATE_PATH, 'templates');
+        static::$environment = new Twig_Environment($fileSystem, ['strict_variables' => true]);
         static::$environment->addExtension(new TwigExcelExtension());
         static::$environment->setCache(__DIR__ . static::$TEMP_PATH);
     }

@@ -92,14 +92,77 @@ class XlsxTwigTest extends AbstractTwigTest
     /**
      * @param string $format
      *
+     * @throws \PHPExcel_Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testDocumentTemplate($format)
+    {
+        try {
+            $document = $this->getDocument('documentTemplateAdvanced', $format);
+            static::assertNotNull($document, 'Document does not exist');
+
+            $sheet = $document->getSheet(0);
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('Hello2', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            static::assertEquals('World', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+            static::assertEquals('Foo', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+            static::assertEquals('Bar2', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+
+            static::assertTrue($sheet->getCell('A1')->getStyle()->getFont()->getBold(), 'Unexpected value in bold');
+            static::assertTrue($sheet->getCell('B1')->getStyle()->getFont()->getItalic(), 'Unexpected value in italic');
+            static::assertEquals('single', $sheet->getCell('A2')->getStyle()->getFont()->getUnderline(), 'Unexpected value in underline');
+            static::assertEquals('FFFF3333', $sheet->getCell('B2')->getStyle()->getFont()->getColor()->getARGB(), 'Unexpected value in color');
+
+            $headerFooter = $sheet->getHeaderFooter();
+            static::assertNotNull($headerFooter, 'HeaderFooter does not exist');
+            static::assertContains('Left area header',
+                $headerFooter->getOddHeader(),
+                'Unexpected value in oddHeader');
+            static::assertContains('12Center area header',
+                $headerFooter->getOddHeader(),
+                'Unexpected value in oddHeader');
+            static::assertContains('12Right area header',
+                $headerFooter->getOddHeader(),
+                'Unexpected value in oddHeader');
+            static::assertContains('Left area footer',
+                $headerFooter->getOddFooter(),
+                'Unexpected value in oddFooter');
+            static::assertContains('12Center area footer',
+                $headerFooter->getOddFooter(),
+                'Unexpected value in oddFooter');
+            static::assertContains('12Right area footer',
+                $headerFooter->getOddFooter(),
+                'Unexpected value in oddFooter');
+
+            $drawings = $sheet->getDrawingCollection();
+            static::assertCount(1, $drawings, 'Not enough drawings exist');
+
+            $drawing = $drawings[0];
+            static::assertEquals(196, $drawing->getWidth(), 'Unexpected value in width');
+            static::assertEquals(187, $drawing->getHeight(), 'Unexpected value in height');
+        } catch (Twig_Error_Runtime $e) {
+            static::fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $format
+     *
      * @dataProvider formatProvider
      */
     public function testDrawingProperties($format)
     {
         try {
             $document = $this->getDocument('drawingProperties', $format);
+            static::assertNotNull($document, 'Document does not exist');
+
             $sheet = $document->getSheetByName('Test');
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
             $drawings = $sheet->getDrawingCollection();
+            static::assertCount(1, $drawings, 'Not enough drawings exist');
 
             $drawing = $drawings[0];
             static::assertEquals('Test Description', $drawing->getDescription(), 'Unexpected value in description');
@@ -130,9 +193,13 @@ class XlsxTwigTest extends AbstractTwigTest
     {
         try {
             $document = $this->getDocument('headerFooterComplex', $format);
-            $sheet = $document->getSheetByName('Test');
-            $headerFooter = $sheet->getHeaderFooter();
+            static::assertNotNull($document, 'Document does not exist');
 
+            $sheet = $document->getSheetByName('Test');
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            $headerFooter = $sheet->getHeaderFooter();
+            static::assertNotNull($headerFooter, 'HeaderFooter does not exist');
             static::assertEquals('&LfirstHeader left&CfirstHeader center&RfirstHeader right',
                 $headerFooter->getFirstHeader(),
                 'Unexpected value in firstHeader');

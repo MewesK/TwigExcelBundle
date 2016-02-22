@@ -1,0 +1,10 @@
+{% xlsdocument { 'template': '@templates/template.xlsx' } %}
+    {% xlssheet %}
+        {% xlsrow %}
+            {% xlscell %}Hello2{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow %}
+            {% xlscell 1 %}Bar2{% endxlscell %}
+        {% endxlsrow %}
+    {% endxlssheet %}
+{% endxlsdocument %}

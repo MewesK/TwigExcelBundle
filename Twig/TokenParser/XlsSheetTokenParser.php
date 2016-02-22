@@ -3,6 +3,7 @@
 namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
 use MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode;
+use Twig_Node_Expression_Constant;
 use Twig_Token;
 
 /**
@@ -21,7 +22,10 @@ class XlsSheetTokenParser extends AbstractTokenParser
     public function parse(Twig_Token $token)
     {
         // parse attributes
-        $title = $this->parser->getExpressionParser()->parseExpression();
+        $title = new Twig_Node_Expression_Constant(null, $token->getLine());
+        if (!$this->parser->getStream()->test(Twig_Token::PUNCTUATION_TYPE) && !$this->parser->getStream()->test(Twig_Token::BLOCK_END_TYPE)) {
+            $title = $this->parser->getExpressionParser()->parseExpression();
+        }
         $properties = $this->parseProperties($token);
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 

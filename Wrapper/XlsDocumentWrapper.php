@@ -2,10 +2,13 @@
 
 namespace MewesK\TwigExcelBundle\Wrapper;
 
+use PHPExcel_IOFactory;
 use PHPExcel_Settings;
 use PHPExcel_Writer_Abstract;
 use ReflectionClass;
 use Symfony\Bridge\Twig\AppVariable;
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 
 /**
  * Class XlsDocumentWrapper
@@ -18,6 +21,10 @@ class XlsDocumentWrapper extends AbstractWrapper
      * @var array
      */
     protected $context;
+    /**
+     * @var Twig_Environment
+     */
+    protected $environment;
 
     /**
      * @var \PHPExcel
@@ -33,11 +40,14 @@ class XlsDocumentWrapper extends AbstractWrapper
     protected $mappings;
 
     /**
+     * XlsDocumentWrapper constructor.
      * @param array $context
+     * @param Twig_Environment $environment
      */
-    public function __construct(array $context)
+    public function __construct(array $context, Twig_Environment $environment)
     {
         $this->context = $context;
+        $this->environment = $environment;
 
         $this->object = null;
         $this->attributes = [];
@@ -99,6 +109,9 @@ class XlsDocumentWrapper extends AbstractWrapper
         $this->mappings['subject'] = function ($value) {
             $this->object->getProperties()->setSubject($value);
         };
+        $this->mappings['template'] = function ($value) {
+            $this->attributes['template'] = $value;
+        };
         $this->mappings['title'] = function ($value) {
             $this->object->getProperties()->setTitle($value);
         };
@@ -111,8 +124,19 @@ class XlsDocumentWrapper extends AbstractWrapper
      */
     public function start(array $properties = null)
     {
-        $this->object = new \PHPExcel();
-        $this->object->removeSheetByIndex(0);
+        // load template
+        if (array_key_exists('template', $properties)) {
+            $templatePath = $this->expandPath($properties['template']);
+            $reader = PHPExcel_IOFactory::createReaderForFile($templatePath);
+            $this->object = $reader->load($templatePath);
+        }
+
+        // create new
+        else {
+            $this->object = new \PHPExcel();
+            $this->object->removeSheetByIndex(0);
+        }
+
         $this->attributes['properties'] = $properties ?: [];
 
         if ($properties !== null) {
@@ -193,6 +217,37 @@ class XlsDocumentWrapper extends AbstractWrapper
 
         $this->object = null;
         $this->attributes = [];
+    }
+
+    //
+    // Helpers
+    //
+
+    /**
+     * Resolves properties containing paths using namespaces.
+     *
+     * @param string $path
+     * @return bool
+     */
+    private function expandPath($path)
+    {
+        $loader = $this->environment->getLoader();
+        if ($loader instanceof Twig_Loader_Filesystem) {
+            /**
+             * @var Twig_Loader_Filesystem $loader
+             */
+            foreach ($loader->getNamespaces() as $namespace) {
+                if (strpos($path, $namespace) === 1) {
+                    foreach ($loader->getPaths($namespace) as $namespacePath) {
+                        $expandedPathAttribute = str_replace('@' . $namespace, $namespacePath, $path);
+                        if (file_exists($expandedPathAttribute)) {
+                            return $expandedPathAttribute;
+                        }
+                    }
+                }
+            }
+        }
+        return $path;
     }
 
     //
