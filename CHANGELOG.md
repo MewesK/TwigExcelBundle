@@ -1,4 +1,8 @@
-## 1.3.x
+## 2.0 (2016-02-27)
+
+**Attention**
+
+Some mayor changes required to increase the minimum requirements significantly. Therefore I'm bumping the version to 2.0.
 
 **Improvements**
 
