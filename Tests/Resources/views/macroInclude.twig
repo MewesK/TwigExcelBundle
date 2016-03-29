@@ -21,3 +21,13 @@
         {% endxlsrow %}
     {% endxlssheet %}
 {% endxlsmacro %}
+
+{% xlsmacro sheet2(a, b, c) %}
+    {% from _self import cell %}
+    {% xlssheet a %}
+        {% xlsrow %}
+            {{ cell(b) }}
+            {{ cell(c) }}
+        {% endxlsrow %}
+    {% endxlssheet %}
+{% endxlsmacro %}
