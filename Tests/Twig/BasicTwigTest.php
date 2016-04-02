@@ -179,6 +179,12 @@ class BasicTwigTest extends AbstractTwigTest
 
             static::assertEquals('Hello3', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
             static::assertEquals('World3', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+
+            $sheet = $document->getSheetByName('Test3');
+            static::assertNotNull($sheet, 'Sheet does not exist');
+
+            static::assertEquals('Hello4', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+            static::assertEquals('World4', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
         } catch (Twig_Error_Runtime $e) {
             static::fail($e->getMessage());
         }
