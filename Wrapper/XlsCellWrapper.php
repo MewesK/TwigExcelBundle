@@ -109,6 +109,9 @@ class XlsCellWrapper extends AbstractWrapper
         $this->mappings['url'] = function ($value) {
             $this->object->getHyperlink()->setUrl($value);
         };
+        $this->mappings['merge'] = function ($value) {
+            $this->sheetWrapper->getObject()->mergeCells($this->object->getCoordinate().':'.$value.$this->sheetWrapper->getRow());
+        };
     }
 
     /**
