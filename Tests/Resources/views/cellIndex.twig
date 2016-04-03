@@ -18,5 +18,10 @@
                 'merge': 'C3'
             } %}Foo{% endxlscell %}
         {% endxlsrow %}
+        {% xlsrow %}
+            {% xlscell {
+                'merge': 'A6'
+            } %}Foo{% endxlscell %}
+        {% endxlsrow %}
     {% endxlssheet %}
 {% endxlsdocument %}

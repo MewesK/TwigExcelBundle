@@ -42,6 +42,7 @@ class XlsTwigTest extends AbstractTwigTest
 
         static::assertEquals('A2:C2', $sheet->getCell('A2')->getMergeRange(), 'Unexpected value in mergeRange');
         static::assertEquals('A3:C3', $sheet->getCell('A3')->getMergeRange(), 'Unexpected value in mergeRange');
+        static::assertEquals('A4:A6', $sheet->getCell('A4')->getMergeRange(), 'Unexpected value in mergeRange');
     }
 
     /**
