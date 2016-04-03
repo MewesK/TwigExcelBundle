@@ -3,6 +3,10 @@
 **Fixes**
 
  * Bugfix #8 {% xlsmacro %} cannot call a macro defined in the same twig file (ThmX)
+ 
+**Features**
+
+ * Added support for cell merging (malheirosrafa)
 
 ## 2.0 (2016-02-27)
 
