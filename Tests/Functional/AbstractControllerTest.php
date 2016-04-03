@@ -13,6 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class AbstractControllerTest
+ * 
  * @package MewesK\TwigExcelBundle\Tests\Functional
  */
 abstract class AbstractControllerTest extends WebTestCase
@@ -20,6 +21,10 @@ abstract class AbstractControllerTest extends WebTestCase
     protected static $CONFIG_FILE;
     protected static $TEMP_PATH = '/../../tmp/functional/';
 
+    /**
+     * @var Filesystem
+     */
+    protected static $fileSystem;
     /**
      * @var Client
      */
@@ -37,20 +42,21 @@ abstract class AbstractControllerTest extends WebTestCase
      * @param $uri
      * @param $format
      * @return \PHPExcel
+     * @throws \InvalidArgumentException
+     * @throws \Symfony\Component\Filesystem\Exception\IOException
      */
     protected function getDocument($uri, $format = 'xlsx')
     {
         // generate source
         static::$client->request('GET', $uri);
         $source = static::$client->getResponse()->getContent();
-
-        // create source directory if necessary
-        if (!file_exists(__DIR__ . static::$TEMP_PATH)) {
-            mkdir(__DIR__ . static::$TEMP_PATH);
-        }
+        
+        // create paths
+        $tempDirPath = __DIR__ . static::$TEMP_PATH;
+        $tempFilePath = $tempDirPath . 'simple' . '.' . $format;
 
         // save source
-        file_put_contents(__DIR__ . static::$TEMP_PATH . 'simple' . '.' . $format, $source);
+        static::$fileSystem->dumpFile($tempFilePath, $source);
 
         // load source
         switch ($format) {
@@ -81,46 +87,43 @@ abstract class AbstractControllerTest extends WebTestCase
 
     /**
      * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        try {
-            $fs = new Filesystem();
-            $fs->remove(__DIR__ . static::$TEMP_PATH);
-        } catch(\Exception $e) {
-            if (!in_array(getenv('IGNORE_DELETE_EXCEPTIONS'), ['true', '1', 1, true], true)) {
-                throw $e;
-            }
-        }
-
-        static::$client = static::createClient(['config' => static::$CONFIG_FILE]);
-        static::$router = static::$kernel->getContainer()->get('router');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        if (in_array(getenv('DELETE_TEMP_FILES'), ['true', '1', 1, true], true)) {
-            try {
-                $fs = new Filesystem();
-                $fs->remove(__DIR__ . static::$TEMP_PATH);
-            } catch(\Exception $e) {
-                if (!in_array(getenv('IGNORE_DELETE_EXCEPTIONS'), ['true', '1', 1, true], true)) {
-                    throw $e;
-                }
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
+     * @throws \RuntimeException
      */
     protected static function createKernel(array $options = [])
     {
         return static::$kernel = new AppKernel(
             array_key_exists('config', $options) && is_string($options['config']) ? $options['config'] : 'config.yml'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws \Exception
+     */
+    protected function setUp()
+    {
+        static::$client = static::createClient(['config' => static::$CONFIG_FILE]);
+        static::$router = static::$kernel->getContainer()->get('router');
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws \Exception
+     */
+    public static function setUpBeforeClass()
+    {
+        static::$fileSystem = new Filesystem();
+        static::$fileSystem->remove(__DIR__ . static::$TEMP_PATH);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws \Symfony\Component\Filesystem\Exception\IOException
+     */
+    public static function tearDownAfterClass()
+    {
+        if (in_array(getenv('DELETE_TEMP_FILES'), ['true', '1', 1, true], true)) {
+            static::$fileSystem->remove(__DIR__ . static::$TEMP_PATH);
+        }
     }
 }

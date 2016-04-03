@@ -38,6 +38,7 @@ class XlsRowWrapper extends AbstractWrapper
 
     /**
      * @param null|int $index
+     * @throws \LogicException
      */
     public function start($index = null)
     {

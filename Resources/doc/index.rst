@@ -1,7 +1,7 @@
 TwigExcelBundle Documentation
 =============================
 
-|TeavisCI| |Scrutinizer| |SensioLabsInsight|
+|TravisCI| |Scrutinizer| |SensioLabsInsight|
 
 .. _dev-docs:
 
@@ -17,7 +17,7 @@ User Documentation
     twig_functions
     twig_tags
 
-.. |TeavisCI| image:: https://travis-ci.org/MewesK/TwigExcelBundle.png?branch=master
+.. |TravisCI| image:: https://travis-ci.org/MewesK/TwigExcelBundle.png?branch=master
    :target: https://travis-ci.org/MewesK/TwigExcelBundle
 .. |Scrutinizer| image:: https://scrutinizer-ci.com/g/MewesK/TwigExcelBundle/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/MewesK/TwigExcelBundle/?branch=master

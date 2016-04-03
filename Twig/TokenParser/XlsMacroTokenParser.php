@@ -41,7 +41,7 @@ class XlsMacroTokenParser extends Twig_TokenParser_Macro
         if ($token = $stream->nextIf(Twig_Token::NAME_TYPE)) {
             $value = $token->getValue();
 
-            if ($value != $name) {
+            if ($value !== $name) {
                 throw new Twig_Error_Syntax(sprintf('Expected endxlsmacro for macro "%s" (but "%s" given).', $name, $value), $stream->getCurrent()->getLine(), $stream->getFilename());
             }
         }

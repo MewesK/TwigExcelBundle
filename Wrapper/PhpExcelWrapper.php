@@ -75,6 +75,9 @@ class PhpExcelWrapper
 
     /**
      * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Exception
+     * @throws \InvalidArgumentException
+     * @throws \PHPExcel_Writer_Exception
      */
     public function endDocument()
     {
@@ -84,7 +87,6 @@ class PhpExcelWrapper
     /**
      * @param string $index
      * @param null|array $properties
-     *
      * @throws \PHPExcel_Exception
      */
     public function startSheet($index, array $properties = null)
@@ -110,8 +112,9 @@ class PhpExcelWrapper
     /**
      * @param null|mixed $value
      * @param null|array $properties
-     *
      * @throws \PHPExcel_Exception
+     * @throws \InvalidArgumentException
+     * @throws \LogicException
      */
     public function startCell($value = null, array $properties = null)
     {
@@ -126,6 +129,7 @@ class PhpExcelWrapper
     /**
      * @param string $type
      * @param null|array $properties
+     * @throws \LogicException
      */
     public function startHeaderFooter($type, array $properties = null)
     {
@@ -140,6 +144,7 @@ class PhpExcelWrapper
     /**
      * @param null|string $type
      * @param null|array $properties
+     * @throws \InvalidArgumentException
      */
     public function startAlignment($type = null, array $properties = null)
     {
@@ -148,6 +153,7 @@ class PhpExcelWrapper
 
     /**
      * @param null|string $value
+     * @throws \InvalidArgumentException
      */
     public function endAlignment($value = null)
     {
@@ -157,8 +163,10 @@ class PhpExcelWrapper
     /**
      * @param string $path
      * @param array $properties
-     *
      * @throws \PHPExcel_Exception
+     * @throws \InvalidArgumentException
+     * @throws \LogicException
+     * @throws \RuntimeException
      */
     public function startDrawing($path, array $properties = null)
     {

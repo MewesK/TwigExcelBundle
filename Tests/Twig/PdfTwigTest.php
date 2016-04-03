@@ -2,8 +2,6 @@
 
 namespace MewesK\TwigExcelBundle\Tests\Twig;
 
-use Twig_Error_Runtime;
-
 /**
  * Class PdfTwigTest
  * @package MewesK\TwigExcelBundle\Tests\Twig
@@ -31,8 +29,7 @@ class PdfTwigTest extends AbstractTwigTest
 
     /**
      * @param string $format
-     *
-     * @throws \PHPExcel_Exception
+     * @throws \Exception
      *
      * @dataProvider formatProvider
      */
@@ -43,13 +40,9 @@ class PdfTwigTest extends AbstractTwigTest
             return;
         }
 
-        try {
-            $path = $this->getDocument('cellProperties', $format);
+        $path = $this->getDocument('cellProperties', $format);
 
-            static::assertTrue(file_exists($path), 'File does not exist');
-            static::assertGreaterThan(0, filesize($path), 'File is empty');
-        } catch (Twig_Error_Runtime $e) {
-            static::fail($e->getMessage());
-        }
+        static::assertFileExists($path, 'File does not exist');
+        static::assertGreaterThan(0, filesize($path), 'File is empty');
     }
 }

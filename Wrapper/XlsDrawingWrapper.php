@@ -42,6 +42,7 @@ class XlsDrawingWrapper extends AbstractWrapper
 
     /**
      * XlsDrawingWrapper constructor.
+     * 
      * @param array $context
      * @param Twig_Environment $environment
      * @param XlsSheetWrapper $sheetWrapper
@@ -117,6 +118,9 @@ class XlsDrawingWrapper extends AbstractWrapper
      * @param $path
      * @param array|null $properties
      * @throws \PHPExcel_Exception
+     * @throws \LogicException
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function start($path, array $properties = null)
     {
@@ -197,6 +201,8 @@ class XlsDrawingWrapper extends AbstractWrapper
     /**
      * @param $path
      * @return string
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     private function createTempCopy($path)
     {

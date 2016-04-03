@@ -25,7 +25,6 @@ class XlsDocumentWrapper extends AbstractWrapper
      * @var Twig_Environment
      */
     protected $environment;
-
     /**
      * @var \PHPExcel
      */
@@ -41,6 +40,7 @@ class XlsDocumentWrapper extends AbstractWrapper
 
     /**
      * XlsDocumentWrapper constructor.
+     * 
      * @param array $context
      * @param Twig_Environment $environment
      */
@@ -119,7 +119,6 @@ class XlsDocumentWrapper extends AbstractWrapper
 
     /**
      * @param null|array $properties
-     *
      * @throws \PHPExcel_Exception
      */
     public function start(array $properties = null)
@@ -147,7 +146,6 @@ class XlsDocumentWrapper extends AbstractWrapper
     /**
      * @param bool $preCalculateFormulas
      * @param null|string $diskCachingDirectory
-     *
      * @throws \InvalidArgumentException
      * @throws \PHPExcel_Exception
      * @throws \PHPExcel_Reader_Exception

@@ -2,8 +2,6 @@
 
 namespace MewesK\TwigExcelBundle\Tests\Twig;
 
-use Twig_Error_Runtime;
-
 /**
  * Class ErrorTwigTest
  * @package MewesK\TwigExcelBundle\Tests\Twig
@@ -30,8 +28,7 @@ class ErrorTwigTest extends AbstractTwigTest
 
     /**
      * @param string $format
-     *
-     * @throws \PHPExcel_Exception
+     * @throws \Exception
      *
      * @dataProvider formatProvider
      */
@@ -41,18 +38,12 @@ class ErrorTwigTest extends AbstractTwigTest
             '\Twig_Error_Syntax',
             'Block tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsblock\' instead in "blockError.twig".'
         );
-
-        try {
-            $this->getDocument('blockError', $format);
-        } catch (Twig_Error_Runtime $e) {
-            static::fail($e->getMessage());
-        }
+        $this->getDocument('blockError', $format);
     }
 
     /**
      * @param string $format
-     *
-     * @throws \PHPExcel_Exception
+     * @throws \Exception
      *
      * @dataProvider formatProvider
      */
@@ -62,18 +53,12 @@ class ErrorTwigTest extends AbstractTwigTest
             '\Twig_Error_Syntax',
             'Node "MewesK\TwigExcelBundle\Twig\Node\XlsDocumentNode" is not allowed inside of Node "MewesK\TwigExcelBundle\Twig\Node\XlsSheetNode"'
         );
-
-        try {
-            $this->getDocument('documentError', $format);
-        } catch (Twig_Error_Runtime $e) {
-            static::fail($e->getMessage());
-        }
+        $this->getDocument('documentError', $format);
     }
 
     /**
      * @param string $format
-     *
-     * @throws \PHPExcel_Exception
+     * @throws \Exception
      *
      * @dataProvider formatProvider
      */
@@ -83,11 +68,6 @@ class ErrorTwigTest extends AbstractTwigTest
             '\Twig_Error_Syntax',
             'Macro tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsmacro\' instead in "macroError.twig".'
         );
-
-        try {
-            $this->getDocument('macroError', $format);
-        } catch (Twig_Error_Runtime $e) {
-            static::fail($e->getMessage());
-        }
+        $this->getDocument('macroError', $format);
     }
 }

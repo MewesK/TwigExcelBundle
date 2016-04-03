@@ -31,8 +31,7 @@ abstract class AbstractTokenParser extends Twig_TokenParser
 
     /**
      * @param Twig_Token $token
-     *
-     * @return mixed|Twig_Node_Expression_Array|\Twig_Node_Expression_Conditional|\Twig_Node_Expression_GetAttr
+     * @return mixed|\Twig_Node_Expression_Array|\Twig_Node_Expression_Conditional|\Twig_Node_Expression_GetAttr
      */
     protected function parseProperties(Twig_Token $token)
     {

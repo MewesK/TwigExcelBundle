@@ -75,6 +75,7 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
     /**
      * @param string $type
      * @param null|array $properties
+     * @throws \LogicException
      */
     public function start($type, array $properties = null)
     {
@@ -148,6 +149,7 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
     /**
      * @param null|string $type
      * @param null|array $properties
+     * @throws \InvalidArgumentException
      */
     public function startAlignment($type = null, array $properties = null)
     {
@@ -171,6 +173,7 @@ class XlsHeaderFooterWrapper extends AbstractWrapper
 
     /**
      * @param null|string $value
+     * @throws \InvalidArgumentException
      */
     public function endAlignment($value = null)
     {

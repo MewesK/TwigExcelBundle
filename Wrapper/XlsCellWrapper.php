@@ -38,6 +38,7 @@ class XlsCellWrapper extends AbstractWrapper
 
     /**
      * XlsCellWrapper constructor.
+     * 
      * @param array $context
      * @param Twig_Environment $environment
      * @param XlsSheetWrapper $sheetWrapper
@@ -114,8 +115,9 @@ class XlsCellWrapper extends AbstractWrapper
      * @param null|int $index
      * @param null|mixed $value
      * @param null|array $properties
-     *
      * @throws \PHPExcel_Exception
+     * @throws \LogicException
+     * @throws \InvalidArgumentException
      */
     public function start($index = null, $value = null, array $properties = null)
     {

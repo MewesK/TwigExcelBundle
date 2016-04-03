@@ -19,6 +19,7 @@ class AppKernel extends Kernel
 
     /**
      * @param string $config
+     * @throws \RuntimeException
      */
     public function __construct($config)
     {
@@ -52,6 +53,7 @@ class AppKernel extends Kernel
 
     /**
      * @param LoaderInterface $loader
+     * @throws \Exception
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {

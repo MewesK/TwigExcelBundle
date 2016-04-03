@@ -9,6 +9,7 @@ use PHPExcel_Reader_Excel5;
 use PHPExcel_Reader_OOCalc;
 use PHPUnit_Framework_TestCase;
 use Symfony\Bridge\Twig\AppVariable;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Environment;
@@ -25,6 +26,10 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
     protected static $TEMPLATE_PATH = '/../Resources/templates/';
 
     /**
+     * @var Filesystem
+     */
+    protected static $fileSystem;
+    /**
      * @var Twig_Environment
      */
     protected static $environment;
@@ -36,8 +41,11 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
     /**
      * @param string $templateName
      * @param string $format
-     *
      * @return \PHPExcel
+     * @throws \Twig_Error_Syntax
+     * @throws \Twig_Error_Loader
+     * @throws \Symfony\Component\Filesystem\Exception\IOException
+     * @throws \InvalidArgumentException
      */
     protected function getDocument($templateName, $format)
     {
@@ -58,13 +66,8 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
         $tempDirPath = __DIR__ . static::$TEMP_PATH;
         $tempFilePath = $tempDirPath . $templateName . '.' . $format;
 
-        // create source directory if necessary
-        if (!file_exists($tempDirPath) && !@mkdir($tempDirPath) && !@is_dir($tempDirPath)) {
-            throw new \RuntimeException('Cannot create temp folder');
-        }
-
         // save source
-        file_put_contents($tempFilePath, $source);
+        static::$fileSystem->dumpFile($tempFilePath, $source);
 
         // load source
         switch ($format) {
@@ -98,23 +101,28 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
 
     /**
      * {@inheritdoc}
+     * @throws \Twig_Error_Loader
      */
     public static function setUpBeforeClass()
     {
-        $fileSystem = new Twig_Loader_Filesystem([__DIR__ . static::$RESOURCE_PATH]);
-        $fileSystem->addPath( __DIR__ . static::$TEMPLATE_PATH, 'templates');
-        static::$environment = new Twig_Environment($fileSystem, ['strict_variables' => true]);
+        static::$fileSystem = new Filesystem();
+        
+        $twigFileSystem = new Twig_Loader_Filesystem([__DIR__ . static::$RESOURCE_PATH]);
+        $twigFileSystem->addPath( __DIR__ . static::$TEMPLATE_PATH, 'templates');
+        
+        static::$environment = new Twig_Environment($twigFileSystem, ['strict_variables' => true]);
         static::$environment->addExtension(new TwigExcelExtension());
         static::$environment->setCache(__DIR__ . static::$TEMP_PATH);
     }
 
     /**
      * {@inheritdoc}
+     * @throws \Symfony\Component\Filesystem\Exception\IOException
      */
     public static function tearDownAfterClass()
     {
         if (in_array(getenv('DELETE_TEMP_FILES'), ['true', '1', 1, true], true)) {
-            exec('rm -rf ' . __DIR__ . static::$TEMP_PATH);
+            static::$fileSystem->remove(__DIR__ . static::$TEMP_PATH);
         }
     }
 }

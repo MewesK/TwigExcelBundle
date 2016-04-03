@@ -16,6 +16,7 @@ class MewesKTwigExcelExtension extends ConfigurableExtension
 {
     /**
      * {@inheritDoc}
+     * @throws \Exception
      */
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {

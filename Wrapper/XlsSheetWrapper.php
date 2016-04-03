@@ -31,7 +31,6 @@ class XlsSheetWrapper extends AbstractWrapper
      * @var XlsDocumentWrapper
      */
     protected $documentWrapper;
-
     /**
      * @var null|int
      */
@@ -40,7 +39,6 @@ class XlsSheetWrapper extends AbstractWrapper
      * @var null|int
      */
     protected $column;
-
     /**
      * @var \PHPExcel_Worksheet
      */
@@ -56,6 +54,7 @@ class XlsSheetWrapper extends AbstractWrapper
 
     /**
      * XlsSheetWrapper constructor.
+     * 
      * @param array $context
      * @param Twig_Environment $environment
      * @param XlsDocumentWrapper $documentWrapper

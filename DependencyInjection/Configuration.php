@@ -7,12 +7,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class Configuration
+ * 
  * @package MewesK\TwigExcelBundle\DependencyInjection
  */
 class Configuration implements ConfigurationInterface
 {
     /**
      * {@inheritDoc}
+     * @throws \RuntimeException
      */
     public function getConfigTreeBuilder()
     {

@@ -1,3 +1,9 @@
+## 2.1 (2016-04-03)
+
+**Fixes**
+
+ * Bugfix #8 {% xlsmacro %} cannot call a macro defined in the same twig file (ThmX)
+
 ## 2.0 (2016-02-27)
 
 **Attention**

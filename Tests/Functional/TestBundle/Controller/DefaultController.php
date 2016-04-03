@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class DefaultController
+ * 
  * @package MewesK\TwigExcelBundle\Tests\Functional\TestBundle\Controller
  */
 class DefaultController extends Controller
@@ -49,9 +50,11 @@ class DefaultController extends Controller
             ]
         );
     }
+
     /**
      * @param $templateName
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \InvalidArgumentException
      *
      * @Route("/custom-response/{templateName}.{_format}", name="test_custom_response", defaults={"templateName" = "simple", "_format" = "xlsx"})
      */
