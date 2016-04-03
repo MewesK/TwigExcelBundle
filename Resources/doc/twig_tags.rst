@@ -62,7 +62,7 @@ Example
         defaultStyle: {
             font: {
                 name: 'Verdana',
-                size: '18'
+                size: 18.0
             }
         },
         description: 'Test document',
