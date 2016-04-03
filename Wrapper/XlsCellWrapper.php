@@ -1,6 +1,8 @@
 <?php
 
 namespace MewesK\TwigExcelBundle\Wrapper;
+
+use PHPExcel_Cell;
 use Twig_Environment;
 
 /**
@@ -103,14 +105,17 @@ class XlsCellWrapper extends AbstractWrapper
         $this->mappings['dataValidation']['type'] = function ($value) {
             $this->object->getDataValidation()->setType($value);
         };
+        $this->mappings['merge'] = function ($value) {
+            if (is_int($value)) {
+                $value = PHPExcel_Cell::stringFromColumnIndex($value) . $this->sheetWrapper->getRow();
+            }
+            $this->sheetWrapper->getObject()->mergeCells(sprintf('%s:%s', $this->object->getCoordinate(), $value));
+        };
         $this->mappings['style'] = function ($value) {
             $this->sheetWrapper->getObject()->getStyle($this->object->getCoordinate())->applyFromArray($value);
         };
         $this->mappings['url'] = function ($value) {
             $this->object->getHyperlink()->setUrl($value);
-        };
-        $this->mappings['merge'] = function ($value) {
-            $this->sheetWrapper->getObject()->mergeCells($this->object->getCoordinate().':'.$value.$this->sheetWrapper->getRow());
         };
     }
 

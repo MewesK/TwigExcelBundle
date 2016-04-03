@@ -8,5 +8,15 @@
             {% xlscell 1 %}Hello{% endxlscell %}
             {% xlscell 4 %}World{% endxlscell %}
         {% endxlsrow %}
+        {% xlsrow %}
+            {% xlscell {
+                'merge': 2
+            } %}Foo{% endxlscell %}
+        {% endxlsrow %}
+        {% xlsrow %}
+            {% xlscell {
+                'merge': 'C3'
+            } %}Foo{% endxlscell %}
+        {% endxlsrow %}
     {% endxlssheet %}
 {% endxlsdocument %}

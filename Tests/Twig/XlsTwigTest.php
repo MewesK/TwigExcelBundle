@@ -32,6 +32,24 @@ class XlsTwigTest extends AbstractTwigTest
      *
      * @dataProvider formatProvider
      */
+    public function testCellIndex($format)
+    {
+        $document = $this->getDocument('cellIndex', $format);
+        static::assertNotNull($document, 'Document does not exist');
+
+        $sheet = $document->getSheetByName('Test');
+        static::assertNotNull($sheet, 'Sheet does not exist');
+
+        static::assertEquals('A2:C2', $sheet->getCell('A2')->getMergeRange(), 'Unexpected value in mergeRange');
+        static::assertEquals('A3:C3', $sheet->getCell('A3')->getMergeRange(), 'Unexpected value in mergeRange');
+    }
+
+    /**
+     * @param string $format
+     * @throws \Exception
+     *
+     * @dataProvider formatProvider
+     */
     public function testCellProperties($format)
     {
         $document = $this->getDocument('cellProperties', $format);

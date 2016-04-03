@@ -431,28 +431,29 @@ properties  array   X
 Properties
 ``````````
 
-=======================  ========  ===  ===  ===========
-Name                     Type      XLS  ODS  Description
-=======================  ========  ===  ===  ===========
-break                    int       X         Possible values are defined in PHPExcel_Worksheet
-dataType                 string    X    X    Possible values are defined in PHPExcel_Cell_DataType
+=======================  ==========  ===  ===  ===========
+Name                     Type        XLS  ODS  Description
+=======================  ==========  ===  ===  ===========
+break                    int         X         Possible values are defined in PHPExcel_Worksheet
+dataType                 string      X    X    Possible values are defined in PHPExcel_Cell_DataType
 dataValidation           array
  \+ allowBlank           boolean
  \+ error                string
- \+ errorStyle           string              Possible values are defined in PHPExcel_Cell_DataValidation
+ \+ errorStyle           string                Possible values are defined in PHPExcel_Cell_DataValidation
  \+ errorTitle           string
  \+ formula1             string
  \+ formula2             string
- \+ operator             string              Possible values are defined in PHPExcel_Cell_DataValidation
+ \+ operator             string                Possible values are defined in PHPExcel_Cell_DataValidation
  \+ prompt               string
  \+ promptTitle          string
  \+ showDropDown         boolean
  \+ showErrorMessage     boolean
  \+ showInputMessage     boolean
- \+ type                 string              Possible values are defined in PHPExcel_Cell_DataValidation
-style                    array     X         Standard PhpExcel style array
-url                      string    X
-=======================  ========  ===  ===  ===========
+ \+ type                 string                Possible values are defined in PHPExcel_Cell_DataValidation
+merge                    int|string  X         Merge a cell range. Allows zero-based cell index or cell coordinates like 'A3'
+style                    array       X         Standard PhpExcel style array
+url                      string      X
+=======================  ==========  ===  ===  ===========
 
 Example
 ```````
@@ -476,6 +477,7 @@ Example
             showInputMessage: false,
             type: 'none',
         },
+        merge: 2,
         style: {
             borders: {
                 bottom: {
