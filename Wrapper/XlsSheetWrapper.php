@@ -77,6 +77,9 @@ class XlsSheetWrapper extends AbstractWrapper
 
     protected function initializeMappings()
     {
+        $this->mappings['autoFilter'] = function ($value) {
+            $this->object->setAutoFilter($value);
+        };
         $this->mappings['columnDimension']['__multi'] = true;
         $this->mappings['columnDimension']['__object'] = function ($key = 'default') {
             return $key === 'default' ? $this->object->getDefaultColumnDimension() : $this->object->getColumnDimension($key);
