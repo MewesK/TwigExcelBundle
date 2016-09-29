@@ -453,6 +453,7 @@ dataValidation           array
 merge                    int|string  X         Merge a cell range. Allows zero-based cell index or cell coordinates like 'A3'
 style                    array       X         Standard PhpExcel style array
 url                      string      X
+isExplicitValue          boolean     X         If true then render cell as an explicit value (useful to show leading zero numbers as string)
 =======================  ==========  ===  ===  ===========
 
 Example
