@@ -146,7 +146,7 @@ class XlsCellWrapper extends AbstractWrapper
             $this->sheetWrapper->getRow());
 
         if ($value !== null) {
-            if (array_key_exists('isExplicitValue', $properties) && $properties['isExplicitValue'] === true) {
+            if (array_key_exists('explicitValue', $properties) && $properties['explicitValue'] === true) {
                 $this->object->setValueExplicit($value);
             } else {
                 $this->object->setValue($value);

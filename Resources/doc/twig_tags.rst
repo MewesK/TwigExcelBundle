@@ -451,10 +451,10 @@ dataValidation           array
  \+ showErrorMessage     boolean
  \+ showInputMessage     boolean
  \+ type                 string                Possible values are defined in PHPExcel_Cell_DataValidation
+explicitValue            boolean     X         If true cell is rendered as an explicit value (useful to show leading zeros using strings)
 merge                    int|string  X         Merge a cell range. Allows zero-based cell index or cell coordinates like 'A3'
 style                    array       X         Standard PhpExcel style array
 url                      string      X
-isExplicitValue          boolean     X         If true then render cell as an explicit value (useful to show leading zero numbers as string)
 =======================  ==========  ===  ===  ===========
 
 Example

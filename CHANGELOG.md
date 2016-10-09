@@ -2,11 +2,12 @@
 
 **Fixes**
 
- * 
+ * Fixed issue #16 'Leading zeros problem in a string that contains an integer' (aserratorta)
  
 **Features**
 
- * Added autoFilter property to XlsSheetWrapper (fdicioccio)
+ * Added 'autoFilter' property to the 'xlssheet' tag (fdicioccio)
+ * Added 'explicitValue' property to the 'xlscell' tag to allow leading zeros (aserratorta)
 
 ## 2.1 (2016-04-03)
 

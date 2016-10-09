@@ -205,6 +205,8 @@ class BasicTwigTest extends AbstractTwigTest
 
         static::assertEquals('s', $sheet->getCell('B1')->getDataType(), 'Unexpected value in dataType');
         static::assertEquals('n', $sheet->getCell('C1')->getDataType(), 'Unexpected value in dataType');
+        static::assertEquals('007', $sheet->getCell('D1')->getValue(), 'Unexpected value in D1');
+        static::assertEquals('s', $sheet->getCell('D1')->getDataType(), 'Unexpected value in dataType');
     }
 
     /**
