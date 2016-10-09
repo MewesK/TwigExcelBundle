@@ -1,3 +1,13 @@
+## 2.2 (2016-10-09)
+
+**Fixes**
+
+ * 
+ 
+**Features**
+
+ * Added autoFilter property to XlsSheetWrapper (fdicioccio)
+
 ## 2.1 (2016-04-03)
 
 **Fixes**

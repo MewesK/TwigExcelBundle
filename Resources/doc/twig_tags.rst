@@ -111,6 +111,7 @@ Properties
 =======================  ========  ===  ===  ===========
 Name                     Type      XLS  ODS  Description
 =======================  ========  ===  ===  ===========
+autoFilter               string              The range like 'A1:E20'
 columnDimension          array               Contains one or more arrays. Possible keys are 'default' or a valid column name like 'A'
  \+ autoSize             boolean             Does not work in PhpExcel?
  \+ collapsed            boolean             Does not work in PhpExcel?
@@ -133,7 +134,7 @@ pageSetup                array
  \+ horizontalCentered   boolean
  \+ orientation          string              Possible orientations are 'default', 'landscape', 'portrait'
  \+ paperSize            int                 Possible values are defined in PHPExcel_Worksheet_PageSetup
- \+ printArea            string              An area like 'A1:B1'
+ \+ printArea            string              A range like 'A1:E20'
  \+ scale                int
  \+ verticalCentered     boolean
 protection               array

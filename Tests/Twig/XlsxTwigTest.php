@@ -248,4 +248,20 @@ class XlsxTwigTest extends AbstractTwigTest
         static::assertFalse($headerFooter->getAlignWithMargins(), 'Unexpected value in alignWithMargins');
         static::assertFalse($headerFooter->getScaleWithDocument(), 'Unexpected value in scaleWithDocument');
     }
+
+    /**
+     * @param string $format
+     * @throws \Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testSheetProperties($format)
+    {
+        $document = $this->getDocument('sheetProperties', $format);
+        static::assertNotNull($document, 'Document does not exist');
+
+        $sheet = $document->getSheetByName('Test');
+        static::assertNotNull($sheet, 'Sheet does not exist');
+        static::assertEquals('A1:B1', $sheet->getAutoFilter()->getRange(), 'Unexpected value in autoFilter');
+    }
 }
