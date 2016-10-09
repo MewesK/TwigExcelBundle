@@ -10,7 +10,7 @@ use Twig_Node;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsLeftNode extends XlsNode
+class XlsLeftNode extends Twig_Node implements SyntaxAwareNode
 {
     /**
      * @param Twig_Node $body

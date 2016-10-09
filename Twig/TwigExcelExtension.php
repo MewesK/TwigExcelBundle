@@ -10,6 +10,7 @@ use MewesK\TwigExcelBundle\Twig\TokenParser\XlsDocumentTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsDrawingTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsFooterTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsHeaderTokenParser;
+use MewesK\TwigExcelBundle\Twig\TokenParser\XlsIncludeTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsLeftTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsMacroTokenParser;
 use MewesK\TwigExcelBundle\Twig\TokenParser\XlsRightTokenParser;
@@ -66,6 +67,7 @@ class TwigExcelExtension extends Twig_Extension
             new XlsDrawingTokenParser(),
             new XlsFooterTokenParser(),
             new XlsHeaderTokenParser(),
+            new XlsIncludeTokenParser(),
             new XlsLeftTokenParser(),
             new XlsMacroTokenParser(),
             new XlsRightTokenParser(),

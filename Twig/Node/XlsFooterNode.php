@@ -11,7 +11,7 @@ use Twig_Node_Expression;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsFooterNode extends XlsNode
+class XlsFooterNode extends Twig_Node implements SyntaxAwareNode
 {
     /**
      * @param Twig_Node_Expression $type

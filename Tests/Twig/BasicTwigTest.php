@@ -132,38 +132,6 @@ class BasicTwigTest extends AbstractTwigTest
      *
      * @dataProvider formatProvider
      */
-    public function testMacro($format)
-    {
-        $document = $this->getDocument('macro', $format);
-        static::assertNotNull($document, 'Document does not exist');
-
-        $sheet = $document->getSheetByName('Test');
-        static::assertNotNull($sheet, 'Sheet does not exist');
-
-        static::assertEquals('Hello1', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
-        static::assertEquals('World1', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
-        static::assertEquals('Hello2', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
-        static::assertEquals('World2', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
-
-        $sheet = $document->getSheetByName('Test2');
-        static::assertNotNull($sheet, 'Sheet does not exist');
-
-        static::assertEquals('Hello3', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
-        static::assertEquals('World3', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
-
-        $sheet = $document->getSheetByName('Test3');
-        static::assertNotNull($sheet, 'Sheet does not exist');
-
-        static::assertEquals('Hello4', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
-        static::assertEquals('World4', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
-    }
-
-    /**
-     * @param string $format
-     * @throws \Exception
-     *
-     * @dataProvider formatProvider
-     */
     public function testCellIndex($format)
     {
         $document = $this->getDocument('cellIndex', $format);
@@ -311,6 +279,64 @@ class BasicTwigTest extends AbstractTwigTest
         static::assertEquals('World', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
         static::assertEquals('Foo', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
         static::assertEquals('Bar2', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+    }
+
+    /**
+     * @param string $format
+     * @throws \Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testInclude($format)
+    {
+        $document = $this->getDocument('include', $format);
+        static::assertNotNull($document, 'Document does not exist');
+
+        $sheet = $document->getSheetByName('Test');
+        static::assertNotNull($sheet, 'Sheet does not exist');
+
+        static::assertEquals('Hello1', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+        static::assertEquals('World1', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+        static::assertEquals('Hello2', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+        static::assertEquals('World2', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+
+        $sheet = $document->getSheetByName('Test2');
+        static::assertNotNull($sheet, 'Sheet does not exist');
+
+        static::assertEquals('Hello3', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+        static::assertEquals('World3', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+    }
+
+    /**
+     * @param string $format
+     * @throws \Exception
+     *
+     * @dataProvider formatProvider
+     */
+    public function testMacro($format)
+    {
+        $document = $this->getDocument('macro', $format);
+        static::assertNotNull($document, 'Document does not exist');
+
+        $sheet = $document->getSheetByName('Test');
+        static::assertNotNull($sheet, 'Sheet does not exist');
+
+        static::assertEquals('Hello1', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+        static::assertEquals('World1', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+        static::assertEquals('Hello2', $sheet->getCell('A2')->getValue(), 'Unexpected value in A2');
+        static::assertEquals('World2', $sheet->getCell('B2')->getValue(), 'Unexpected value in B2');
+
+        $sheet = $document->getSheetByName('Test2');
+        static::assertNotNull($sheet, 'Sheet does not exist');
+
+        static::assertEquals('Hello3', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+        static::assertEquals('World3', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
+
+        $sheet = $document->getSheetByName('Test3');
+        static::assertNotNull($sheet, 'Sheet does not exist');
+
+        static::assertEquals('Hello4', $sheet->getCell('A1')->getValue(), 'Unexpected value in A1');
+        static::assertEquals('World4', $sheet->getCell('B1')->getValue(), 'Unexpected value in B1');
     }
 
     /**

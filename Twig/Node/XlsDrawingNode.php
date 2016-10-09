@@ -3,6 +3,7 @@
 namespace MewesK\TwigExcelBundle\Twig\Node;
 
 use Twig_Compiler;
+use Twig_Node;
 use Twig_Node_Expression;
 
 /**
@@ -10,7 +11,7 @@ use Twig_Node_Expression;
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-class XlsDrawingNode extends XlsNode
+class XlsDrawingNode extends Twig_Node implements SyntaxAwareNode
 {
     /**
      * @param Twig_Node_Expression $path

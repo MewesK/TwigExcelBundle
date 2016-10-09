@@ -2,12 +2,13 @@
 
 **Fixes**
 
+ * Fixed issue #14 'Include another template' (plfort)
  * Fixed issue #16 'Leading zeros problem in a string that contains an integer' (aserratorta)
  
 **Features**
 
  * Added 'autoFilter' property to the 'xlssheet' tag (fdicioccio)
- * Added 'explicitValue' property to the 'xlscell' tag to allow leading zeros (aserratorta)
+ * Added new 'xlsinclude' tag to support includes containing other TwigExcelBundle tags. Not the most elegant solution but necessary to clean up the node tree before including it in the main template.
 
 ## 2.1 (2016-04-03)
 

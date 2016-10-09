@@ -610,7 +610,7 @@ xlsmacro
     {% endxlsmacro %}
 
 - Works the same way as the standard macro tag does
-- Attention: the standard macro tag does not with tags provided by this bundle
+- Attention: the standard macro tag does not work with tags provided by this bundle
 
 Example
 ```````
@@ -633,3 +633,33 @@ Example
     {# ... #}
     {{ macros.test() }}
     {# ... #}
+
+
+xlsinclude
+----------
+
+.. code-block:: twig
+
+    {% xlsinclude %}
+        {# ... #}
+    {% endxlsinclude %}
+
+- Attention: without this wrapper tag templates containing tags provided by this bundle can not be used
+
+Example
+```````
+
+.. code-block:: twig
+
+    {# include.xls.twig #}
+
+    {% xlsinclude %}
+        {# ... #}
+    {% endxlsinclude %}
+
+
+.. code-block:: twig
+
+    {# test.xls.twig #}
+
+    {% include 'include.xls.twig' %}

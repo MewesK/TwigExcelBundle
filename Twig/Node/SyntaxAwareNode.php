@@ -3,19 +3,19 @@
 namespace MewesK\TwigExcelBundle\Twig\Node;
 
 /**
- * Class XlsNode
+ * Interface SyntaxAwareNode
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-abstract class XlsNode extends \Twig_Node
+interface SyntaxAwareNode
 {
     /**
      * @return string[]
      */
-    abstract public function getAllowedParents();
+    public function getAllowedParents();
 
     /**
      * @return bool
      */
-    abstract public function canContainText();
+    public function canContainText();
 }
