@@ -3,6 +3,7 @@
 namespace MewesK\TwigExcelBundle\Tests\Functional;
 
 use InvalidArgumentException;
+use MewesK\TwigExcelBundle\Tests\Kernel\AppKernel;
 use PHPExcel_Reader_Excel2007;
 use PHPExcel_Reader_Excel5;
 use PHPExcel_Reader_OOCalc;

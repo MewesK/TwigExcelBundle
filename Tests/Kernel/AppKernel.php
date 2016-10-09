@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\TwigExcelBundle\Tests\Functional;
+namespace MewesK\TwigExcelBundle\Tests\Kernel;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -27,7 +27,7 @@ class AppKernel extends Kernel
 
         $fs = new Filesystem();
         if (!$fs->isAbsolutePath($config)) {
-            $config = __DIR__.'/config/'.$config;
+            $config = __DIR__ . '/config/' .$config;
         }
 
         if (!file_exists($config)) {
