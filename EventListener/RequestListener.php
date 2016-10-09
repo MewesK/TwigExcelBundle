@@ -18,7 +18,7 @@ class RequestListener
     {
         $event->getRequest()->setFormat('csv', 'text/csv');
         $event->getRequest()->setFormat('ods', 'application/vnd.oasis.opendocument.spreadsheet');
-        $event->getRequest()->setFormat('pdf', ' application/pdf');
+        $event->getRequest()->setFormat('pdf', 'application/pdf');
         $event->getRequest()->setFormat('xls', 'application/vnd.ms-excel');
         $event->getRequest()->setFormat('xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     }
