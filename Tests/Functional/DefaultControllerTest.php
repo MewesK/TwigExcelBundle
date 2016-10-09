@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DefaultControllerTest extends AbstractControllerTest
 {
-    protected static $TEMP_PATH = '/../../tmp/functional/controller/config';
+    protected static $TEMP_PATH = '/../../tmp/functional/controller/';
 
     //
     // PhpUnit
