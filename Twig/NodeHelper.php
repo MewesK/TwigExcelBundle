@@ -2,7 +2,7 @@
 
 namespace MewesK\TwigExcelBundle\Twig;
 
-use MewesK\TwigExcelBundle\Twig\Node\SyntaxAwareNode;
+use MewesK\TwigExcelBundle\Twig\Node\SyntaxAwareNodeInterface;
 use Twig_Error_Syntax;
 use Twig_Node;
 use Twig_Node_Block;
@@ -58,7 +58,7 @@ class NodeHelper
             } elseif ($subNode instanceof Twig_Node_BlockReference) {
                 self::removeTextNodesRecursively($parser->getBlock($subNode->getAttribute('name')), $parser);
             } elseif ($subNode instanceof Twig_Node && $subNode->count() > 0) {
-                if ($subNode instanceof SyntaxAwareNode && $subNode->canContainText()) {
+                if ($subNode instanceof SyntaxAwareNodeInterface && $subNode->canContainText()) {
                     continue;
                 }
                 self::removeTextNodesRecursively($subNode, $parser);
@@ -67,11 +67,11 @@ class NodeHelper
     }
 
     /**
-     * @param SyntaxAwareNode $node
+     * @param SyntaxAwareNodeInterface $node
      * @param array $path
      * @throws Twig_Error_Syntax
      */
-    public static function checkAllowedParents(SyntaxAwareNode $node, array $path)
+    public static function checkAllowedParents(SyntaxAwareNodeInterface $node, array $path)
     {
         $parentName = null;
 
@@ -102,7 +102,7 @@ class NodeHelper
     public static function checkContainsXlsNode(Twig_Node $node)
     {
         foreach ($node->getIterator() as $key => $subNode) {
-            if ($node instanceof SyntaxAwareNode) {
+            if ($node instanceof SyntaxAwareNodeInterface) {
                 return true;
             } elseif ($subNode instanceof Twig_Node && $subNode->count() > 0) {
                 if (self::checkContainsXlsNode($subNode)) {

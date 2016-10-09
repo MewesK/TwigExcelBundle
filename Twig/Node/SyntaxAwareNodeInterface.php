@@ -3,11 +3,11 @@
 namespace MewesK\TwigExcelBundle\Twig\Node;
 
 /**
- * Interface SyntaxAwareNode
+ * Interface SyntaxAwareNodeInterface
  *
  * @package MewesK\TwigExcelBundle\Twig\Node
  */
-interface SyntaxAwareNode
+interface SyntaxAwareNodeInterface
 {
     /**
      * @return string[]

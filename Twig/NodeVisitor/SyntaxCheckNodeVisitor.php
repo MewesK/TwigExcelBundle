@@ -2,7 +2,7 @@
 
 namespace MewesK\TwigExcelBundle\Twig\NodeVisitor;
 
-use MewesK\TwigExcelBundle\Twig\Node\SyntaxAwareNode;
+use MewesK\TwigExcelBundle\Twig\Node\SyntaxAwareNodeInterface;
 use MewesK\TwigExcelBundle\Twig\NodeHelper;
 use Twig_BaseNodeVisitor;
 use Twig_Environment;
@@ -38,9 +38,9 @@ class SyntaxCheckNodeVisitor extends Twig_BaseNodeVisitor
                 throw new Twig_Error_Syntax('Macro tags do not work together with Twig tags provided by TwigExcelBundle. Please use \'xlsmacro\' instead.');
             }
         }
-        elseif ($node instanceof SyntaxAwareNode) {
+        elseif ($node instanceof SyntaxAwareNodeInterface) {
             /**
-             * @var SyntaxAwareNode $node
+             * @var SyntaxAwareNodeInterface $node
              */
             try {
                 NodeHelper::checkAllowedParents($node, $this->path);

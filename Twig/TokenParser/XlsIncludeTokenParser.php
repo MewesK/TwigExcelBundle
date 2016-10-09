@@ -2,7 +2,6 @@
 
 namespace MewesK\TwigExcelBundle\Twig\TokenParser;
 
-use MewesK\TwigExcelBundle\Twig\Node\XlsIncludeNode;
 use MewesK\TwigExcelBundle\Twig\NodeHelper;
 use Twig_Node;
 use Twig_Token;

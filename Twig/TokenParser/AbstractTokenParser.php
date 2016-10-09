@@ -15,7 +15,7 @@ use Twig_TokenParser;
 abstract class AbstractTokenParser extends Twig_TokenParser
 {
     /**
-     * @return \Twig_Node
+     * @return Twig_Node
      * @throws \Twig_Error_Syntax
      */
     protected function parseBody()

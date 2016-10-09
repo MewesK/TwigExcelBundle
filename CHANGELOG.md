@@ -1,24 +1,16 @@
-## 2.2 (2016-10-09)
+## 2.1 (2016-10-09)
 
 **Fixes**
 
+ * Bugfix #8 {% xlsmacro %} cannot call a macro defined in the same twig file (ThmX)
  * Fixed issue #14 'Include another template' (plfort)
  * Fixed issue #16 'Leading zeros problem in a string that contains an integer' (aserratorta)
  
 **Features**
 
+ * Added support for cell merging (malheirosrafa)
  * Added 'autoFilter' property to the 'xlssheet' tag (fdicioccio)
  * Added new 'xlsinclude' tag to support includes containing other TwigExcelBundle tags. Not the most elegant solution but necessary to clean up the node tree before including it in the main template.
-
-## 2.1 (2016-04-03)
-
-**Fixes**
-
- * Bugfix #8 {% xlsmacro %} cannot call a macro defined in the same twig file (ThmX)
- 
-**Features**
-
- * Added support for cell merging (malheirosrafa)
 
 ## 2.0 (2016-02-27)
 

@@ -41,7 +41,7 @@ abstract class AbstractTwigTest extends PHPUnit_Framework_TestCase
     /**
      * @param string $templateName
      * @param string $format
-     * @return \PHPExcel
+     * @return \PHPExcel|string
      * @throws \Twig_Error_Syntax
      * @throws \Twig_Error_Loader
      * @throws \Symfony\Component\Filesystem\Exception\IOException

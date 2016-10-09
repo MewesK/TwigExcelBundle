@@ -18,6 +18,9 @@ abstract class AbstractWrapper
         foreach ($properties as $key => $value) {
             if (array_key_exists($key, $mappings)) {
                 if (is_array($value) && is_array($mappings) && $key !== 'style' && $key !== 'defaultStyle') {
+                    /**
+                     * @var array $value
+                     */
                     if (array_key_exists('__multi', $mappings[$key]) && $mappings[$key]['__multi'] === true) {
                         foreach ($value as $_key => $_value) {
                             $this->setPropertiesByKey($_key, $_value, $mappings[$key]);
