@@ -3,11 +3,11 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
          backupGlobals="false"
          colors="true"
-         bootstrap="./Tests/autoload.php"
+         bootstrap="./vendor/autoload.php"
         >
     <php>
         <env name="DELETE_TEMP_FILES" value="true"/>
-        <server name="KERNEL_DIR" value="./Tests/Kernel/"/>
+        <server name="KERNEL_DIR" value="./Tests/Fixtures/"/>
     </php>
 
     <testsuites>

@@ -1,14 +1,13 @@
 <?php
 
-namespace MewesK\TwigExcelBundle\Tests\Kernel;
-
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Class AppKernel
- * @package MewesK\TwigExcelBundle\Tests\Functional
+ *
+ * @package MewesK\TwigExcelBundle\Tests\Fixtures
  */
 class AppKernel extends Kernel
 {
@@ -43,11 +42,11 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         return [
-            new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new \Symfony\Bundle\TwigBundle\TwigBundle(),
-            new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new \MewesK\TwigExcelBundle\MewesKTwigExcelBundle(),
-            new \MewesK\TwigExcelBundle\Tests\Functional\TestBundle\TestBundle()
+            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new Symfony\Bundle\TwigBundle\TwigBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new MewesK\TwigExcelBundle\MewesKTwigExcelBundle(),
+            new MewesK\TwigExcelBundle\Tests\Fixtures\TestBundle\TestBundle()
         ];
     }
 
@@ -65,7 +64,7 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return __DIR__ . '/../../tmp/functional';
+        return __DIR__ . '/../../tmp/cache';
     }
 
     /**
@@ -73,6 +72,6 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        return __DIR__ . '/../../tmp/functional/logs';
+        return __DIR__ . '/../../tmp/logs';
     }
 }

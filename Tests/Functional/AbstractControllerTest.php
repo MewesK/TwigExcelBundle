@@ -3,7 +3,6 @@
 namespace MewesK\TwigExcelBundle\Tests\Functional;
 
 use InvalidArgumentException;
-use MewesK\TwigExcelBundle\Tests\Kernel\AppKernel;
 use PHPExcel_Reader_Excel2007;
 use PHPExcel_Reader_Excel5;
 use PHPExcel_Reader_OOCalc;
@@ -92,7 +91,11 @@ abstract class AbstractControllerTest extends WebTestCase
      */
     protected static function createKernel(array $options = [])
     {
-        return static::$kernel = new AppKernel(
+        if (null === static::$class) {
+            static::$class = static::getKernelClass();
+        }
+
+        return new static::$class(
             array_key_exists('config', $options) && is_string($options['config']) ? $options['config'] : 'config.yml'
         );
     }

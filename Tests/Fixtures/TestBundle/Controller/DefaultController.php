@@ -1,6 +1,6 @@
 <?php
 
-namespace MewesK\TwigExcelBundle\Tests\Functional\TestBundle\Controller;
+namespace MewesK\TwigExcelBundle\Tests\Fixtures\TestBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class DefaultController
  * 
- * @package MewesK\TwigExcelBundle\Tests\Functional\TestBundle\Controller
+ * @package MewesK\TwigExcelBundle\Tests\Fixtures\TestBundle\Controller
  */
 class DefaultController extends Controller
 {
