@@ -23,9 +23,9 @@ matrix:
 sudo: false
 
 before_install:
-  - phpenv config-rm xdebug.ini
+  - if [[ $TRAVIS_PHP_VERSION != 'nightly' && $TRAVIS_PHP_VERSION != 'hhvm' ]]; then phpenv config-rm xdebug.ini; fi
 
 install:
-  - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
+  - composer require sensio/framework-extra-bundle:${SYMFONY_VERSION} --no-update
   - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
   - composer update --prefer-dist --no-interaction
