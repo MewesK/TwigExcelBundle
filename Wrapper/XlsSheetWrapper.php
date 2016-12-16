@@ -1,6 +1,7 @@
 <?php
 
 namespace MewesK\TwigExcelBundle\Wrapper;
+use PHPExcel_Cell;
 use Twig_Environment;
 
 /**
@@ -280,6 +281,24 @@ class XlsSheetWrapper extends AbstractWrapper
      */
     public function end()
     {
+        if (true === isset($this->attributes['properties']['columnDimension'])
+            && is_array($this->attributes['properties']['columnDimension'])
+        ) {
+            foreach ($this->attributes['properties']['columnDimension'] as $key => $value) {
+                if(true === is_array($value) && true === isset($value['autoSize'])) {
+                    if ('default' == $key) {
+                        $cellIterator = $this->object->getRowIterator()->current()->getCellIterator();
+                        $cellIterator->setIterateOnlyExistingCells(true);
+                        /** @var PHPExcel_Cell $cell */
+                        foreach ($cellIterator as $cell) {
+                            $this->object->getColumnDimension($cell->getColumn())->setAutoSize($value['autoSize']);
+                        }
+                    } else {
+                        $this->object->getColumnDimension($key)->setAutoSize($value['autoSize']);
+                    }
+                }
+            }
+        }
         $this->object = null;
         $this->attributes = [];
         $this->row = null;
