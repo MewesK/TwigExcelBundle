@@ -2,6 +2,7 @@
 
 namespace MewesK\TwigExcelBundle\Wrapper;
 use PHPExcel_Cell;
+use PHPExcel_Worksheet_RowCellIterator;
 use Twig_Environment;
 
 /**
@@ -278,18 +279,31 @@ class XlsSheetWrapper extends AbstractWrapper
 
     /**
      * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Exception
      */
     public function end()
     {
-        if (true === isset($this->attributes['properties']['columnDimension'])
-            && is_array($this->attributes['properties']['columnDimension'])
+        // auto-size columns
+        if (
+            true === isset($this->attributes['properties']['columnDimension']) &&
+            is_array($this->attributes['properties']['columnDimension'])
         ) {
-            foreach ($this->attributes['properties']['columnDimension'] as $key => $value) {
+            /**
+             * @var array $columnDimension
+             */
+            $columnDimension = $this->attributes['properties']['columnDimension'];
+            foreach ($columnDimension as $key => $value) {
                 if(true === is_array($value) && true === isset($value['autoSize'])) {
-                    if ('default' == $key) {
+                    if ('default' === $key) {
+                        /**
+                         * @var PHPExcel_Worksheet_RowCellIterator $cellIterator
+                         */
                         $cellIterator = $this->object->getRowIterator()->current()->getCellIterator();
                         $cellIterator->setIterateOnlyExistingCells(true);
-                        /** @var PHPExcel_Cell $cell */
+
+                        /**
+                         * @var PHPExcel_Cell $cell
+                         */
                         foreach ($cellIterator as $cell) {
                             $this->object->getColumnDimension($cell->getColumn())->setAutoSize($value['autoSize']);
                         }
@@ -299,6 +313,7 @@ class XlsSheetWrapper extends AbstractWrapper
                 }
             }
         }
+
         $this->object = null;
         $this->attributes = [];
         $this->row = null;

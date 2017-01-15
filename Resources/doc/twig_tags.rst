@@ -113,7 +113,7 @@ Name                     Type      XLS  ODS  Description
 =======================  ========  ===  ===  ===========
 autoFilter               string              The range like 'A1:E20'
 columnDimension          array               Contains one or more arrays. Possible keys are 'default' or a valid column name like 'A'
- \+ autoSize             boolean             Does not work in PhpExcel?
+ \+ autoSize             boolean
  \+ collapsed            boolean             Does not work in PhpExcel?
  \+ columnIndex          string              Does not work in PhpExcel?
  \+ outlineLevel         int

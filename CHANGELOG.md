@@ -1,3 +1,9 @@
+## 2.1.1 (2017-01-15)
+
+**Fixes**
+
+ * Bugfix #20 How to autosize columns (guiyomh)
+
 ## 2.1 (2016-10-09)
 
 **Fixes**
