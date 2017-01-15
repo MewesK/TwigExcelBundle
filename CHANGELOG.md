@@ -3,6 +3,7 @@
 **Fixes**
 
  * Bugfix #20 How to autosize columns (guiyomh)
+ * Fixed a Twig 2.0 bug (a73280e)
 
 ## 2.1 (2016-10-09)
 

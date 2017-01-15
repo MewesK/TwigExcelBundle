@@ -6,6 +6,7 @@ use MewesK\TwigExcelBundle\Twig\NodeHelper;
 use Twig_Error_Syntax;
 use Twig_Node_Block;
 use Twig_Node_BlockReference;
+use Twig_Parser;
 use Twig_Token;
 use Twig_TokenParser;
 use Twig_TokenParser_Block;
@@ -17,6 +18,14 @@ use Twig_TokenParser_Block;
  */
 class XlsBlockTokenParser extends Twig_TokenParser
 {
+    private $baseTokenParser;
+
+    public function __construct()
+    {
+        // instantiate Twig block parser since final classes cannot be inherited (Twig 2.x fix)
+        $this->baseTokenParser = new Twig_TokenParser_Block();
+    }
+
     /**
      * @param Twig_Token $token
      * @return Twig_Node_BlockReference
@@ -24,13 +33,10 @@ class XlsBlockTokenParser extends Twig_TokenParser
      */
     public function parse(Twig_Token $token)
     {
-        // instantiate Twig block parser since final classes cannot be inherited (Twig 2.x fix)
-        $tokenParser = new Twig_TokenParser_Block();
-
         /**
          * @var Twig_Node_BlockReference $blockReference
          */
-        $blockReference = $tokenParser->parse($token);
+        $blockReference = $this->baseTokenParser->parse($token);
         /**
          * @var Twig_Node_Block $block
          */
@@ -65,5 +71,11 @@ class XlsBlockTokenParser extends Twig_TokenParser
     public function getTag()
     {
         return 'xlsblock';
+    }
+
+    public function setParser(Twig_Parser $parser)
+    {
+        parent::setParser($parser);
+        $this->baseTokenParser->setParser($parser);
     }
 }
