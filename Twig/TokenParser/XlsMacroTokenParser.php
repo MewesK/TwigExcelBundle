@@ -8,20 +8,20 @@ use Twig_Node_Body;
 use Twig_Node_Expression_Constant;
 use Twig_Node_Macro;
 use Twig_Token;
-use Twig_TokenParser_Macro;
+use Twig_TokenParser;
 
 /**
  * Class XlsMacroTokenParser
  *
  * @package MewesK\TwigExcelBundle\Twig\TokenParser
  */
-class XlsMacroTokenParser extends Twig_TokenParser_Macro
+class XlsMacroTokenParser extends Twig_TokenParser
 {
     /**
-     * Copy of the parent method to allow manipulating the Twig_Node_Macro instance.
+     * Based on final class method Twig_TokenParser_Macro::parse
      *
      * @param Twig_Token $token
-     * @return \Twig_NodeInterface|void
+     * @return void
      * @throws Twig_Error_Syntax
      */
     public function parse(Twig_Token $token)

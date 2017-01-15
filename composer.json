@@ -6,7 +6,14 @@
     "homepage": "https://github.com/MewesK/TwigExcelBundle",
     "license": "MIT",
     "authors": [
-        { "name": "Mewes Kochheim", "email": "mewes@kochheim.de" }
+        {
+            "name": "Mewes Kochheim",
+            "email": "mewes@kochheim.de"
+        },
+        {
+            "name": "Community Contributors",
+            "homepage": "https://github.com/MewesK/TwigExcelBundle/graphs/contributors"
+        }
     ],
     "require": {
         "php": ">=5.5",
@@ -17,7 +24,8 @@
         "symfony/symfony": "~2.7|~3.0",
         "symfony/phpunit-bridge": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
-        "mpdf/mpdf": "~6.0"
+        "mpdf/mpdf": "~6.0",
+        "phpunit/phpunit": "~4.8|~5.0"
     },
     "suggest": {
         "mpdf/mpdf": "~6.0"

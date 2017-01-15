@@ -2,6 +2,7 @@
 
 namespace MewesK\TwigExcelBundle\Wrapper;
 use PHPExcel_Cell;
+use PHPExcel_Exception;
 use PHPExcel_Worksheet_RowCellIterator;
 use Twig_Environment;
 
@@ -295,17 +296,21 @@ class XlsSheetWrapper extends AbstractWrapper
             foreach ($columnDimension as $key => $value) {
                 if(true === is_array($value) && true === isset($value['autoSize'])) {
                     if ('default' === $key) {
-                        /**
-                         * @var PHPExcel_Worksheet_RowCellIterator $cellIterator
-                         */
-                        $cellIterator = $this->object->getRowIterator()->current()->getCellIterator();
-                        $cellIterator->setIterateOnlyExistingCells(true);
+                        try {
+                            /**
+                             * @var PHPExcel_Worksheet_RowCellIterator $cellIterator
+                             */
+                            $cellIterator = $this->object->getRowIterator()->current()->getCellIterator();
+                            $cellIterator->setIterateOnlyExistingCells(true);
 
-                        /**
-                         * @var PHPExcel_Cell $cell
-                         */
-                        foreach ($cellIterator as $cell) {
-                            $this->object->getColumnDimension($cell->getColumn())->setAutoSize($value['autoSize']);
+                            /**
+                             * @var PHPExcel_Cell $cell
+                             */
+                            foreach ($cellIterator as $cell) {
+                                $this->object->getColumnDimension($cell->getColumn())->setAutoSize($value['autoSize']);
+                            }
+                        } catch (PHPExcel_Exception $e) {
+                            // ignore exceptions thrown when no cells are defined
                         }
                     } else {
                         $this->object->getColumnDimension($key)->setAutoSize($value['autoSize']);
