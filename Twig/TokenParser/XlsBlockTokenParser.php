@@ -7,6 +7,7 @@ use Twig_Error_Syntax;
 use Twig_Node_Block;
 use Twig_Node_BlockReference;
 use Twig_Token;
+use Twig_TokenParser;
 use Twig_TokenParser_Block;
 
 /**
@@ -14,7 +15,7 @@ use Twig_TokenParser_Block;
  *
  * @package MewesK\TwigExcelBundle\Twig\TokenParser
  */
-class XlsBlockTokenParser extends Twig_TokenParser_Block
+class XlsBlockTokenParser extends Twig_TokenParser
 {
     /**
      * @param Twig_Token $token
@@ -23,10 +24,13 @@ class XlsBlockTokenParser extends Twig_TokenParser_Block
      */
     public function parse(Twig_Token $token)
     {
+        // instantiate Twig block parser since final classes cannot be inherited (Twig 2.x fix)
+        $tokenParser = new Twig_TokenParser_Block();
+
         /**
          * @var Twig_Node_BlockReference $blockReference
          */
-        $blockReference = parent::parse($token);
+        $blockReference = $tokenParser->parse($token);
         /**
          * @var Twig_Node_Block $block
          */
