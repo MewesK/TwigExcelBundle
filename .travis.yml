@@ -18,7 +18,6 @@ env:
 matrix:
   fast_finish: true
   allow_failures:
-    - php: '7.1'
     - php: nightly
     - env: SYMFONY_VERSION=dev-master
 
@@ -31,3 +30,6 @@ install:
   - if [[ $SYMFONY_VERSION == '3.0.*' ]]; then composer require twig/twig:~1.23 --no-update; fi
   - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
   - composer update --prefer-dist --no-interaction
+
+script:
+  - vendor/bin/phpunit
