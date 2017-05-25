@@ -22,7 +22,7 @@ The following software is required to use PHPExcel/TwigExcelBundle.
 
 **Required by this bundle:**
 
- * PHP 5.5 or newer
+ * PHP 5.5.9 or newer
  * Symfony 2.7 or newer
 
 **Required by PhpExcel:**
