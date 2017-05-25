@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
+        "php": "5.5.9 - 7.0",
         "symfony/framework-bundle": "~2.7|~3.0",
         "phpoffice/phpexcel": "~1.8.1"
     },
@@ -24,11 +24,11 @@
         "symfony/symfony": "~2.7|~3.0",
         "symfony/phpunit-bridge": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
-        "mpdf/mpdf": "~6.0",
-        "phpunit/phpunit": "~4.8|~5.0"
-    },
-    "suggest": {
         "mpdf/mpdf": "~6.0"
+    },
+    "minimum-stability": "dev",
+    "suggest": {
+        "mpdf/mpdf": "Add support for PDF rendering, requires ~6.0"
     },
     "autoload": {
         "psr-4": { "MewesK\\TwigExcelBundle\\": "" }
