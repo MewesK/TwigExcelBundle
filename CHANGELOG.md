@@ -5,10 +5,6 @@
 PhpExcel will not support PHP 7.1 or newer. I have changed the requirements accordingly.
 I will start working on the next release using PhpSpreadsheet, the successor to PhpExcel.
 
-**Improvements**
-
- * Added Symfony 4 support
-
 **Fixes**
 
  * Bugfix #20 How to autosize columns (guiyomh)
