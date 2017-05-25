@@ -31,7 +31,6 @@ sudo: false
 
 cache:
   directories:
-    - .phpunit
     - $HOME/.composer/cache/files
 
 before_install:
@@ -42,4 +41,4 @@ install:
   - composer update $COMPOSER_FLAGS --prefer-dist --prefer-stable
 
 script:
-  - ./phpunit
+  - phpunit

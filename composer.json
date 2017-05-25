@@ -28,7 +28,7 @@
     },
     "minimum-stability": "dev",
     "suggest": {
-        "mpdf/mpdf": "Add support for PDF rendering, requires~6.0"
+        "mpdf/mpdf": "Add support for PDF rendering, requires ~6.0"
     },
     "autoload": {
         "psr-4": { "MewesK\\TwigExcelBundle\\": "" }
