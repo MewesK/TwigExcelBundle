@@ -39,7 +39,6 @@ before_install:
 
 install:
   - composer update $COMPOSER_FLAGS --prefer-dist --prefer-stable
-  - vendor/bin/simple-phpunit
 
 script:
-  - phpunit
+  - vendor/bin/simple-phpunit
