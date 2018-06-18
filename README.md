@@ -1,10 +1,10 @@
 # TwigExcelBundle
 
-[![Teavis CI: Build Status](https://travis-ci.org/MewesK/TwigExcelBundle.png?branch=master)](https://travis-ci.org/MewesK/TwigExcelBundle)
-[![Scrutinizer: Code Quality](https://scrutinizer-ci.com/g/MewesK/TwigExcelBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MewesK/TwigExcelBundle/?branch=master)
-[![SensioLabsInsight: Code Quality](https://insight.sensiolabs.com/projects/283cfe57-6ee4-4102-8fff-da3f6e668e8f/mini.png)](https://insight.sensiolabs.com/projects/283cfe57-6ee4-4102-8fff-da3f6e668e8f)
+## DEPRECATED
 
-This Symfony bundle provides a PhpExcel integration for Twig.
+This project is no longer maintained and should not be used anymore.
+     
+All users should migrate to its direct successor [TwigSpreadsheetBundle](https://github.com/MewesK/TwigSpreadsheetBundle).
 
 ## Supported output formats
 
